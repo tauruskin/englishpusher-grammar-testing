@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Question } from "@/hooks/useGame";
+import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 
 interface QuestionCardProps {
   question: Question;
