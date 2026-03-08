@@ -150,7 +150,7 @@ const Index = () => {
             rel="noopener noreferrer"
             className="hover:text-primary transition-colors"
           >
-            Visit EnglishPusher.in.ua →
+            Visit Englishpusher.in.ua →
           </a>
         </div>
       </footer>
