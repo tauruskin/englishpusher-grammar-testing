@@ -107,13 +107,34 @@ const Index = () => {
                 className="h-10 w-auto"
               />
             </a>
-            <div>
-              <h1 className="font-display text-lg font-bold text-foreground tracking-tight">
+            <div className="relative" ref={dropdownRef}>
+              <h1
+                className="font-display text-lg font-bold text-foreground tracking-tight cursor-pointer flex items-center gap-1"
+                onClick={() => setDropdownOpen((o) => !o)}
+              >
                 Englishpusher<span className="text-primary"> Trivia</span>
+                <span className="text-xs text-muted-foreground ml-1">▼</span>
               </h1>
               <p className="text-xs text-muted-foreground">
-                Adjectives for Feelings
+                {selectedTopic.name}
               </p>
+              {dropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[200px]">
+                  {topics.map((topic) => (
+                    <button
+                      key={topic.id}
+                      onClick={() => handleSelectTopic(topic)}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-muted ${
+                        topic.id === selectedTopic.id
+                          ? "text-primary font-semibold bg-primary/10"
+                          : "text-foreground"
+                      }`}
+                    >
+                      {topic.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-3">
