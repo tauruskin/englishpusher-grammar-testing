@@ -44,6 +44,7 @@ export interface Question {
   options?: string[];
   correctAnswer: string;
   shownTranslation?: string;
+  sentence?: string;
 }
 
 export interface AnswerResult {
