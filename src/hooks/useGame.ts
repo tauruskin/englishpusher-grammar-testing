@@ -230,11 +230,14 @@ export function useGame(customPool?: WordEntry[]) {
 
       const isMatching = currentQuestion.type === "matching";
       const isTypeWord = currentQuestion.type === "type-word";
+      const isSentenceCompletion = currentQuestion.type === "sentence-completion";
       const feedbackDelay = isMatching
         ? 300
         : isTypeWord
           ? correct ? 2000 : 3000
-          : 1000;
+          : isSentenceCompletion
+            ? correct ? 1000 : 2000
+            : 1000;
 
       setTimeout(() => {
         setTransitioning(true);
