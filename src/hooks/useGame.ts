@@ -35,7 +35,7 @@ function clearProgress() {
   } catch {}
 }
 
-export type QuestionType = "en-to-native" | "native-to-en" | "type-word" | "true-false" | "matching";
+export type QuestionType = "en-to-native" | "native-to-en" | "type-word" | "true-false" | "matching" | "sentence-completion";
 
 export interface Question {
   type: QuestionType;
@@ -44,6 +44,7 @@ export interface Question {
   options?: string[];
   correctAnswer: string;
   shownTranslation?: string;
+  sentence?: string;
 }
 
 export interface AnswerResult {
@@ -58,6 +59,7 @@ const configToType: Record<string, QuestionType> = {
   typeTheWord: "type-word",
   trueOrFalse: "true-false",
   matching: "matching",
+  sentenceCompletion: "sentence-completion",
 };
 
 export const questionTypeLabel: Record<QuestionType, string> = {
@@ -66,6 +68,7 @@ export const questionTypeLabel: Record<QuestionType, string> = {
   "type-word": "Type the word",
   "true-false": "True or False",
   "matching": "Match the pair",
+  "sentence-completion": "Complete the sentence",
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -90,6 +93,13 @@ function buildSingleQuestion(word: WordEntry, type: QuestionType, pool: WordEntr
     return { type, word, correctAnswer: isTrue ? "true" : "false", shownTranslation };
   }
 
+  if (type === "sentence-completion") {
+    const others = pool.filter((w) => w.word !== word.word);
+    const wrongOnes = shuffle(others).slice(0, 3);
+    const options = shuffle([word.word, ...wrongOnes.map((w) => w.word)]);
+    return { type, word, options, correctAnswer: word.word, sentence: word.example };
+  }
+
   const others = pool.filter((w) => w.word !== word.word);
   const wrongOnes = shuffle(others).slice(0, 3);
 
@@ -107,6 +117,10 @@ function generateQuestions(pool: WordEntry[]): Question[] {
   const singleTypes = enabledTypes.filter((t) => t !== "matching");
   const matchingEnabled = enabledTypes.includes("matching");
 
+  // Sentence-completion only works for words that have an example field
+  const sentenceCompletionEnabled = singleTypes.includes("sentence-completion");
+  const singleTypesNoSentence = singleTypes.filter((t) => t !== "sentence-completion");
+
   const shuffled = shuffle(pool);
   const questions: Question[] = [];
   let i = 0;
@@ -123,9 +137,14 @@ function generateQuestions(pool: WordEntry[]): Question[] {
       i += 5;
     } else {
       const word = shuffled[i];
+      // Allow sentence-completion only if the word has an example
+      const availableTypes =
+        sentenceCompletionEnabled && word.example
+          ? singleTypes
+          : singleTypesNoSentence;
       const type =
-        singleTypes.length > 0
-          ? singleTypes[Math.floor(Math.random() * singleTypes.length)]
+        availableTypes.length > 0
+          ? availableTypes[Math.floor(Math.random() * availableTypes.length)]
           : "en-to-native";
       questions.push(buildSingleQuestion(word, type, pool.length >= 4 ? pool : wordList));
       i++;
@@ -211,11 +230,14 @@ export function useGame(customPool?: WordEntry[]) {
 
       const isMatching = currentQuestion.type === "matching";
       const isTypeWord = currentQuestion.type === "type-word";
+      const isSentenceCompletion = currentQuestion.type === "sentence-completion";
       const feedbackDelay = isMatching
         ? 300
         : isTypeWord
           ? correct ? 2000 : 3000
-          : 1000;
+          : isSentenceCompletion
+            ? correct ? 1000 : 2000
+            : 1000;
 
       setTimeout(() => {
         setTransitioning(true);

@@ -24,6 +24,7 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       const timer = setTimeout(() => speakIfInteracted(question.word.word), 500);
       return () => clearTimeout(timer);
     }
+    // Do NOT auto-pronounce for sentence-completion
   }, [question.word.word, question.type, speakIfInteracted]);
 
   const getPrompt = () => {
@@ -31,6 +32,7 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       case "en-to-native": return "What does this word mean?";
       case "native-to-en": return "Which English word matches?";
       case "type-word": return "Type the English word:";
+      case "sentence-completion": return "Fill in the missing word:";
     }
   };
 
@@ -39,8 +41,11 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       case "en-to-native": return question.word.word;
       case "native-to-en": return question.word.translation;
       case "type-word": return question.word.translation;
+      case "sentence-completion": return null; // sentence is shown instead
     }
   };
+
+  const isSentenceCompletion = question.type === "sentence-completion";
 
   const getOptionStyle = (option: string) => {
     if (!answered) return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
@@ -63,8 +68,8 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
 
   const characterPose: CharacterPose = !answered ? "thinking" : isCorrect ? "happy" : "sad";
 
-  // Determine if we should show the speaker next to the English word
   const showSpeakerInline = question.type === "en-to-native";
+  const showSpeakerForAnswer = question.type === "native-to-en" || question.type === "type-word";
 
   return (
     <div className="flex items-center gap-6 w-full">
@@ -89,26 +94,41 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       {/* Type label */}
       <div className="flex justify-center">
         <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
-          {question.type === "type-word" ? "Type the Word" : "Multiple Choice"}
+          {isSentenceCompletion ? "Complete the Sentence" : question.type === "type-word" ? "Type the Word" : "Multiple Choice"}
         </span>
       </div>
 
       {/* Prompt */}
       <p className="text-muted-foreground text-center text-sm">{getPrompt()}</p>
 
-      {/* Main word */}
+      {/* Main word or sentence */}
       <div className="text-center">
-        <div className="flex items-center justify-center gap-1">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-relaxed">
-            {getDisplayWord()}
-          </h2>
-          {showSpeakerInline && (
-            <SpeakerButton word={question.word.word} onSpeak={speak} />
-          )}
-          {(question.type === "native-to-en" || question.type === "type-word") && (
-            <SpeakerButton word={question.correctAnswer} onSpeak={speak} />
-          )}
-        </div>
+        {isSentenceCompletion && question.sentence ? (
+          <p className="font-body text-lg md:text-xl text-foreground leading-relaxed">
+            {question.sentence.split("___").map((part, idx, arr) => (
+              <span key={idx}>
+                {part}
+                {idx < arr.length - 1 && (
+                  <span className="inline-block mx-1 border-b-2 border-primary min-w-[80px] text-center font-bold text-primary">
+                    {answered ? question.correctAnswer : "___"}
+                  </span>
+                )}
+              </span>
+            ))}
+          </p>
+        ) : (
+          <div className="flex items-center justify-center gap-1">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-relaxed">
+              {getDisplayWord()}
+            </h2>
+            {showSpeakerInline && (
+              <SpeakerButton word={question.word.word} onSpeak={speak} />
+            )}
+            {showSpeakerForAnswer && (
+              <SpeakerButton word={question.correctAnswer} onSpeak={speak} />
+            )}
+          </div>
+        )}
       </div>
 
       {/* Options or Input */}
