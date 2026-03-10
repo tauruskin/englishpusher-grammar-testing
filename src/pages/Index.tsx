@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useGame } from "@/hooks/useGame";
 import { useTTS } from "@/hooks/useTTS";
 import { WordEntry } from "@/data/wordList";
+import topics, { Topic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
 import ScoreBadge from "@/components/ScoreBadge";
 import QuestionCard from "@/components/QuestionCard";
@@ -10,9 +11,30 @@ import MatchingCard from "@/components/MatchingCard";
 import EndScreen from "@/components/EndScreen";
 
 const Index = () => {
-  const [customPool, setCustomPool] = useState<WordEntry[] | undefined>();
+  const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
+  const [customPool, setCustomPool] = useState<WordEntry[] | undefined>(topics[0].wordList);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const game = useGame(customPool);
   const tts = useTTS();
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSelectTopic = (topic: Topic) => {
+    setSelectedTopic(topic);
+    setCustomPool(topic.wordList);
+    game.restart(topic.wordList);
+    setDropdownOpen(false);
+  };
 
   const handlePracticeWeak = (words: WordEntry[]) => {
     setCustomPool(words);
@@ -20,8 +42,8 @@ const Index = () => {
   };
 
   const handlePlayAgain = () => {
-    setCustomPool(undefined);
-    game.restart();
+    setCustomPool(selectedTopic.wordList);
+    game.restart(selectedTopic.wordList);
   };
 
   const renderQuestion = () => {
@@ -85,13 +107,34 @@ const Index = () => {
                 className="h-10 w-auto"
               />
             </a>
-            <div>
-              <h1 className="font-display text-lg font-bold text-foreground tracking-tight">
+            <div className="relative" ref={dropdownRef}>
+              <h1
+                className="font-display text-lg font-bold text-foreground tracking-tight cursor-pointer flex items-center gap-1"
+                onClick={() => setDropdownOpen((o) => !o)}
+              >
                 Englishpusher<span className="text-primary"> Trivia</span>
+                <span className="text-xs text-muted-foreground ml-1">▼</span>
               </h1>
               <p className="text-xs text-muted-foreground">
-                Adjectives for Feelings
+                {selectedTopic.name}
               </p>
+              {dropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[200px]">
+                  {topics.map((topic) => (
+                    <button
+                      key={topic.id}
+                      onClick={() => handleSelectTopic(topic)}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-muted ${
+                        topic.id === selectedTopic.id
+                          ? "text-primary font-semibold bg-primary/10"
+                          : "text-foreground"
+                      }`}
+                    >
+                      {topic.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-3">
