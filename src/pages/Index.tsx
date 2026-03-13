@@ -181,7 +181,11 @@ const Index = () => {
           ) : (
             <>
               <ProgressBar current={game.currentIndex} total={game.totalQuestions} />
-              {renderQuestion()}
+              {game.totalQuestions === 0 ? (
+                <div className="text-center text-muted-foreground">Loading...</div>
+              ) : (
+                renderQuestion()
+              )}
             </>
           )}
         </div>
