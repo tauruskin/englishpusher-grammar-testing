@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import wordList, { WordEntry, enabledQuestionTypes } from "@/data/wordList";
 
-const STORAGE_KEY = "englishpusher-game-progress";
+const STORAGE_KEY = "englishpusher-game-progress-v2";
 
 interface SavedProgress {
   questions: Question[];
