@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { Question } from "@/hooks/useGame";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 import SpeakerButton from "@/components/SpeakerButton";
@@ -23,7 +23,7 @@ interface MatchingCardProps {
 const MatchingCard = ({ question, transitioning, onSubmit, speak }: MatchingCardProps) => {
   const words = question.words!;
 
-  const [shuffledTranslations] = useState(() => shuffle(words.map((w) => w.translation)));
+  const shuffledTranslations = useMemo(() => shuffle(words.map((w) => w.translation)), [words]);
   const [correctPairs, setCorrectPairs] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<string | null>(null);
   const [shaking, setShaking] = useState<{ word: string; translation: string } | null>(null);
