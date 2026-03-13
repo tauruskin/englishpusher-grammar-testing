@@ -12,7 +12,7 @@ import EndScreen from "@/components/EndScreen";
 
 const Index = () => {
   const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
-  const [customPool, setCustomPool] = useState<WordEntry[] | undefined>(topics[0].wordList);
+  const [customPool, setCustomPool] = useState<WordEntry[]>(topics[0].wordList);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const game = useGame(customPool);

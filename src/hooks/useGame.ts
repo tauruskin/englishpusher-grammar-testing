@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import wordList, { WordEntry, enabledQuestionTypes } from "@/data/wordList";
+import { WordEntry } from "@/data/wordList";
 
 const STORAGE_KEY = "englishpusher-game-progress-v3";
 
@@ -147,37 +147,17 @@ function generateQuestions(pool: WordEntry[]): Question[] {
   return questions;
 }
 
-export function useGame(customPool?: WordEntry[]) {
-  const pool = customPool ?? wordList;
-
-  const [questions, setQuestions] = useState<Question[]>(() => {
-    if (!customPool) {
-      const saved = loadProgress();
-      if (saved) return saved.questions;
-    }
-    return generateQuestions(pool);
-  });
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    if (!customPool) { const s = loadProgress(); if (s) return s.currentIndex; }
-    return 0;
-  });
-  const [score, setScore] = useState(() => {
-    if (!customPool) { const s = loadProgress(); if (s) return s.score; }
-    return 0;
-  });
+export function useGame(pool: WordEntry[]) {
+  const [questions, setQuestions] = useState<Question[]>(() => generateQuestions(pool));
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameOver, setGameOver] = useState(false);
-  const [streak, setStreak] = useState(() => {
-    if (!customPool) { const s = loadProgress(); if (s) return s.streak; }
-    return 0;
-  });
+  const [streak, setStreak] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
-  const [results, setResults] = useState<AnswerResult[]>(() => {
-    if (!customPool) { const s = loadProgress(); if (s) return s.results; }
-    return [];
-  });
+  const [results, setResults] = useState<AnswerResult[]>([]);
 
   const currentQuestion = questions[currentIndex] ?? null;
 
@@ -185,10 +165,10 @@ export function useGame(customPool?: WordEntry[]) {
   useEffect(() => {
     if (gameOver) {
       clearProgress();
-    } else if (questions.length > 0 && !customPool) {
+    } else if (questions.length > 0) {
       saveProgress({ questions, currentIndex, score, streak, results });
     }
-  }, [questions, currentIndex, score, streak, results, gameOver, customPool]);
+  }, [questions, currentIndex, score, streak, results, gameOver]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
