@@ -114,7 +114,7 @@ function generateQuestions(pool: WordEntry[]): Question[] {
 }
 
 export function useGame(pool: WordEntry[]) {
-  const [questions, setQuestions] = useState<Question[]>(() => generateQuestions(pool));
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
