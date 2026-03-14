@@ -1,6 +1,7 @@
 import { WordEntry } from "@/data/wordList";
 import adjectives from "./adjectives";
 import stativeVerbs from "./stative-verbs";
+import personalityAdjectives from "./personality-adjectives";
 
 export interface Topic {
   id: string;
@@ -11,6 +12,7 @@ export interface Topic {
 const topics: Topic[] = [
   { id: "adjectives", name: "Adjectives for Feelings", wordList: adjectives },
   { id: "stative-verbs", name: "Stative Verbs", wordList: stativeVerbs },
+  { id: "personality-adjectives", name: "Personality Adjectives", wordList: personalityAdjectives },
 ];
 
 export default topics;
