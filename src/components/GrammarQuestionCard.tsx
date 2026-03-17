@@ -112,6 +112,7 @@ const ErrorSpotView = ({
       <div className="flex flex-wrap gap-2 justify-center">
         {words.map((word, idx) => {
           const isError = idx === data.errorWordIndex;
+          const displayWord = (answered && isCorrect && isError) ? data.correction : word;
           
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
           
@@ -130,7 +131,7 @@ const ErrorSpotView = ({
           
           return (
             <span key={idx} className={style}>
-              {word}
+              {displayWord}
             </span>
           );
         })}
