@@ -148,7 +148,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "beginner",
-        sentence: "I am living in Moscow since I was born.",
+        sentence: "I am living in Kyiv since I was born.",
         grammarRule: "Present Simple for Permanent Situation",
         explanation: "When talking about where you live (permanent), use Present Simple, not Present Continuous.",
         errorSpot: {
