@@ -5,6 +5,7 @@ import personalityAdjectives from "./personality-adjectives";
 import adverbsOfFrequency from "./adverbs-of-frequency";
 import jobs from "./jobs";
 import personalityAdjectivesOpposites from "./personality-adjectives-opposites";
+import presentPerfect from "../grammarRules"; // ADD THIS LINE
 
 export interface Topic {
   id: string;
@@ -19,6 +20,7 @@ const topics: Topic[] = [
   { id: "adverbs-of-frequency", name: "Adverbs of Frequency", wordList: adverbsOfFrequency },
   { id: "jobs", name: "Jobs", wordList: jobs },
   { id: "personality-adjectives-opposites", name: "Personality Adjectives: Opposites", wordList: personalityAdjectivesOpposites },
+  { id: "present-perfect", name: "Present Perfect Tense", wordList: presentPerfect }, // ADD THIS LINE
 ];
 
 export default topics;
