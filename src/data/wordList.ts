@@ -1,36 +1,17 @@
-/**
- * Englishpusher Trivia — Word List Config
- *
- * This file re-exports the default topic's word list and shared types.
- * To add new topics, see src/data/topics/index.ts.
- */
-export interface WordEntry {
-  word: string;
-  translation: string;
-  example?: string;
-}
+import { WordEntry } from "@/data/wordList";
 
-export type EnabledQuestionType = 'multipleChoice' | 'reversed' | 'typeTheWord' | 'trueOrFalse' | 'matching' | 'sentenceCompletion';
-
-/**
- * Toggle question types on/off per lesson.
- * - multipleChoice: English word → pick Ukrainian translation
- * - reversed: Ukrainian translation → pick English word
- * - typeTheWord: Ukrainian translation → type the English word
- * - trueOrFalse: Is this English–Ukrainian pair correct?
- * - matching: Click-to-match 5 English words to their Ukrainian translations
- */
-export const enabledQuestionTypes: EnabledQuestionType[] = [
-  'multipleChoice',
-  'reversed',
-  'typeTheWord',
-  'trueOrFalse',
-  'matching',
-  'sentenceCompletion',
+const grammarTenses: WordEntry[] = [
+  {
+    word: "I ___ in London for five years.",
+    translation: "Present Perfect Gap Fill",
+    example: "have lived",
+  },
+  {
+    word: "He has go to the store.",
+    translation: "Error: Spot the mistake",
+    example: "gone",
+  },
+  // ... add more grammar questions here
 ];
 
-import adjectives from "./topics/adjectives";
-
-const wordList: WordEntry[] = adjectives;
-
-export default wordList;
+export default grammarTenses;
