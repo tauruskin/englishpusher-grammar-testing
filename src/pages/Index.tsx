@@ -116,7 +116,7 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
                 className="font-display text-lg font-bold text-foreground tracking-tight cursor-pointer flex items-center gap-1"
                 onClick={() => setDropdownOpen((o) => !o)}
               >
-                Englishpusher<span className="text-primary"> Trivia</span>
+                Englishpusher<span className="text-primary"> Grammar Testing</span>
                 <span className="text-xs text-muted-foreground ml-1">▼</span>
               </h1>
               <p className="text-xs text-muted-foreground">
