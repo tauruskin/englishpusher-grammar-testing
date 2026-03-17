@@ -111,12 +111,19 @@ const ErrorSpotView = ({
       {/* Sentence with clickable words */}
       <div className="flex flex-wrap gap-2 justify-center">
         {words.map((word, idx) => {
-          const isError = idx === data.errorWordIndex;
-          const displayWord = (answered && isCorrect && isError) ? data.correction : word;
+          const wrongWordCount = data.wrongWord.split(" ").length;
+          const isPrimaryError = idx === data.errorWordIndex;
+          const isInErrorRange = idx >= data.errorWordIndex && idx < data.errorWordIndex + wrongWordCount;
+          
+          if (answered && isCorrect && isInErrorRange && !isPrimaryError) {
+            return null; // Remove extra words in the phrase when corrected
+          }
+
+          const displayWord = (answered && isCorrect && isPrimaryError) ? data.correction : word;
           
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
           
-          if (isError) {
+          if (isPrimaryError) {
             if (answered) {
               style += isCorrect
                 ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold"
