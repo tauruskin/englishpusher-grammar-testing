@@ -365,12 +365,7 @@ const ExplanationPanel = ({
   </div>
 );
 
-// --- Difficulty Badge ---
-const difficultyColors: Record<string, string> = {
-  beginner: "text-success bg-success/10",
-  intermediate: "text-accent bg-accent/10",
-  advanced: "text-destructive bg-destructive/10",
-};
+// --- Question Type Labels ---
 
 const questionTypeLabel: Record<string, string> = {
   "gap-fill": "Fill the Gap",
@@ -470,17 +465,12 @@ const GrammarQuestionCard = ({
           </div>
         )}
 
-        {/* Header: type label + difficulty */}
         <div className="flex items-center justify-between">
           <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
             {questionTypeLabel[question.type]}
           </span>
-          <span
-            className={`text-xs font-display font-semibold px-2 py-0.5 rounded-full ${
-              difficultyColors[question.difficulty]
-            }`}
-          >
-            {question.difficulty}
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-display font-medium">
+            {question.grammarRule}
           </span>
         </div>
 
