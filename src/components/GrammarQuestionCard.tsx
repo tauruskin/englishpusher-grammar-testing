@@ -111,9 +111,7 @@ const ErrorSpotView = ({
       {/* Sentence with clickable words */}
       <div className="flex flex-wrap gap-2 justify-center">
         {words.map((word, idx) => {
-          // Calculate the range of words to highlight if wrongWord is a phrase
-          const wrongWordCount = data.wrongWord.split(" ").length;
-          const isError = idx >= data.errorWordIndex && idx < data.errorWordIndex + wrongWordCount;
+          const isError = idx === data.errorWordIndex;
           
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
           
@@ -123,7 +121,7 @@ const ErrorSpotView = ({
                 ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold"
                 : "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400 font-bold line-through";
             } else {
-              // Highlight the error word/phrase in red as requested
+              // Highlight the error word in red initially
               style += "bg-red-50 dark:bg-red-900/10 border-red-500/50 text-red-600 dark:text-red-400 font-bold";
             }
           } else {
