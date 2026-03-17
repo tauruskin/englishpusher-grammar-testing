@@ -1,5 +1,5 @@
 import { WordEntry } from "@/data/wordList";
-import presentPerfect from "../grammarRules";
+import presentPerfect from "./present-perfect";
 
 export interface Topic {
   id: string;
