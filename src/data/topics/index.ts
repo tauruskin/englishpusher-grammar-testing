@@ -1,14 +1,10 @@
-import { WordEntry } from "@/data/wordList";
-import presentPerfect from "./present-perfect";
+import { GrammarTopic } from "@/data/types";
+import { presentPerfectTopic } from "./present-perfect";
 
-export interface Topic {
-  id: string;
-  name: string;
-  wordList: WordEntry[];
-}
+export type { GrammarTopic };
 
-const topics: Topic[] = [
-  { id: "present-perfect", name: "Present Perfect Tense", wordList: presentPerfect },
+const topics: GrammarTopic[] = [
+  presentPerfectTopic,
 ];
 
 export default topics;

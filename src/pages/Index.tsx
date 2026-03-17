@@ -1,14 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { useGame } from "@/hooks/useGame";
-import { useTTS } from "@/hooks/useTTS";
-import { WordEntry } from "@/data/wordList";
-import topics, { Topic } from "@/data/topics";
+import topics, { GrammarTopic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
 import ScoreBadge from "@/components/ScoreBadge";
-import QuestionCard from "@/components/QuestionCard";
-import TrueFalseCard from "@/components/TrueFalseCard";
-import MatchingCard from "@/components/MatchingCard";
+import GrammarQuestionCard from "@/components/GrammarQuestionCard";
 import EndScreen from "@/components/EndScreen";
+import { useGrammarGame } from "@/hooks/useGrammarGame";
 
 const Index = () => {
   const getInitialTopic = () => {
@@ -16,12 +12,12 @@ const Index = () => {
     const topicId = params.get("topic");
     return topics.find((t) => t.id === topicId) ?? topics[0];
   };
-const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
-  const [customPool, setCustomPool] = useState<WordEntry[]>(topics[0].wordList);
+
+  const [selectedTopic, setSelectedTopic] = useState<GrammarTopic>(getInitialTopic);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const game = useGame(selectedTopic.wordList, selectedTopic.id);
-  const tts = useTTS();
+  
+  const game = useGrammarGame(selectedTopic.rules, selectedTopic.id);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -34,57 +30,21 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const handleSelectTopic = (topic: Topic) => {
-      setSelectedTopic(topic);
-      setDropdownOpen(false);
-      window.history.pushState({}, "", `?topic=${topic.id}`);
-    };
-
-  const handlePracticeWeak = (words: WordEntry[]) => {
-    setCustomPool(words);
-    game.restart(words);
+  const handleSelectTopic = (topic: GrammarTopic) => {
+    setSelectedTopic(topic);
+    setDropdownOpen(false);
+    window.history.pushState({}, "", `?topic=${topic.id}`);
   };
 
   const handlePlayAgain = () => {
-    setCustomPool(selectedTopic.wordList);
-    game.restart(selectedTopic.wordList);
+    game.restart();
   };
 
   const renderQuestion = () => {
     if (!game.currentQuestion) return null;
 
-    if (game.currentQuestion.type === "true-false") {
-      return (
-        <TrueFalseCard
-          key={game.currentIndex}
-          question={game.currentQuestion}
-          answered={game.answered}
-          selectedAnswer={game.selectedAnswer}
-          isCorrect={game.isCorrect}
-          streak={game.streak}
-          transitioning={game.transitioning}
-          onSubmit={game.submitAnswer}
-          speak={tts.speak}
-          speakIfInteracted={tts.speakIfInteracted}
-        />
-      );
-    }
-
-    if (game.currentQuestion.type === "matching") {
-      return (
-        <MatchingCard
-          key={game.currentIndex}
-          question={game.currentQuestion}
-          transitioning={game.transitioning}
-          onSubmit={game.submitAnswer}
-          speak={tts.speak}
-          speakIfInteracted={tts.speakIfInteracted}
-        />
-      );
-    }
-
     return (
-      <QuestionCard
+      <GrammarQuestionCard
         key={game.currentIndex}
         question={game.currentQuestion}
         answered={game.answered}
@@ -93,8 +53,6 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
         streak={game.streak}
         transitioning={game.transitioning}
         onSubmit={game.submitAnswer}
-        speak={tts.speak}
-        speakIfInteracted={tts.speakIfInteracted}
       />
     );
   };
@@ -141,15 +99,6 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={tts.toggleMute}
-              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-lg"
-              aria-label={tts.muted ? "Unmute pronunciation" : "Mute pronunciation"}
-              title={tts.muted ? "Unmute" : "Mute"}
-            >
-              {tts.muted ? "🔇" : "🔊"}
-            </button>
             {!game.gameOver && (
               <button
                 onClick={handlePlayAgain}
@@ -170,7 +119,6 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
                 <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
               </>
             )}
-          </div>
         </div>
       </header>
 
@@ -182,7 +130,6 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
               total={game.totalQuestions}
               results={game.results}
               onRestart={handlePlayAgain}
-              onPracticeWeak={handlePracticeWeak}
             />
           ) : (
             <>

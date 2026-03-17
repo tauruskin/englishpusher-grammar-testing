@@ -1,4 +1,4 @@
-import { GrammarQuestion } from './types';
+import { GrammarQuestion } from '@/data/types';
 
 /**
  * Present Perfect Tense - Grammar Questions
