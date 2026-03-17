@@ -5,6 +5,7 @@ import ScoreBadge from "@/components/ScoreBadge";
 import GrammarQuestionCard from "@/components/GrammarQuestionCard";
 import EndScreen from "@/components/EndScreen";
 import { useGrammarGame } from "@/hooks/useGrammarGame";
+import { useTTS } from "@/hooks/useTTS";
 
 const Index = () => {
   const getInitialTopic = () => {
@@ -18,6 +19,7 @@ const Index = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   
   const game = useGrammarGame(selectedTopic.rules, selectedTopic.id);
+  const tts = useTTS();
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -99,26 +101,36 @@ const Index = () => {
               )}
             </div>
           </div>
-            {!game.gameOver && (
+            <div className="flex items-center gap-3">
               <button
-                onClick={handlePlayAgain}
+                onClick={tts.toggleMute}
                 className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-lg"
-                aria-label="Restart game"
-                title="Restart"
+                aria-label={tts.muted ? "Unmute pronunciation" : "Mute pronunciation"}
+                title={tts.muted ? "Unmute" : "Mute"}
               >
-                🔄
+                {tts.muted ? "🔇" : "🔊"}
               </button>
-            )}
-            {!game.gameOver && (
-              <>
-                {game.streak >= 3 && (
-                  <span className="text-sm font-display font-bold text-primary animate-pulse">
-                    🔥 {game.streak}
-                  </span>
-                )}
-                <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
-              </>
-            )}
+              {!game.gameOver && (
+                <button
+                  onClick={handlePlayAgain}
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-lg"
+                  aria-label="Restart game"
+                  title="Restart"
+                >
+                  🔄
+                </button>
+              )}
+              {!game.gameOver && (
+                <>
+                  {game.streak >= 3 && (
+                    <span className="text-sm font-display font-bold text-primary animate-pulse">
+                      🔥 {game.streak}
+                    </span>
+                  )}
+                  <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
+                </>
+              )}
+            </div>
         </div>
       </header>
 
