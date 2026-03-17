@@ -111,17 +111,25 @@ const ErrorSpotView = ({
       {/* Sentence with clickable words */}
       <div className="flex flex-wrap gap-2 justify-center">
         {words.map((word, idx) => {
-          const isError = idx === data.errorWordIndex;
+          // Calculate the range of words to highlight if wrongWord is a phrase
+          const wrongWordCount = data.wrongWord.split(" ").length;
+          const isError = idx >= data.errorWordIndex && idx < data.errorWordIndex + wrongWordCount;
+          
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
-          if (answered && isError) {
-            style += isCorrect
-              ? "bg-success/20 border-success text-success font-bold"
-              : "bg-destructive/20 border-destructive text-destructive font-bold line-through";
-          } else if (!answered && isError) {
-            style += "bg-secondary border-border text-foreground cursor-default";
+          
+          if (isError) {
+            if (answered) {
+              style += isCorrect
+                ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold"
+                : "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400 font-bold line-through";
+            } else {
+              // Highlight the error word/phrase in red as requested
+              style += "bg-red-50 dark:bg-red-900/10 border-red-500/50 text-red-600 dark:text-red-400 font-bold";
+            }
           } else {
-            style += "bg-secondary border-transparent text-foreground cursor-default";
+            style += "bg-secondary border-transparent text-foreground opacity-90 cursor-default";
           }
+          
           return (
             <span key={idx} className={style}>
               {word}
@@ -154,16 +162,16 @@ const ErrorSpotView = ({
 
       {/* After answering — show correction */}
       {answered && (
-        <div className={`text-center space-y-1 p-3 rounded-xl border-2 ${isCorrect ? "border-success/40 bg-success/10" : "border-destructive/40 bg-destructive/10"}`}>
+        <div className={`text-center space-y-2 p-4 rounded-xl border-2 ${isCorrect ? "border-green-200 bg-green-50/50" : "border-red-200 bg-red-50/50"}`}>
           {!isCorrect && (
-            <p className="text-sm font-display font-semibold text-destructive">
+            <p className="text-sm font-display font-semibold text-red-600">
               Your answer: <span className="line-through">{selectedAnswer}</span>
             </p>
           )}
-          <p className="text-base font-display font-bold text-success">
-            ✅ Correct word: <em>{data.correction}</em>
+          <p className="text-lg font-display font-bold text-green-600">
+            ✅ Correct replacement: <em>{data.correction}</em>
           </p>
-          <p className="text-sm text-muted-foreground">{data.reason}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 italic">{data.reason}</p>
         </div>
       )}
     </div>

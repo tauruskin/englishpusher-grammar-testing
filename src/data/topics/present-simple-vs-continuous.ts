@@ -188,7 +188,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         grammarRule: "Present Continuous for Current Action",
         explanation: '"At the moment" indicates an action happening now, so use Present Continuous.',
         errorSpot: {
-            errorWordIndex: 2,
+            errorWordIndex: 1,
             wrongWord: "do you do",
             correction: "are you doing",
             reason: "'At the moment' = right now = Present Continuous question.",
@@ -206,7 +206,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         grammarRule: "State Verbs Don't Use Continuous",
         explanation: '"Believe" is a state verb. The correct form is simply "doesn\'t believe".',
         errorSpot: {
-            errorWordIndex: 5,
+            errorWordIndex: 8,
             wrongWord: "is not believing",
             correction: "doesn't believe",
             reason: "State verbs like 'believe' are never used in continuous form.",
@@ -224,7 +224,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         grammarRule: "Present Simple for Daily Routine",
         explanation: '"Every day" indicates a daily routine/habit. Use Present Simple for both actions.',
         errorSpot: {
-            errorWordIndex: 5,
+            errorWordIndex: 8,
             wrongWord: "is having",
             correction: "has",
             reason: "Routine actions (every day) use Present Simple, not Present Continuous.",
