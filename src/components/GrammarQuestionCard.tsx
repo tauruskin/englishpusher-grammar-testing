@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { GrammarQuestion } from "@/data/types";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 
@@ -11,6 +11,78 @@ interface GrammarQuestionCardProps {
   transitioning: boolean;
   onSubmit: (answer: string) => void;
 }
+
+const instructionText: Record<string, string> = {
+  "gap-fill": "Fill in the blank with the correct word",
+  "error-spot": "Find and correct the mistake in the sentence",
+  "multiple-choice": "Choose the grammatically correct sentence",
+  "sentence-reorder": "Put the words in the correct order",
+};
+
+const questionTypeLabel: Record<string, string> = {
+  "gap-fill": "Fill the Gap",
+  "error-spot": "Spot the Error",
+  "multiple-choice": "Multiple Choice",
+  "sentence-reorder": "Reorder",
+};
+
+// --- Shared Components ---
+
+const WordBox: React.FC<{ 
+  children: React.ReactNode; 
+  variant?: "default" | "correct" | "wrong" | "gap" | "active";
+  className?: string;
+}> = ({ 
+  children, 
+  variant = "default", 
+  className = "" 
+}) => {
+  const styles = {
+    default: "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100",
+    correct: "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold",
+    wrong: "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400 font-bold line-through",
+    gap: "bg-slate-50 dark:bg-slate-900/50 border-dashed border-primary/40 min-w-[3rem]",
+    active: "bg-primary/5 border-primary text-primary font-bold"
+  };
+
+  return (
+    <div className={`px-3 py-2 rounded-lg border-2 text-base md:text-lg transition-all shadow-sm ${styles[variant]} ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+const AnswerOption: React.FC<{
+  option: string;
+  onClick: () => void;
+  disabled: boolean;
+  variant?: "default" | "correct" | "wrong" | "faded";
+  delay?: number;
+}> = ({
+  option,
+  onClick,
+  disabled,
+  variant = "default",
+  delay = 0,
+}) => {
+  const styles = {
+    default: "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-primary/50 text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50 shadow-sm",
+    correct: "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold shadow-green-100 dark:shadow-none",
+    wrong: "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400 font-bold shadow-red-100 dark:shadow-none",
+    faded: "bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 opacity-60 grayscale-[0.5]"
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{ animationDelay: `${delay}ms` }}
+      className={`w-full text-left px-5 py-4 rounded-xl border-2 font-body transition-all duration-200 hover:scale-[1.01] active:scale-[0.98] ${styles[variant]}`}
+    >
+      {option}
+    </button>
+  );
+};
 
 // --- Gap Fill ---
 const GapFillView = ({
@@ -27,58 +99,43 @@ const GapFillView = ({
   onSubmit: (a: string) => void;
 }) => {
   const data = question.gapFill!;
-  const correct = data.correctAnswer;
-
-  const getOptionStyle = (option: string) => {
-    if (!answered)
-      return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
-    if (option === correct)
-      return "bg-success/20 border-success text-success animate-bounce-once";
-    if (option === selectedAnswer && !isCorrect)
-      return "bg-destructive/20 border-destructive text-destructive animate-shake";
-    return "bg-secondary border-border text-muted-foreground opacity-50";
-  };
+  const words = question.sentence.split(" ");
 
   return (
-    <div className="space-y-5">
-      {/* Sentence with blank */}
-      <div className="text-center">
-        <p className="font-body text-lg md:text-xl text-foreground leading-relaxed">
-          {question.sentence.split("___").map((part, idx, arr) => (
-            <span key={idx}>
-              {part}
-              {idx < arr.length - 1 && (
-                <span
-                  className={`inline-block mx-1 min-w-[110px] text-center font-bold border-b-2 ${
-                    answered
-                      ? isCorrect
-                        ? "border-success text-success"
-                        : "border-destructive text-destructive"
-                      : "border-primary text-primary"
-                  }`}
-                >
-                  {answered ? correct : "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"}
-                </span>
-              )}
-            </span>
-          ))}
-        </p>
+    <div className="space-y-8">
+      {/* Boxed Sentence */}
+      <div className="flex flex-wrap gap-2 justify-center">
+        {words.map((word, idx) => {
+          if (word === "___") {
+            const variant = answered ? (isCorrect ? "correct" : "wrong") : "gap";
+            return (
+              <WordBox key={idx} variant={variant}>
+                {answered ? data.correctAnswer : "\u00a0\u00a0\u00a0\u00a0\u00a0"}
+              </WordBox>
+            );
+          }
+          return <WordBox key={idx}>{word}</WordBox>;
+        })}
       </div>
 
-      {/* Answer options */}
-      <div className="grid gap-2.5">
-        {data.options.map((option, i) => (
-          <button
-            key={option}
-            onClick={() => !answered && onSubmit(option)}
-            disabled={answered}
-            style={{ animationDelay: `${i * 60}ms` }}
-            className={`w-full text-left px-5 py-3 rounded-xl border-2 font-body transition-all duration-200 ${getOptionStyle(option)}`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
+      {!answered && (
+        <div className="space-y-4">
+          <p className="text-center text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+            Choose the correct word:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {data.options.map((option, i) => (
+              <AnswerOption
+                key={option}
+                option={option}
+                onClick={() => onSubmit(option)}
+                disabled={answered}
+                delay={i * 50}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -102,68 +159,49 @@ const ErrorSpotView = ({
   const options = data.correctionOptions ?? [data.correction];
 
   return (
-    <div className="space-y-5">
-      {/* Instruction */}
-      <p className="text-center text-muted-foreground text-sm font-body">
-        Find and correct the mistake in the sentence:
-      </p>
-
-      {/* Sentence with clickable words */}
+    <div className="space-y-8">
+      {/* Boxed Sentence */}
       <div className="flex flex-wrap gap-2 justify-center">
         {words.map((word, idx) => {
           const isError = idx === data.errorWordIndex;
-          let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
+          let variant: "default" | "correct" | "wrong" = "default";
           if (answered && isError) {
-            style += isCorrect
-              ? "bg-success/20 border-success text-success font-bold"
-              : "bg-destructive/20 border-destructive text-destructive font-bold line-through";
-          } else if (!answered && isError) {
-            style += "bg-secondary border-border text-foreground cursor-default";
-          } else {
-            style += "bg-secondary border-transparent text-foreground cursor-default";
+            variant = isCorrect ? "correct" : "wrong";
           }
-          return (
-            <span key={idx} className={style}>
-              {word}
-            </span>
-          );
+          return <WordBox key={idx} variant={variant}>{word}</WordBox>;
         })}
       </div>
 
-      {/* Choose the correct replacement */}
       {!answered && (
-        <div>
-          <p className="text-center text-xs font-display text-muted-foreground uppercase tracking-widest mb-3">
-            Choose the correct word:
+        <div className="space-y-4">
+          <p className="text-center text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+            Choose the correct replacement:
           </p>
-          <div className="grid gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {options.map((option, i) => (
-              <button
+              <AnswerOption
                 key={option}
-                onClick={() => !answered && onSubmit(option)}
+                option={option}
+                onClick={() => onSubmit(option)}
                 disabled={answered}
-                style={{ animationDelay: `${i * 60}ms` }}
-                className="w-full text-left px-5 py-3 rounded-xl border-2 bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98] font-body transition-all duration-200"
-              >
-                {option}
-              </button>
+                delay={i * 50}
+              />
             ))}
           </div>
         </div>
       )}
 
-      {/* After answering — show correction */}
       {answered && (
-        <div className={`text-center space-y-1 p-3 rounded-xl border-2 ${isCorrect ? "border-success/40 bg-success/10" : "border-destructive/40 bg-destructive/10"}`}>
+        <div className={`text-center space-y-2 p-4 rounded-xl border-2 ${isCorrect ? "border-green-200 bg-green-50/50" : "border-red-200 bg-red-50/50"}`}>
           {!isCorrect && (
-            <p className="text-sm font-display font-semibold text-destructive">
+            <p className="text-sm font-display font-semibold text-red-600">
               Your answer: <span className="line-through">{selectedAnswer}</span>
             </p>
           )}
-          <p className="text-base font-display font-bold text-success">
-            ✅ Correct word: <em>{data.correction}</em>
+          <p className="text-lg font-display font-bold text-green-600">
+            ✅ Correct word: {data.correction}
           </p>
-          <p className="text-sm text-muted-foreground">{data.reason}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 italic">{data.reason}</p>
         </div>
       )}
     </div>
@@ -185,35 +223,33 @@ const MultipleChoiceView = ({
   onSubmit: (a: string) => void;
 }) => {
   const data = question.multipleChoice!;
-  const correct = data.correctOption;
-
-  const getOptionStyle = (option: string) => {
-    if (!answered)
-      return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
-    if (option === correct)
-      return "bg-success/20 border-success text-success animate-bounce-once";
-    if (option === selectedAnswer && !isCorrect)
-      return "bg-destructive/20 border-destructive text-destructive animate-shake";
-    return "bg-secondary border-border text-muted-foreground opacity-50";
-  };
 
   return (
-    <div className="space-y-5">
-      <p className="text-center font-body text-base text-muted-foreground">
-        {data.question}
-      </p>
-      <div className="grid gap-2.5">
-        {data.options.map((option, i) => (
-          <button
-            key={option}
-            onClick={() => !answered && onSubmit(option)}
-            disabled={answered}
-            style={{ animationDelay: `${i * 60}ms` }}
-            className={`w-full text-left px-5 py-3 rounded-xl border-2 font-body transition-all duration-200 text-sm ${getOptionStyle(option)}`}
-          >
-            {option}
-          </button>
-        ))}
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <p className="text-center text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+          Choose the correct sentence:
+        </p>
+        <div className="space-y-3">
+          {data.options.map((option, i) => {
+            let variant: "default" | "correct" | "wrong" | "faded" = "default";
+            if (answered) {
+              if (option === data.correctOption) variant = "correct";
+              else if (option === selectedAnswer) variant = "wrong";
+              else variant = "faded";
+            }
+            return (
+              <AnswerOption
+                key={option}
+                option={option}
+                onClick={() => onSubmit(option)}
+                disabled={answered}
+                variant={variant}
+                delay={i * 50}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -232,9 +268,7 @@ const SentenceReorderView = ({
   onSubmit: (a: string) => void;
 }) => {
   const data = question.sentenceReorder!;
-
-  // Initialize shuffled word indices
-  const [wordOrder, setWordOrder] = useState<number[]>(() => {
+  const [wordOrder] = useState<number[]>(() => {
     const idxs = data.words.map((_, i) => i);
     for (let i = idxs.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -246,8 +280,6 @@ const SentenceReorderView = ({
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const correctSentence = data.correctOrder.map((idx) => data.words[idx]).join(" ");
-
   const handleWordClick = (wordIdx: number) => {
     if (answered || submitted) return;
     if (selected.includes(wordIdx)) {
@@ -256,84 +288,67 @@ const SentenceReorderView = ({
       const next = [...selected, wordIdx];
       setSelected(next);
       if (next.length === data.words.length) {
-        const sentence = next.map((i) => data.words[i]).join(" ");
         setSubmitted(true);
-        onSubmit(sentence);
+        onSubmit(next.map(i => data.words[i]).join(" "));
       }
     }
   };
 
-  const builtSentence = selected.map((i) => data.words[i]).join(" ");
-
   return (
-    <div className="space-y-5">
-      <p className="text-center text-muted-foreground text-sm font-body">
-        Arrange the words to form a correct sentence:
-      </p>
-
-      {/* Built sentence display */}
-      <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
-        {selected.length === 0 ? (
-          <span className="text-muted-foreground text-sm italic">Click words below to build the sentence…</span>
-        ) : (
-          selected.map((wIdx, pos) => (
-            <span
-              key={pos}
-              onClick={() => !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))}
-              className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body cursor-pointer border-2 transition-all ${
-                answered
-                  ? isCorrect
-                    ? "border-success bg-success/20 text-success cursor-default"
-                    : "border-destructive bg-destructive/20 text-destructive cursor-default"
-                  : "border-primary bg-primary/10 text-primary hover:opacity-80"
-              }`}
-            >
-              {data.words[wIdx]}
-            </span>
-          ))
+    <div className="space-y-6">
+      {/* Tray for selected words */}
+      <div className="min-h-[4rem] p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-wrap gap-2 justify-center items-center">
+        {selected.length === 0 && !answered && (
+          <p className="text-slate-400 text-sm italic">Click words below to build the sentence</p>
         )}
+        {selected.map((wIdx, pos) => {
+          let variant: "active" | "correct" | "wrong" = "active";
+          if (answered) variant = isCorrect ? "correct" : "wrong";
+          return (
+            <div key={pos} onClick={() => !answered && !submitted && setSelected(s => s.filter((_, i) => i !== pos))}>
+              <WordBox variant={variant} className="cursor-pointer hover:scale-105 active:scale-95">
+                {data.words[wIdx]}
+              </WordBox>
+            </div>
+          );
+        })}
       </div>
 
       {/* Word bank */}
       {!answered && (
         <div className="flex flex-wrap gap-2 justify-center">
-          {wordOrder.map((wordIdx) => {
-            const isUsed = selected.includes(wordIdx);
+          {wordOrder.map((wIdx) => {
+            const isUsed = selected.includes(wIdx);
             return (
               <button
-                key={wordIdx}
-                onClick={() => handleWordClick(wordIdx)}
+                key={wIdx}
+                onClick={() => handleWordClick(wIdx)}
                 disabled={isUsed || submitted}
-                className={`px-3 py-1.5 rounded-lg border-2 font-body text-sm transition-all duration-150 ${
+                className={`px-4 py-2 rounded-xl border-2 font-body text-base transition-all ${
                   isUsed
-                    ? "border-transparent bg-secondary/50 text-transparent cursor-default"
-                    : "border-border bg-secondary text-foreground hover:border-primary hover:bg-primary/10 hover:scale-105 active:scale-95"
+                    ? "bg-slate-100 dark:bg-slate-800 border-transparent text-transparent"
+                    : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-primary hover:bg-primary/5 shadow-sm active:scale-90"
                 }`}
               >
-                {data.words[wordIdx]}
+                {data.words[wIdx]}
               </button>
             );
           })}
         </div>
       )}
 
-      {/* Answer reveal */}
-      {answered && !isCorrect && (
-        <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
-          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">Correct sentence</p>
-          <p className="font-body font-semibold text-success">{correctSentence}</p>
+      {selected.length > 0 && !answered && !submitted && (
+        <div className="text-center">
+          <button onClick={() => setSelected([])} className="text-xs text-slate-400 hover:text-red-500 underline transition-colors">
+            Clear all
+          </button>
         </div>
       )}
 
-      {/* Clear button */}
-      {!answered && !submitted && selected.length > 0 && (
-        <div className="text-center">
-          <button
-            onClick={() => setSelected([])}
-            className="text-xs text-muted-foreground hover:text-destructive underline transition-colors"
-          >
-            Clear and start over
-          </button>
+      {answered && !isCorrect && (
+        <div className="p-4 rounded-xl border-2 border-green-200 bg-green-50/50 text-center">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Correct sentence</p>
+          <p className="text-lg font-bold text-green-600">{data.correctOrder.map(i => data.words[i]).join(" ")}</p>
         </div>
       )}
     </div>
@@ -348,31 +363,20 @@ const ExplanationPanel = ({
   question: GrammarQuestion;
   isCorrect: boolean | null;
 }) => (
-  <div
-    className={`mt-4 p-4 rounded-xl border-2 text-sm space-y-1 ${
-      isCorrect
-        ? "border-success/30 bg-success/5"
-        : "border-primary/30 bg-primary/5"
-    }`}
-  >
-    <p className="font-display font-semibold text-foreground text-xs uppercase tracking-widest">
-      📚 {question.grammarRule}
+  <div className={`mt-6 p-5 rounded-2xl border-2 space-y-2 ${isCorrect ? "border-green-100 bg-green-50/30" : "border-primary/10 bg-primary/5"}`}>
+    <p className="text-xs font-bold tracking-widest text-slate-400 uppercase">
+      📚 Grammar Rule
     </p>
-    <p className="font-body text-foreground">{question.explanation}</p>
+    <p className="text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
+      {question.explanation}
+    </p>
     {question.tip && (
-      <p className="font-body text-muted-foreground italic">💡 {question.tip}</p>
+      <p className="text-slate-500 dark:text-slate-400 text-sm italic pt-1">
+        💡 <span className="font-semibold">Tip:</span> {question.tip}
+      </p>
     )}
   </div>
 );
-
-// --- Question Type Labels ---
-
-const questionTypeLabel: Record<string, string> = {
-  "gap-fill": "Fill the Gap",
-  "error-spot": "Spot the Error",
-  "multiple-choice": "Multiple Choice",
-  "sentence-reorder": "Reorder",
-};
 
 // --- Main Card ---
 const GrammarQuestionCard = ({
@@ -384,103 +388,75 @@ const GrammarQuestionCard = ({
   transitioning,
   onSubmit,
 }: GrammarQuestionCardProps) => {
-  const characterPose: CharacterPose = !answered
-    ? "thinking"
-    : isCorrect
-    ? "happy"
-    : "sad";
+  const characterPose: CharacterPose = !answered ? "thinking" : isCorrect ? "happy" : "sad";
 
   const renderQuestionBody = () => {
     switch (question.type) {
-      case "gap-fill":
-        return (
-          <GapFillView
-            question={question}
-            answered={answered}
-            selectedAnswer={selectedAnswer}
-            isCorrect={isCorrect}
-            onSubmit={onSubmit}
-          />
-        );
-      case "error-spot":
-        return (
-          <ErrorSpotView
-            question={question}
-            answered={answered}
-            selectedAnswer={selectedAnswer}
-            isCorrect={isCorrect}
-            onSubmit={onSubmit}
-          />
-        );
-      case "multiple-choice":
-        return (
-          <MultipleChoiceView
-            question={question}
-            answered={answered}
-            selectedAnswer={selectedAnswer}
-            isCorrect={isCorrect}
-            onSubmit={onSubmit}
-          />
-        );
-      case "sentence-reorder":
-        return (
-          <SentenceReorderView
-            question={question}
-            answered={answered}
-            isCorrect={isCorrect}
-            onSubmit={onSubmit}
-          />
-        );
+      case "gap-fill": return <GapFillView question={question} answered={answered} selectedAnswer={selectedAnswer} isCorrect={isCorrect} onSubmit={onSubmit} />;
+      case "error-spot": return <ErrorSpotView question={question} answered={answered} selectedAnswer={selectedAnswer} isCorrect={isCorrect} onSubmit={onSubmit} />;
+      case "multiple-choice": return <MultipleChoiceView question={question} answered={answered} selectedAnswer={selectedAnswer} isCorrect={isCorrect} onSubmit={onSubmit} />;
+      case "sentence-reorder": return <SentenceReorderView question={question} answered={answered} isCorrect={isCorrect} onSubmit={onSubmit} />;
+      default: return null;
     }
   };
 
   return (
-    <div className="flex items-start gap-6 w-full">
-      <GameCharacter pose={characterPose} className="flex-shrink-0 mt-4" />
+    <div className="flex flex-col md:flex-row items-center md:items-start gap-8 w-full max-w-4xl mx-auto">
+      {/* Teacher Character */}
+      <div className="hidden md:block sticky top-24">
+        <GameCharacter pose={characterPose} className="flex-shrink-0" />
+      </div>
 
-      <div
-        className={`flex-1 w-full max-w-lg mx-auto space-y-5 bg-card rounded-2xl p-6 md:p-8 border border-border shadow-md relative overflow-hidden transition-all duration-300 ${
-          transitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0 animate-slide-up"
-        }`}
-      >
-        {/* Reaction emoji overlay */}
-        {answered && isCorrect !== null && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <span
-              className={`text-7xl ${isCorrect ? "animate-emoji-correct" : "animate-emoji-wrong"}`}
-            >
-              {isCorrect ? "🎉" : "😬"}
-            </span>
+      <div className={`flex-1 w-full space-y-6 transition-all duration-300 ${transitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
+        {/* Main Card Container */}
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
+          
+          {/* Unified Header */}
+          <div className="mb-8 border-b border-slate-100 dark:border-slate-800 pb-6">
+            <h3 className="text-primary font-display font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              {questionTypeLabel[question.type]}
+            </h3>
+            <h2 className="text-slate-900 dark:text-white font-display text-xl md:text-2xl font-black leading-tight">
+              {question.grammarRule}
+            </h2>
           </div>
-        )}
 
-        {/* Streak badge */}
-        {streak >= 2 && (
-          <div
-            className={`absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${
-              streak >= 3 ? "animate-pulse" : ""
-            }`}
-          >
-            🔥 {streak} in a row!
+          {/* Reaction Overlay */}
+          {answered && isCorrect !== null && (
+            <div className="absolute top-8 right-8 pointer-events-none z-20 animate-bounce">
+              <span className="text-5xl">{isCorrect ? "🎉" : "😬"}</span>
+            </div>
+          )}
+
+          {/* Instruction */}
+          <p className="text-slate-600 dark:text-slate-400 font-body text-base md:text-lg mb-8 text-center max-w-md mx-auto">
+            {instructionText[question.type]}
+          </p>
+
+          {/* Question Content */}
+          <div className="relative z-10">
+            {renderQuestionBody()}
           </div>
-        )}
 
-        <div className="flex items-center justify-between">
-          <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
-            {questionTypeLabel[question.type]}
-          </span>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-display font-medium">
-            {question.grammarRule}
-          </span>
+          {/* Explanation shown after answering */}
+          {answered && (
+            <ExplanationPanel question={question} isCorrect={isCorrect} />
+          )}
+
+          {/* Streak badge inside card */}
+          {streak >= 3 && !answered && (
+            <div className="mt-8 flex justify-center">
+              <span className="bg-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-black shadow-lg shadow-orange-200 dark:shadow-none animate-pulse">
+                🔥 {streak} STREAK!
+              </span>
+            </div>
+          )}
         </div>
-
-        {/* Question body */}
-        {renderQuestionBody()}
-
-        {/* Explanation panel — shown after answering */}
-        {answered && question.type !== "error-spot" && (
-          <ExplanationPanel question={question} isCorrect={isCorrect} />
-        )}
+      </div>
+      
+      {/* Character for mobile */}
+      <div className="md:hidden">
+        <GameCharacter pose={characterPose} />
       </div>
     </div>
   );
