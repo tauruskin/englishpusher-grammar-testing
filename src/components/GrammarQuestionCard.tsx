@@ -471,13 +471,13 @@ const GrammarQuestionCard = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between">
-          <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-base uppercase tracking-widest text-accent font-display font-bold">
             {questionTypeLabel[question.type]}
-          </span>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-display font-medium">
+          </h2>
+          <p className="text-sm uppercase tracking-wider text-muted-foreground font-display font-medium leading-tight">
             {question.grammarRule}
-          </span>
+          </p>
         </div>
 
         {/* Question body */}
