@@ -17,10 +17,12 @@ export function getCorrectAnswer(q: GrammarQuestion): string {
       return q.errorSpot?.correction ?? "";
     case "multiple-choice":
       return q.multipleChoice?.correctOption ?? "";
-    case "sentence-reorder":
-      return q.sentenceReorder?.words
-        .map((_, i) => q.sentenceReorder!.words[q.sentenceReorder!.correctOrder.indexOf(i)])
-        .join(" ") ?? "";
+    case "sentence-reorder": {
+      const data = q.sentenceReorder;
+      if (!data || !data.words || !data.correctOrders || data.correctOrders.length === 0) return "";
+      // Return the first valid ordering as the reference correct answer
+      return data.correctOrders[0].map(idx => data.words[idx]).join(" ");
+    }
     default:
       return "";
   }
@@ -69,8 +71,24 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
     (answer: string) => {
       if (answered || !currentQuestion) return;
 
-      const correct_answer = getCorrectAnswer(currentQuestion);
-      const correct = answer.trim().toLowerCase() === correct_answer.trim().toLowerCase();
+      let correct = false;
+      let correct_answer = "";
+
+      if (currentQuestion.type === "sentence-reorder" && currentQuestion.sentenceReorder) {
+        const data = currentQuestion.sentenceReorder;
+        const userTrimmed = answer.trim().toLowerCase();
+        
+        // Check if user answer matches ANY of the correct orders
+        const possibleAnswers = data.correctOrders.map(order => 
+          order.map(idx => data.words[idx]).join(" ").trim().toLowerCase()
+        );
+        
+        correct = possibleAnswers.includes(userTrimmed);
+        correct_answer = possibleAnswers[0]; // Reference for display
+      } else {
+        correct_answer = getCorrectAnswer(currentQuestion);
+        correct = answer.trim().toLowerCase() === correct_answer.trim().toLowerCase();
+      }
 
       setSelectedAnswer(answer);
       setIsCorrect(correct);

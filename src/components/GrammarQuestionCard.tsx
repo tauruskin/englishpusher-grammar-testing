@@ -121,9 +121,6 @@ const ErrorSpotView = ({
 
           const displayWord = (answered && isCorrect && isPrimaryError) ? data.correction : word;
           
-          // Replace the error word with correction if answered correctly
-          const displayWord = isError && answered && isCorrect ? data.correction : word;
-          
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
           
           if (isPrimaryError) {
@@ -443,6 +440,7 @@ const GrammarQuestionCard = ({
       case "gap-fill":
         return (
           <GapFillView
+            key={question.id}
             question={question}
             answered={answered}
             selectedAnswer={selectedAnswer}
@@ -453,6 +451,7 @@ const GrammarQuestionCard = ({
       case "error-spot":
         return (
           <ErrorSpotView
+            key={question.id}
             question={question}
             answered={answered}
             selectedAnswer={selectedAnswer}
@@ -463,6 +462,7 @@ const GrammarQuestionCard = ({
       case "multiple-choice":
         return (
           <MultipleChoiceView
+            key={question.id}
             question={question}
             answered={answered}
             selectedAnswer={selectedAnswer}
@@ -473,6 +473,7 @@ const GrammarQuestionCard = ({
       case "sentence-reorder":
         return (
           <SentenceReorderView
+            key={question.id}
             question={question}
             answered={answered}
             isCorrect={isCorrect}
