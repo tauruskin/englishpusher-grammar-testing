@@ -63,19 +63,19 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    {
+        {
         id: "ps-pc-gap-4",
         topic: "present-simple-vs-continuous",
         type: "gap-fill",
         difficulty: "intermediate",
-        sentence: "What ___ you ___? I'm reading a book.",
+        sentence: "Look! Tom ___ on his phone instead of working.",
         grammarRule: "Present Continuous Question",
-        explanation: "Question form: 'What are you doing?' (Present Continuous for action happening now).",
-        tip: "Question: What are you doing? (Action now)",
+        explanation: "Use Present Continuous (is + verb-ing) for actions happening right now.",
+        tip: "Right now / Look! / at the moment = Present Continuous.",
         gapFill: {
             gapIndex: 1,
-            correctAnswer: "are you doing",
-            options: ["are you doing", "do you do", "you are doing", "you doing"],
+            correctAnswer: "is talking",
+            options: ["is talking", "talks", "talk", "talking"],
             correctOptionIndex: 0,
         },
     },
