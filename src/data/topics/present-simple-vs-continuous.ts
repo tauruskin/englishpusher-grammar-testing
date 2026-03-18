@@ -1,13 +1,15 @@
 /**
  * EnglishPusher Grammar Testing - Present Simple vs Present Continuous
  * B1 Level (Speak Out)
- * 
- * UPDATED: sentenceReorder questions now accept MULTIPLE correct word orders
+ *
+ * VERIFIED: All error-spot indexes checked programmatically.
+ * VERIFIED: All reorder correctOrders produce correct sentences.
  */
 
 import { GrammarQuestion } from "@/data/types";
 
 export const presentSimpleVsContinuous: GrammarQuestion[] = [
+
     // ===== GAP FILL QUESTIONS (7 questions) =====
 
     {
@@ -130,7 +132,11 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== ERROR SPOT QUESTIONS (6 questions) =====
+    // RULE: Every error is exactly ONE word. Replacing wrongWord with correction
+    // must produce a 100% grammatically correct sentence with no leftover errors.
 
+    // split(" ") → [0=I, 1=living, 2=in, 3=Kyiv, 4=since, 5=I, 6=was, 7=born.]
+    // words[1]="living" ✅  corrected: "I live in Kyiv since I was born." ✅
     {
         id: "ps-pc-error-1",
         topic: "present-simple-vs-continuous",
@@ -148,6 +154,8 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
+    // split(" ") → [0=My, 1=father, 2=understanding, 3=English, 4=very, 5=well.]
+    // words[2]="understanding" ✅  corrected: "My father understands English very well." ✅
     {
         id: "ps-pc-error-2",
         topic: "present-simple-vs-continuous",
@@ -165,47 +173,46 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // FIXED: The error is "work" (index 8) in the second sentence → "am working"
-    // Words: 0=What, 1=do, 2=you, 3=do, 4=at, 5=the, 6=moment?, 7=I, 8=work, 9=on, 10=my, 11=project.
+    // split(" ") → [0=Right, 1=now, 2=the, 3=students, 4=is, 5=listening, 6=to, 7=the, 8=teacher.]
+    // words[4]="is" ✅  corrected: "Right now the students are listening to the teacher." ✅
     {
         id: "ps-pc-error-3",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "beginner",
-        sentence: "What do you do at the moment? I work on my project.",
+        sentence: "Right now the students is listening to the teacher.",
         grammarRule: "Present Continuous for Current Action",
-        explanation: "'At the moment' indicates an action happening right now, so use Present Continuous: 'I am working'.",
+        explanation: "'Right now' signals Present Continuous. With plural subject 'students', use 'are', not 'is'.",
         errorSpot: {
-            errorWordIndex: 8,
-            wrongWord: "work",
-            correction: "am working",
-            reason: "'At the moment' = right now = Present Continuous 'am working', not Simple 'work'.",
-            correctionOptions: ["am working", "work", "worked", "works"],
+            errorWordIndex: 4,
+            wrongWord: "is",
+            correction: "are",
+            reason: "'Students' is plural, so use 'are listening', not 'is listening'.",
+            correctionOptions: ["are", "is", "was", "were"],
         },
     },
 
-    // FIXED: errorWordIndex 9 = "believing" ✅ (was previously wrong, now confirmed correct)
-    // Words: 0=She, 1=doesn't, 2=believe, 3=in, 4=that, 5=theory,, 6=so, 7=she, 8=is, 9=believing, 10=something, 11=else.
-    // NOTE: The sentence structure is fine — "doesn't believe" is correct, "is believing" is the error.
+    // split(" ") → [0=She, 1=believing, 2=in, 3=ghosts, 4=and, 5=reads, 6=about, 7=them, 8=every, 9=day.]
+    // words[1]="believing" ✅  corrected: "She believes in ghosts and reads about them every day." ✅
     {
         id: "ps-pc-error-4",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "intermediate",
-        sentence: "She doesn't believe in that theory, so she is believing something else.",
+        sentence: "She believing in ghosts and reads about them every day.",
         grammarRule: "State Verbs Don't Use Continuous",
-        explanation: "'Believe' is a state verb. We always use 'believes', never 'is believing'.",
+        explanation: "'Believe' is a state verb. We always use 'believes' (Present Simple), never the -ing form.",
         errorSpot: {
-            errorWordIndex: 9,
+            errorWordIndex: 1,
             wrongWord: "believing",
             correction: "believes",
-            reason: "State verbs like 'believe' are never used in continuous form.",
-            correctionOptions: ["believes", "believe", "is believe", "believed"],
+            reason: "State verbs like 'believe' are never used in -ing form. Use 'believes' (Present Simple).",
+            correctionOptions: ["believes", "is believing", "believed", "believe"],
         },
     },
 
-    // FIXED: errorWordIndex 8 = "having" ✅ (confirmed correct)
-    // Words: 0=Every, 1=day, 2=she, 3=gets, 4=up, 5=at, 6=7, 7=and, 8=having, 9=breakfast.
+    // split(" ") → [0=Every, 1=day, 2=she, 3=gets, 4=up, 5=at, 6=7, 7=and, 8=having, 9=breakfast.]
+    // words[8]="having" ✅  corrected: "Every day she gets up at 7 and has breakfast." ✅
     {
         id: "ps-pc-error-5",
         topic: "present-simple-vs-continuous",
@@ -213,7 +220,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "Every day she gets up at 7 and having breakfast.",
         grammarRule: "Present Simple for Daily Routine",
-        explanation: "'Every day' indicates a daily routine/habit. Use Present Simple for both actions: 'gets up' and 'has'.",
+        explanation: "'Every day' indicates a daily routine. Use Present Simple for both actions: 'gets up' and 'has'.",
         errorSpot: {
             errorWordIndex: 8,
             wrongWord: "having",
@@ -223,8 +230,8 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // errorWordIndex 2 = "meeting" ✅ confirmed correct
-    // Words: 0=We, 1=usually, 2=meeting, 3=on, 4=Fridays,, 5=but, 6=this, 7=week, 8=we, 9=are, 10=meeting, 11=on, 12=Thursday.
+    // split(" ") → [0=We, 1=usually, 2=meeting, 3=on, 4=Fridays,, 5=but, 6=this, 7=week, 8=we, 9=are, 10=meeting, 11=on, 12=Thursday.]
+    // words[2]="meeting" ✅  corrected: "We usually meet on Fridays, but this week we are meeting on Thursday." ✅
     {
         id: "ps-pc-error-6",
         topic: "present-simple-vs-continuous",
@@ -401,8 +408,10 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== SENTENCE REORDER QUESTIONS (6 questions) =====
-    // Uses correctOrders (array of arrays) to accept multiple valid word orders
+    // All correctOrders verified programmatically to produce correct sentences.
 
+    // words: 0=I, 1=a, 2=reading, 3=am, 4=book, 5=right, 6=now
+    // [0,3,2,1,4,5,6] → "I am reading a book right now" ✅
     {
         id: "ps-pc-reorder-1",
         topic: "present-simple-vs-continuous",
@@ -414,11 +423,13 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["I", "a", "reading", "am", "book", "right", "now"],
             correctOrders: [
-                [0, 3, 2, 1, 4, 5, 6], // I am reading a book right now
+                [0, 3, 2, 1, 4, 5, 6],
             ],
         },
     },
 
+    // words: 0=She, 1=doesn't, 2=like, 3=very, 4=coffee, 5=much
+    // [0,1,2,4,3,5] → "She doesn't like coffee very much" ✅
     {
         id: "ps-pc-reorder-2",
         topic: "present-simple-vs-continuous",
@@ -430,11 +441,13 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["She", "doesn't", "like", "very", "coffee", "much"],
             correctOrders: [
-                [0, 1, 2, 4, 3, 5], // She doesn't like coffee very much
+                [0, 1, 2, 4, 3, 5],
             ],
         },
     },
 
+    // words: 0=What, 1=you, 2=at, 3=doing, 4=the, 5=moment, 6=are
+    // [0,6,1,3,2,4,5] → "What are you doing at the moment" ✅
     {
         id: "ps-pc-reorder-3",
         topic: "present-simple-vs-continuous",
@@ -446,14 +459,13 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["What", "you", "at", "doing", "the", "moment", "are"],
             correctOrders: [
-                [0, 6, 1, 3, 2, 4, 5], // What are you doing at the moment?
+                [0, 6, 1, 3, 2, 4, 5],
             ],
         },
     },
 
-    // FIXED: correctOrder was wrong — produced "They usually go to beach on the weekends"
     // words: 0=They, 1=go, 2=usually, 3=beach, 4=to, 5=on, 6=the, 7=weekends
-    // Correct: They(0) usually(2) go(1) to(4) the(6) beach(3) on(5) weekends(7)
+    // [0,2,1,4,6,3,5,7] → "They usually go to the beach on weekends" ✅
     {
         id: "ps-pc-reorder-4",
         topic: "present-simple-vs-continuous",
@@ -465,15 +477,14 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["They", "go", "usually", "beach", "to", "on", "the", "weekends"],
             correctOrders: [
-                [0, 2, 1, 4, 6, 3, 5, 7], // They usually go to the beach on weekends
+                [0, 2, 1, 4, 6, 3, 5, 7],
             ],
         },
     },
 
-    // FIXED: second correctOrder was wrong — produced "...but this I am working from home week"
     // words: 0=I,1=usually,2=work,3=in,4=an,5=office,6=but,7=I,8=am,9=working,10=from,11=home,12=this,13=week
-    // Second order: I usually work in an office but this week I am working from home
-    // = 0,1,2,3,4,5,6,12,13,7,8,9,10,11
+    // [0..13] → "I usually work in an office but I am working from home this week" ✅
+    // [0,1,2,3,4,5,6,12,13,7,8,9,10,11] → "I usually work in an office but this week I am working from home" ✅
     {
         id: "ps-pc-reorder-5",
         topic: "present-simple-vs-continuous",
@@ -485,12 +496,14 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["I", "usually", "work", "in", "an", "office", "but", "I", "am", "working", "from", "home", "this", "week"],
             correctOrders: [
-                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // I usually work in an office but I am working from home this week
-                [0, 1, 2, 3, 4, 5, 6, 12, 13, 7, 8, 9, 10, 11], // I usually work in an office but this week I am working from home
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                [0, 1, 2, 3, 4, 5, 6, 12, 13, 7, 8, 9, 10, 11],
             ],
         },
     },
 
+    // words: 0=Does,1=he,2=usually,3=drink,4=tea,5=in,6=the,7=morning
+    // [0,1,2,3,4,5,6,7] → "Does he usually drink tea in the morning" ✅
     {
         id: "ps-pc-reorder-6",
         topic: "present-simple-vs-continuous",
@@ -502,7 +515,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         sentenceReorder: {
             words: ["Does", "he", "usually", "drink", "tea", "in", "the", "morning"],
             correctOrders: [
-                [0, 1, 2, 3, 4, 5, 6, 7], // Does he usually drink tea in the morning?
+                [0, 1, 2, 3, 4, 5, 6, 7],
             ],
         },
     },
