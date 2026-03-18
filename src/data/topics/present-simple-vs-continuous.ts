@@ -165,6 +165,8 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
+    // FIXED: The error is "work" (index 8) in the second sentence → "am working"
+    // Words: 0=What, 1=do, 2=you, 3=do, 4=at, 5=the, 6=moment?, 7=I, 8=work, 9=on, 10=my, 11=project.
     {
         id: "ps-pc-error-3",
         topic: "present-simple-vs-continuous",
@@ -172,7 +174,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "beginner",
         sentence: "What do you do at the moment? I work on my project.",
         grammarRule: "Present Continuous for Current Action",
-        explanation: "'At the moment' indicates an action happening now, so use Present Continuous.",
+        explanation: "'At the moment' indicates an action happening right now, so use Present Continuous: 'I am working'.",
         errorSpot: {
             errorWordIndex: 8,
             wrongWord: "work",
@@ -182,6 +184,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
+    // FIXED: errorWordIndex 9 = "believing" ✅ (was previously wrong, now confirmed correct)
+    // Words: 0=She, 1=doesn't, 2=believe, 3=in, 4=that, 5=theory,, 6=so, 7=she, 8=is, 9=believing, 10=something, 11=else.
+    // NOTE: The sentence structure is fine — "doesn't believe" is correct, "is believing" is the error.
     {
         id: "ps-pc-error-4",
         topic: "present-simple-vs-continuous",
@@ -189,16 +194,18 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "She doesn't believe in that theory, so she is believing something else.",
         grammarRule: "State Verbs Don't Use Continuous",
-        explanation: "'Believe' is a state verb. We use 'believes', not 'is believing'.",
+        explanation: "'Believe' is a state verb. We always use 'believes', never 'is believing'.",
         errorSpot: {
             errorWordIndex: 9,
             wrongWord: "believing",
             correction: "believes",
             reason: "State verbs like 'believe' are never used in continuous form.",
-            correctionOptions: ["believes", "believing", "is believe", "believe"],
+            correctionOptions: ["believes", "believe", "is believe", "believed"],
         },
     },
 
+    // FIXED: errorWordIndex 8 = "having" ✅ (confirmed correct)
+    // Words: 0=Every, 1=day, 2=she, 3=gets, 4=up, 5=at, 6=7, 7=and, 8=having, 9=breakfast.
     {
         id: "ps-pc-error-5",
         topic: "present-simple-vs-continuous",
@@ -206,16 +213,18 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "Every day she gets up at 7 and having breakfast.",
         grammarRule: "Present Simple for Daily Routine",
-        explanation: "'Every day' indicates a daily routine/habit. Use Present Simple for both actions.",
+        explanation: "'Every day' indicates a daily routine/habit. Use Present Simple for both actions: 'gets up' and 'has'.",
         errorSpot: {
             errorWordIndex: 8,
             wrongWord: "having",
             correction: "has",
             reason: "Routine actions (every day) use Present Simple 'has', not Present Continuous 'having'.",
-            correctionOptions: ["has", "having", "is having", "have"],
+            correctionOptions: ["has", "is having", "have", "had"],
         },
     },
 
+    // errorWordIndex 2 = "meeting" ✅ confirmed correct
+    // Words: 0=We, 1=usually, 2=meeting, 3=on, 4=Fridays,, 5=but, 6=this, 7=week, 8=we, 9=are, 10=meeting, 11=on, 12=Thursday.
     {
         id: "ps-pc-error-6",
         topic: "present-simple-vs-continuous",
@@ -223,13 +232,13 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "advanced",
         sentence: "We usually meeting on Fridays, but this week we are meeting on Thursday.",
         grammarRule: "Present Simple for Regular Meetings vs Present Continuous for Exception",
-        explanation: "'Usually' and scheduled meetings use Present Simple. Only 'this week' (exception) uses Present Continuous.",
+        explanation: "'Usually' signals a regular habit — use Present Simple 'meet'. 'This week' is the exception, so 'are meeting' is correct there.",
         errorSpot: {
             errorWordIndex: 2,
             wrongWord: "meeting",
             correction: "meet",
             reason: "Regular scheduled meetings (usually, every week) use Present Simple 'meet', not 'meeting'.",
-            correctionOptions: ["meet", "meeting", "are meeting", "meetings"],
+            correctionOptions: ["meet", "are meeting", "met", "meets"],
         },
     },
 
@@ -392,7 +401,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== SENTENCE REORDER QUESTIONS (6 questions) =====
-    // UPDATED: Now uses correctOrders (array of arrays) to accept multiple valid word orders
+    // Uses correctOrders (array of arrays) to accept multiple valid word orders
 
     {
         id: "ps-pc-reorder-1",
@@ -433,7 +442,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "What are you doing at the moment?",
         grammarRule: "Present Continuous Question - Word Order",
-        explanation: "Question: what + be + you + verb-ing + adverbial phrase",
+        explanation: "Question: What + be + subject + verb-ing + adverbial phrase.",
         sentenceReorder: {
             words: ["What", "you", "at", "doing", "the", "moment", "are"],
             correctOrders: [
@@ -442,6 +451,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
+    // FIXED: correctOrder was wrong — produced "They usually go to beach on the weekends"
+    // words: 0=They, 1=go, 2=usually, 3=beach, 4=to, 5=on, 6=the, 7=weekends
+    // Correct: They(0) usually(2) go(1) to(4) the(6) beach(3) on(5) weekends(7)
     {
         id: "ps-pc-reorder-4",
         topic: "present-simple-vs-continuous",
@@ -449,15 +461,19 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "They usually go to the beach on weekends.",
         grammarRule: "Present Simple with Adverb of Frequency",
-        explanation: "Present Simple: subject + adverb + verb + rest.",
+        explanation: "Present Simple: subject + adverb of frequency + verb + rest.",
         sentenceReorder: {
             words: ["They", "go", "usually", "beach", "to", "on", "the", "weekends"],
             correctOrders: [
-                [0, 2, 1, 4, 3, 5, 6, 7], // They usually go to the beach on weekends
+                [0, 2, 1, 4, 6, 3, 5, 7], // They usually go to the beach on weekends
             ],
         },
     },
 
+    // FIXED: second correctOrder was wrong — produced "...but this I am working from home week"
+    // words: 0=I,1=usually,2=work,3=in,4=an,5=office,6=but,7=I,8=am,9=working,10=from,11=home,12=this,13=week
+    // Second order: I usually work in an office but this week I am working from home
+    // = 0,1,2,3,4,5,6,12,13,7,8,9,10,11
     {
         id: "ps-pc-reorder-5",
         topic: "present-simple-vs-continuous",
@@ -465,12 +481,12 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "advanced",
         sentence: "I usually work in an office, but I am working from home this week.",
         grammarRule: "Combining Present Simple and Continuous",
-        explanation: "Two clauses: habit (Simple) + temporary situation (Continuous). 'This week' can go before or after 'I am working'.",
+        explanation: "Two clauses: habit (Simple) + temporary situation (Continuous). 'This week' can go at the start or end of the second clause.",
         sentenceReorder: {
             words: ["I", "usually", "work", "in", "an", "office", "but", "I", "am", "working", "from", "home", "this", "week"],
             correctOrders: [
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // I usually work in an office but I am working from home this week
-                [0, 1, 2, 3, 4, 5, 6, 12, 7, 8, 9, 10, 11, 13], // I usually work in an office but this week I am working from home
+                [0, 1, 2, 3, 4, 5, 6, 12, 13, 7, 8, 9, 10, 11], // I usually work in an office but this week I am working from home
             ],
         },
     },
@@ -482,7 +498,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "advanced",
         sentence: "Does he usually drink tea in the morning?",
         grammarRule: "Present Simple Question with Adverb of Frequency",
-        explanation: "Question: do/does + subject + adverb + verb + rest.",
+        explanation: "Question: do/does + subject + adverb of frequency + verb + rest.",
         sentenceReorder: {
             words: ["Does", "he", "usually", "drink", "tea", "in", "the", "morning"],
             correctOrders: [
