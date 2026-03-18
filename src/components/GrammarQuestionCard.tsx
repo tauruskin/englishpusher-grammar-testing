@@ -227,7 +227,6 @@ const MultipleChoiceView = ({
   );
 };
 
-// --- Sentence Reorder ---
 const SentenceReorderView = ({
   question,
   answered,
@@ -240,7 +239,7 @@ const SentenceReorderView = ({
   onSubmit: (a: string) => void;
 }) => {
   const data = question.sentenceReorder!;
-
+ 
   // Initialize shuffled word indices
   const [wordOrder, setWordOrder] = useState<number[]>(() => {
     const idxs = data.words.map((_, i) => i);
@@ -250,12 +249,27 @@ const SentenceReorderView = ({
     }
     return idxs;
   });
-
+ 
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
-
-  const correctSentence = data.correctOrder.map((idx) => data.words[idx]).join(" ");
-
+ 
+  /**
+   * Check if submitted order matches ANY of the acceptable correct orders
+   */
+  const isCorrectOrder = (submittedOrder: number[]): boolean => {
+    return data.correctOrders.some(
+      (correctOrder) =>
+        submittedOrder.length === correctOrder.length &&
+        submittedOrder.every((idx, pos) => idx === correctOrder[pos])
+    );
+  };
+ 
+  // Build sentences from all acceptable orders (for display)
+  const correctSentences = data.correctOrders.map((order) =>
+    order.map((idx) => data.words[idx]).join(" ")
+  );
+  const firstCorrectSentence = correctSentences[0];
+ 
   const handleWordClick = (wordIdx: number) => {
     if (answered || submitted) return;
     if (selected.includes(wordIdx)) {
@@ -265,29 +279,34 @@ const SentenceReorderView = ({
       setSelected(next);
       if (next.length === data.words.length) {
         const sentence = next.map((i) => data.words[i]).join(" ");
+        const isCorrectSubmission = isCorrectOrder(next);
         setSubmitted(true);
         onSubmit(sentence);
       }
     }
   };
-
+ 
   const builtSentence = selected.map((i) => data.words[i]).join(" ");
-
+ 
   return (
     <div className="space-y-5">
       <p className="text-center text-muted-foreground text-sm font-body">
         Arrange the words to form a correct sentence:
       </p>
-
+ 
       {/* Built sentence display */}
       <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
         {selected.length === 0 ? (
-          <span className="text-muted-foreground text-sm italic">Click words below to build the sentence…</span>
+          <span className="text-muted-foreground text-sm italic">
+            Click words below to build the sentence…
+          </span>
         ) : (
           selected.map((wIdx, pos) => (
             <span
               key={pos}
-              onClick={() => !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))}
+              onClick={() =>
+                !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))
+              }
               className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body cursor-pointer border-2 transition-all ${
                 answered
                   ? isCorrect
@@ -301,7 +320,7 @@ const SentenceReorderView = ({
           ))
         )}
       </div>
-
+ 
       {/* Word bank */}
       {!answered && (
         <div className="flex flex-wrap gap-2 justify-center">
@@ -324,15 +343,22 @@ const SentenceReorderView = ({
           })}
         </div>
       )}
-
-      {/* Answer reveal */}
+ 
+      {/* Answer reveal - show first correct sentence */}
       {answered && !isCorrect && (
         <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
-          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">Correct sentence</p>
-          <p className="font-body font-semibold text-success">{correctSentence}</p>
+          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">
+            Correct sentence
+          </p>
+          <p className="font-body font-semibold text-success">{firstCorrectSentence}</p>
+          {correctSentences.length > 1 && (
+            <p className="text-xs text-muted-foreground mt-2 italic">
+              (Multiple correct word orders are acceptable)
+            </p>
+          )}
         </div>
       )}
-
+ 
       {/* Clear button */}
       {!answered && !submitted && selected.length > 0 && (
         <div className="text-center">
