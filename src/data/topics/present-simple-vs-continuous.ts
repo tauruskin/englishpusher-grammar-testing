@@ -174,11 +174,11 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         grammarRule: "Present Continuous for Current Action",
         explanation: "'At the moment' indicates an action happening now, so use Present Continuous.",
         errorSpot: {
-            errorWordIndex: 3,
-            wrongWord: "do",
-            correction: "doing",
-            reason: "'At the moment' = right now = Present Continuous 'doing', not Simple 'do'.",
-            correctionOptions: ["doing", "do", "will do", "did"],
+            errorWordIndex: 8,
+            wrongWord: "work",
+            correction: "am working",
+            reason: "'At the moment' = right now = Present Continuous 'am working', not Simple 'work'.",
+            correctionOptions: ["am working", "work", "worked", "works"],
         },
     },
 
