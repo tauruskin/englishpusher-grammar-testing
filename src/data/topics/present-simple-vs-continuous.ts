@@ -2,11 +2,7 @@
  * EnglishPusher Grammar Testing - Present Simple vs Present Continuous
  * B1 Level (Speak Out)
  * 
- * This topic covers:
- * - Present Simple: habits, routines, facts, permanent situations
- * - Present Continuous: actions happening now, temporary situations
- * - Difference between the two tenses
- * - State verbs (not used in continuous)
+ * CORRECTED VERSION - All error-spot questions use single-word errors only
  */
 
 import { GrammarQuestion } from "@/data/types";
@@ -141,44 +137,48 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== ERROR SPOT QUESTIONS (6 questions) =====
+    // FIXED: All now use SINGLE-WORD errors only
 
     // QUESTION 8 - Error Spot (Beginner)
+    // FIXED: Changed sentence to have single-word error "living" instead of "am living"
     {
         id: "ps-pc-error-1",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "beginner",
-        sentence: "I am living in Kyiv since I was born.",
+        sentence: "I living in Kyiv since I was born.",
         grammarRule: "Present Simple for Permanent Situation",
         explanation: "When talking about where you live (permanent), use Present Simple, not Present Continuous.",
         errorSpot: {
             errorWordIndex: 1,
-            wrongWord: "am living",
+            wrongWord: "living",
             correction: "live",
-            reason: "Where you live is permanent, so use 'live' (Present Simple), not 'am living'.",
-            correctionOptions: ["live", "living", "am live", "lives"],
+            reason: "Where you live is permanent, so use 'live' (Present Simple), not 'living'.",
+            correctionOptions: ["live", "am living", "am live", "lived"],
         },
     },
 
     // QUESTION 9 - Error Spot (Beginner)
+    // FIXED: Changed sentence to have single-word error "understanding" instead of "is understanding"
     {
         id: "ps-pc-error-2",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "beginner",
-        sentence: "My father is understanding English very well.",
+        sentence: "My father understanding English very well.",
         grammarRule: "State Verbs - Not Used in Continuous",
-        explanation: '"Understand" is a state verb (expressing knowledge/ability). Never use it in Present Continuous.',
+        explanation: "'Understand' is a state verb (expressing knowledge/ability). Never use it in Present Continuous form.",
         errorSpot: {
             errorWordIndex: 2,
-            wrongWord: "is understanding",
+            wrongWord: "understanding",
             correction: "understands",
             reason: "'Understand' is a state verb and cannot be used in continuous form.",
-            correctionOptions: ["understands", "understand", "understanding", "is understand"],
+            correctionOptions: ["understands", "understand", "is understanding", "is understand"],
         },
     },
 
     // QUESTION 10 - Error Spot (Beginner)
+    // FIXED: Changed sentence to have single-word error "do" instead of "do you do"
     {
         id: "ps-pc-error-3",
         topic: "present-simple-vs-continuous",
@@ -186,67 +186,70 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "beginner",
         sentence: "What do you do at the moment? I work on my project.",
         grammarRule: "Present Continuous for Current Action",
-        explanation: '"At the moment" indicates an action happening now, so use Present Continuous.',
+        explanation: "'At the moment' indicates an action happening now, so use Present Continuous.",
         errorSpot: {
-            errorWordIndex: 1,
-            wrongWord: "do you do",
-            correction: "are you doing",
-            reason: "'At the moment' = right now = Present Continuous question.",
-            correctionOptions: ["are you doing", "you do", "are you do", "doing"],
+            errorWordIndex: 2,
+            wrongWord: "do",
+            correction: "doing",
+            reason: "'At the moment' = right now = Present Continuous 'doing', not Simple 'do'.",
+            correctionOptions: ["doing", "do", "will do", "did"],
         },
     },
 
     // QUESTION 11 - Error Spot (Intermediate)
+    // FIXED: Changed sentence to have single-word error "believing" instead of "is not believing"
     {
         id: "ps-pc-error-4",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "intermediate",
-        sentence: "She doesn't believe in that theory, so she is not believing it.",
+        sentence: "She doesn't believe in that theory, so she is believing something else.",
         grammarRule: "State Verbs Don't Use Continuous",
-        explanation: '"Believe" is a state verb. The correct form is simply "doesn\'t believe".',
+        explanation: "'Believe' is a state verb. We use 'believes', not 'is believing'.",
         errorSpot: {
             errorWordIndex: 8,
-            wrongWord: "is not believing",
-            correction: "doesn't believe",
+            wrongWord: "believing",
+            correction: "believes",
             reason: "State verbs like 'believe' are never used in continuous form.",
-            correctionOptions: ["doesn't believe", "is believing", "believing", "isn't believe"],
+            correctionOptions: ["believes", "believing", "is believe", "believe"],
         },
     },
 
     // QUESTION 12 - Error Spot (Intermediate)
+    // FIXED: Changed sentence to have single-word error "having" instead of "is having"
     {
         id: "ps-pc-error-5",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "intermediate",
-        sentence: "Every day she gets up at 7 and is having breakfast.",
+        sentence: "Every day she gets up at 7 and having breakfast.",
         grammarRule: "Present Simple for Daily Routine",
-        explanation: '"Every day" indicates a daily routine/habit. Use Present Simple for both actions.',
+        explanation: "'Every day' indicates a daily routine/habit. Use Present Simple for both actions.",
         errorSpot: {
-            errorWordIndex: 8,
-            wrongWord: "is having",
+            errorWordIndex: 7,
+            wrongWord: "having",
             correction: "has",
-            reason: "Routine actions (every day) use Present Simple, not Present Continuous.",
-            correctionOptions: ["has", "having", "is have", "have"],
+            reason: "Routine actions (every day) use Present Simple 'has', not Present Continuous 'having'.",
+            correctionOptions: ["has", "having", "is having", "have"],
         },
     },
 
     // QUESTION 13 - Error Spot (Advanced)
+    // FIXED: Changed sentence to have single-word error "meeting" instead of "are meeting"
     {
         id: "ps-pc-error-6",
         topic: "present-simple-vs-continuous",
         type: "error-spot",
         difficulty: "advanced",
-        sentence: "We usually are meeting on Fridays, but this week we are meeting on Thursday.",
+        sentence: "We usually meeting on Fridays, but this week we are meeting on Thursday.",
         grammarRule: "Present Simple for Regular Meetings vs Present Continuous for Exception",
-        explanation: '"Usually" and scheduled meetings use Present Simple. Only "this week" (exception) uses Present Continuous.',
+        explanation: "'Usually' and scheduled meetings use Present Simple. Only 'this week' (exception) uses Present Continuous.",
         errorSpot: {
             errorWordIndex: 2,
-            wrongWord: "are meeting",
+            wrongWord: "meeting",
             correction: "meet",
-            reason: "Regular scheduled meetings (usually, every week) use Present Simple 'meet', not Present Continuous.",
-            correctionOptions: ["meet", "meeting", "are meet", "meetings"],
+            reason: "Regular scheduled meetings (usually, every week) use Present Simple 'meet', not 'meeting'.",
+            correctionOptions: ["meet", "meeting", "are meeting", "meetings"],
         },
     },
 
@@ -299,7 +302,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
             ],
             optionExplanations: {
                 "She goes to the gym three times a week.": "Correct! 'Three times a week' = Present Simple (habit).",
-                "She is going to the gym three times a week.": 'Wrong. Habits use Present Simple, not Continuous.',
+                "She is going to the gym three times a week.": "Wrong. Habits use Present Simple, not Continuous.",
                 "She going to the gym three times a week.": "Wrong. Missing the auxiliary verb.",
                 "She are going to the gym three times a week.": "Wrong. With 'she', use 'is' or no auxiliary (Present Simple).",
             },
@@ -326,7 +329,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
             ],
             optionExplanations: {
                 "My brother lives in Canada and works as an engineer.": "Correct! Permanent location and job = Present Simple.",
-                "My brother is living in Canada and is working as an engineer.": 'Wrong. Permanent situation needs Present Simple, not Continuous.',
+                "My brother is living in Canada and is working as an engineer.": "Wrong. Permanent situation needs Present Simple, not Continuous.",
                 "My brother is living in Canada and works as an engineer.": "Wrong. Mix of tenses; both should be Simple for permanent.",
                 "My brother living in Canada and working as an engineer.": "Wrong. Missing auxiliary verbs.",
             },
@@ -427,7 +430,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Continuous: subject + be (am/is/are) + verb-ing + rest.",
         sentenceReorder: {
             words: ["I", "a", "reading", "am", "book", "right", "now"],
-            correctOrder: [0, 3, 2, 1, 4, 5, 6], // I(0) am(3) reading(2) a(1) book(4) right(5) now(6)
+            correctOrder: [0, 3, 2, 1, 4, 5, 6],
         },
     },
 
@@ -442,7 +445,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Simple negative: subject + don't/doesn't + verb + rest.",
         sentenceReorder: {
             words: ["She", "doesn't", "like", "very", "coffee", "much"],
-            correctOrder: [0, 1, 2, 4, 3, 5], // She(0) doesn't(1) like(2) coffee(4) very(3) much(5)
+            correctOrder: [0, 1, 2, 4, 3, 5],
         },
     },
 
@@ -457,7 +460,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Question: what + be + you + verb-ing?",
         sentenceReorder: {
             words: ["What", "you", "at", "doing", "the", "moment", "are"],
-            correctOrder: [0, 6, 1, 3, 2, 4, 5], // What(0) are(6) you(1) doing(3) at(2) the(4) moment(5)
+            correctOrder: [0, 6, 1, 3, 2, 4, 5],
         },
     },
 
@@ -472,7 +475,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Simple: subject + adverb + verb + rest.",
         sentenceReorder: {
             words: ["They", "go", "usually", "beach", "to", "on", "the", "weekends"],
-            correctOrder: [0, 2, 1, 4, 3, 5, 6, 7], // They(0) usually(2) go(1) to(4) the(6) beach(3) on(5) weekends(7)
+            correctOrder: [0, 2, 1, 4, 3, 5, 6, 7],
         },
     },
 
@@ -487,7 +490,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Two clauses: habit (Simple) + temporary situation (Continuous).",
         sentenceReorder: {
             words: ["I", "usually", "work", "in", "an", "office", "but", "I", "am", "working", "from", "home", "this", "week"],
-            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // Already in order
+            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         },
     },
 
@@ -502,14 +505,11 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Question: do/does + subject + adverb + verb?",
         sentenceReorder: {
             words: ["Does", "he", "usually", "drink", "tea", "in", "the", "morning"],
-            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7], // Already in correct order
+            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7],
         },
     },
 ];
 
-/**
- * Grammar topic definition
- */
 export const presentSimpleVsContinuousTopic = {
     id: "present-simple-vs-continuous",
     name: "Present Simple vs Present Continuous",
