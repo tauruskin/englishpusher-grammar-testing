@@ -2,7 +2,7 @@
  * EnglishPusher Grammar Testing - Present Simple vs Present Continuous
  * B1 Level (Speak Out)
  * 
- * CORRECTED VERSION - All error-spot questions use single-word errors only
+ * UPDATED: sentenceReorder questions now accept MULTIPLE correct word orders
  */
 
 import { GrammarQuestion } from "@/data/types";
@@ -10,7 +10,6 @@ import { GrammarQuestion } from "@/data/types";
 export const presentSimpleVsContinuous: GrammarQuestion[] = [
     // ===== GAP FILL QUESTIONS (7 questions) =====
 
-    // QUESTION 1 - Gap Fill (Beginner)
     {
         id: "ps-pc-gap-1",
         topic: "present-simple-vs-continuous",
@@ -28,7 +27,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 2 - Gap Fill (Beginner)
     {
         id: "ps-pc-gap-2",
         topic: "present-simple-vs-continuous",
@@ -46,7 +44,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 3 - Gap Fill (Beginner)
     {
         id: "ps-pc-gap-3",
         topic: "present-simple-vs-continuous",
@@ -64,7 +61,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 4 - Gap Fill (Intermediate)
     {
         id: "ps-pc-gap-4",
         topic: "present-simple-vs-continuous",
@@ -82,7 +78,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 5 - Gap Fill (Intermediate)
     {
         id: "ps-pc-gap-5",
         topic: "present-simple-vs-continuous",
@@ -100,7 +95,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 6 - Gap Fill (Intermediate)
     {
         id: "ps-pc-gap-6",
         topic: "present-simple-vs-continuous",
@@ -118,7 +112,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 7 - Gap Fill (Advanced)
     {
         id: "ps-pc-gap-7",
         topic: "present-simple-vs-continuous",
@@ -137,10 +130,7 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== ERROR SPOT QUESTIONS (6 questions) =====
-    // FIXED: All now use SINGLE-WORD errors only
 
-    // QUESTION 8 - Error Spot (Beginner)
-    // FIXED: Changed sentence to have single-word error "living" instead of "am living"
     {
         id: "ps-pc-error-1",
         topic: "present-simple-vs-continuous",
@@ -158,8 +148,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 9 - Error Spot (Beginner)
-    // FIXED: Changed sentence to have single-word error "understanding" instead of "is understanding"
     {
         id: "ps-pc-error-2",
         topic: "present-simple-vs-continuous",
@@ -177,8 +165,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 10 - Error Spot (Beginner)
-    // FIXED: Changed sentence to have single-word error "do" instead of "do you do"
     {
         id: "ps-pc-error-3",
         topic: "present-simple-vs-continuous",
@@ -196,8 +182,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 11 - Error Spot (Intermediate)
-    // FIXED: Changed sentence to have single-word error "believing" instead of "is not believing"
     {
         id: "ps-pc-error-4",
         topic: "present-simple-vs-continuous",
@@ -215,8 +199,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 12 - Error Spot (Intermediate)
-    // FIXED: Changed sentence to have single-word error "having" instead of "is having"
     {
         id: "ps-pc-error-5",
         topic: "present-simple-vs-continuous",
@@ -234,8 +216,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 13 - Error Spot (Advanced)
-    // FIXED: Changed sentence to have single-word error "meeting" instead of "are meeting"
     {
         id: "ps-pc-error-6",
         topic: "present-simple-vs-continuous",
@@ -255,7 +235,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
 
     // ===== MULTIPLE CHOICE QUESTIONS (6 questions) =====
 
-    // QUESTION 14 - Multiple Choice (Beginner)
     {
         id: "ps-pc-mc-1",
         topic: "present-simple-vs-continuous",
@@ -282,7 +261,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 15 - Multiple Choice (Beginner)
     {
         id: "ps-pc-mc-2",
         topic: "present-simple-vs-continuous",
@@ -309,7 +287,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 16 - Multiple Choice (Intermediate)
     {
         id: "ps-pc-mc-3",
         topic: "present-simple-vs-continuous",
@@ -336,7 +313,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 17 - Multiple Choice (Intermediate)
     {
         id: "ps-pc-mc-4",
         topic: "present-simple-vs-continuous",
@@ -363,7 +339,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 18 - Multiple Choice (Intermediate)
     {
         id: "ps-pc-mc-5",
         topic: "present-simple-vs-continuous",
@@ -390,7 +365,6 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // QUESTION 19 - Multiple Choice (Advanced)
     {
         id: "ps-pc-mc-6",
         topic: "present-simple-vs-continuous",
@@ -418,8 +392,8 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
     },
 
     // ===== SENTENCE REORDER QUESTIONS (6 questions) =====
+    // UPDATED: Now uses correctOrders (array of arrays) to accept multiple valid word orders
 
-    // QUESTION 20 - Sentence Reorder (Beginner)
     {
         id: "ps-pc-reorder-1",
         topic: "present-simple-vs-continuous",
@@ -430,11 +404,12 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Continuous: subject + be (am/is/are) + verb-ing + rest.",
         sentenceReorder: {
             words: ["I", "a", "reading", "am", "book", "right", "now"],
-            correctOrder: [0, 3, 2, 1, 4, 5, 6],
+            correctOrders: [
+                [0, 3, 2, 1, 4, 5, 6], // I am reading a book right now
+            ],
         },
     },
 
-    // QUESTION 21 - Sentence Reorder (Beginner)
     {
         id: "ps-pc-reorder-2",
         topic: "present-simple-vs-continuous",
@@ -445,11 +420,12 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Simple negative: subject + don't/doesn't + verb + rest.",
         sentenceReorder: {
             words: ["She", "doesn't", "like", "very", "coffee", "much"],
-            correctOrder: [0, 1, 2, 4, 3, 5],
+            correctOrders: [
+                [0, 1, 2, 4, 3, 5], // She doesn't like coffee very much
+            ],
         },
     },
 
-    // QUESTION 22 - Sentence Reorder (Intermediate)
     {
         id: "ps-pc-reorder-3",
         topic: "present-simple-vs-continuous",
@@ -457,14 +433,15 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "intermediate",
         sentence: "What are you doing at the moment?",
         grammarRule: "Present Continuous Question - Word Order",
-        explanation: "Question: what + be + you + verb-ing?",
+        explanation: "Question: what + be + you + verb-ing + adverbial phrase",
         sentenceReorder: {
             words: ["What", "you", "at", "doing", "the", "moment", "are"],
-            correctOrder: [0, 6, 1, 3, 2, 4, 5],
+            correctOrders: [
+                [0, 6, 1, 3, 2, 4, 5], // What are you doing at the moment?
+            ],
         },
     },
 
-    // QUESTION 23 - Sentence Reorder (Intermediate)
     {
         id: "ps-pc-reorder-4",
         topic: "present-simple-vs-continuous",
@@ -475,11 +452,12 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         explanation: "Present Simple: subject + adverb + verb + rest.",
         sentenceReorder: {
             words: ["They", "go", "usually", "beach", "to", "on", "the", "weekends"],
-            correctOrder: [0, 2, 1, 4, 3, 5, 6, 7],
+            correctOrders: [
+                [0, 2, 1, 4, 3, 5, 6, 7], // They usually go to the beach on weekends
+            ],
         },
     },
 
-    // QUESTION 24 - Sentence Reorder (Advanced)
     {
         id: "ps-pc-reorder-5",
         topic: "present-simple-vs-continuous",
@@ -487,14 +465,16 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "advanced",
         sentence: "I usually work in an office, but I am working from home this week.",
         grammarRule: "Combining Present Simple and Continuous",
-        explanation: "Two clauses: habit (Simple) + temporary situation (Continuous).",
+        explanation: "Two clauses: habit (Simple) + temporary situation (Continuous). 'This week' can go before or after 'I am working'.",
         sentenceReorder: {
             words: ["I", "usually", "work", "in", "an", "office", "but", "I", "am", "working", "from", "home", "this", "week"],
-            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+            correctOrders: [
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // I usually work in an office but I am working from home this week
+                [0, 1, 2, 3, 4, 5, 6, 12, 7, 8, 9, 10, 11, 13], // I usually work in an office but this week I am working from home
+            ],
         },
     },
 
-    // QUESTION 25 - Sentence Reorder (Advanced)
     {
         id: "ps-pc-reorder-6",
         topic: "present-simple-vs-continuous",
@@ -502,10 +482,12 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         difficulty: "advanced",
         sentence: "Does he usually drink tea in the morning?",
         grammarRule: "Present Simple Question with Adverb of Frequency",
-        explanation: "Question: do/does + subject + adverb + verb?",
+        explanation: "Question: do/does + subject + adverb + verb + rest.",
         sentenceReorder: {
             words: ["Does", "he", "usually", "drink", "tea", "in", "the", "morning"],
-            correctOrder: [0, 1, 2, 3, 4, 5, 6, 7],
+            correctOrders: [
+                [0, 1, 2, 3, 4, 5, 6, 7], // Does he usually drink tea in the morning?
+            ],
         },
     },
 ];
