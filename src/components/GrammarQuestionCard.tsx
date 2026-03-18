@@ -279,7 +279,6 @@ const SentenceReorderView = ({
       setSelected(next);
       if (next.length === data.words.length) {
         const sentence = next.map((i) => data.words[i]).join(" ");
-        const isCorrectSubmission = isCorrectOrder(next);
         setSubmitted(true);
         onSubmit(sentence);
       }
