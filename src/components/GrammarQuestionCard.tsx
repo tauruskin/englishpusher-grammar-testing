@@ -227,6 +227,7 @@ const MultipleChoiceView = ({
   );
 };
 
+// --- Sentence Reorder ---
 const SentenceReorderView = ({
   question,
   answered,
@@ -238,8 +239,17 @@ const SentenceReorderView = ({
   isCorrect: boolean | null;
   onSubmit: (a: string) => void;
 }) => {
-  const data = question.sentenceReorder!;
- 
+  const data = question.sentenceReorder;
+
+  // SAFETY CHECK: Validate data before rendering
+  if (!data || !Array.isArray(data.words) || !Array.isArray(data.correctOrders) || data.correctOrders.length === 0) {
+    return (
+      <div className="text-center p-4 rounded-xl border-2 border-red-200 bg-red-50 text-red-600">
+        Error: Invalid sentence reorder question data
+      </div>
+    );
+  }
+
   // Initialize shuffled word indices
   const [wordOrder, setWordOrder] = useState<number[]>(() => {
     const idxs = data.words.map((_, i) => i);
@@ -249,10 +259,10 @@ const SentenceReorderView = ({
     }
     return idxs;
   });
- 
+
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
- 
+
   /**
    * Check if submitted order matches ANY of the acceptable correct orders
    */
@@ -263,13 +273,13 @@ const SentenceReorderView = ({
         submittedOrder.every((idx, pos) => idx === correctOrder[pos])
     );
   };
- 
+
   // Build sentences from all acceptable orders (for display)
   const correctSentences = data.correctOrders.map((order) =>
     order.map((idx) => data.words[idx]).join(" ")
   );
   const firstCorrectSentence = correctSentences[0];
- 
+
   const handleWordClick = (wordIdx: number) => {
     if (answered || submitted) return;
     if (selected.includes(wordIdx)) {
@@ -284,15 +294,15 @@ const SentenceReorderView = ({
       }
     }
   };
- 
+
   const builtSentence = selected.map((i) => data.words[i]).join(" ");
- 
+
   return (
     <div className="space-y-5">
       <p className="text-center text-muted-foreground text-sm font-body">
         Arrange the words to form a correct sentence:
       </p>
- 
+
       {/* Built sentence display */}
       <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
         {selected.length === 0 ? (
@@ -319,7 +329,7 @@ const SentenceReorderView = ({
           ))
         )}
       </div>
- 
+
       {/* Word bank */}
       {!answered && (
         <div className="flex flex-wrap gap-2 justify-center">
@@ -342,7 +352,7 @@ const SentenceReorderView = ({
           })}
         </div>
       )}
- 
+
       {/* Answer reveal - show first correct sentence */}
       {answered && !isCorrect && (
         <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
@@ -357,7 +367,7 @@ const SentenceReorderView = ({
           )}
         </div>
       )}
- 
+
       {/* Clear button */}
       {!answered && !submitted && selected.length > 0 && (
         <div className="text-center">
