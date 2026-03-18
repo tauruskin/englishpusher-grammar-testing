@@ -121,6 +121,9 @@ const ErrorSpotView = ({
 
           const displayWord = (answered && isCorrect && isPrimaryError) ? data.correction : word;
           
+          // Replace the error word with correction if answered correctly
+          const displayWord = isError && answered && isCorrect ? data.correction : word;
+          
           let style = "px-3 py-1.5 rounded-lg border-2 font-body text-base transition-all duration-200 ";
           
           if (isPrimaryError) {
@@ -129,7 +132,6 @@ const ErrorSpotView = ({
                 ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400 font-bold"
                 : "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400 font-bold line-through";
             } else {
-              // Highlight the error word in red initially
               style += "bg-red-50 dark:bg-red-900/10 border-red-500/50 text-red-600 dark:text-red-400 font-bold";
             }
           } else {
@@ -245,11 +247,14 @@ const SentenceReorderView = ({
   isCorrect: boolean | null;
   onSubmit: (a: string) => void;
 }) => {
-  const data = question.sentenceReorder!;
+  const data = question.sentenceReorder;
 
-  // Initialize shuffled word indices
+  const safeWords: string[] = (data?.words && Array.isArray(data.words)) ? data.words : [];
+  const safeOrders: number[][] = (data?.correctOrders && Array.isArray(data.correctOrders) && data.correctOrders.length > 0) ? data.correctOrders : [];
+
   const [wordOrder, setWordOrder] = useState<number[]>(() => {
-    const idxs = data.words.map((_, i) => i);
+    if (safeWords.length === 0) return [];
+    const idxs = safeWords.map((_, i) => i);
     for (let i = idxs.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
@@ -260,7 +265,27 @@ const SentenceReorderView = ({
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const correctSentence = data.correctOrder.map((idx) => data.words[idx]).join(" ");
+  // NOW we can safely bail out after hooks
+  if (!data || safeWords.length === 0 || safeOrders.length === 0) {
+    return (
+      <div className="text-center p-4 rounded-xl border-2 border-red-200 bg-red-50 text-red-600">
+        Error: Invalid sentence reorder question data
+      </div>
+    );
+  }
+
+  const isCorrectOrder = (submittedOrder: number[]): boolean => {
+    return safeOrders.some(
+      (correctOrder) =>
+        submittedOrder.length === correctOrder.length &&
+        submittedOrder.every((idx, pos) => idx === correctOrder[pos])
+    );
+  };
+
+  const correctSentences = safeOrders.map((order) =>
+    order.map((idx) => safeWords[idx]).join(" ")
+  );
+  const firstCorrectSentence = correctSentences[0];
 
   const handleWordClick = (wordIdx: number) => {
     if (answered || submitted) return;
@@ -269,15 +294,13 @@ const SentenceReorderView = ({
     } else {
       const next = [...selected, wordIdx];
       setSelected(next);
-      if (next.length === data.words.length) {
-        const sentence = next.map((i) => data.words[i]).join(" ");
+      if (next.length === safeWords.length) {
+        const sentence = next.map((i) => safeWords[i]).join(" ");
         setSubmitted(true);
         onSubmit(sentence);
       }
     }
   };
-
-  const builtSentence = selected.map((i) => data.words[i]).join(" ");
 
   return (
     <div className="space-y-5">
@@ -288,12 +311,16 @@ const SentenceReorderView = ({
       {/* Built sentence display */}
       <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
         {selected.length === 0 ? (
-          <span className="text-muted-foreground text-sm italic">Click words below to build the sentence…</span>
+          <span className="text-muted-foreground text-sm italic">
+            Click words below to build the sentence…
+          </span>
         ) : (
           selected.map((wIdx, pos) => (
             <span
               key={pos}
-              onClick={() => !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))}
+              onClick={() =>
+                !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))
+              }
               className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body cursor-pointer border-2 transition-all ${
                 answered
                   ? isCorrect
@@ -302,7 +329,7 @@ const SentenceReorderView = ({
                   : "border-primary bg-primary/10 text-primary hover:opacity-80"
               }`}
             >
-              {data.words[wIdx]}
+              {safeWords[wIdx]}
             </span>
           ))
         )}
@@ -324,7 +351,7 @@ const SentenceReorderView = ({
                     : "border-border bg-secondary text-foreground hover:border-primary hover:bg-primary/10 hover:scale-105 active:scale-95"
                 }`}
               >
-                {data.words[wordIdx]}
+                {safeWords[wordIdx]}
               </button>
             );
           })}
@@ -334,8 +361,15 @@ const SentenceReorderView = ({
       {/* Answer reveal */}
       {answered && !isCorrect && (
         <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
-          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">Correct sentence</p>
-          <p className="font-body font-semibold text-success">{correctSentence}</p>
+          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">
+            Correct sentence
+          </p>
+          <p className="font-body font-semibold text-success">{firstCorrectSentence}</p>
+          {correctSentences.length > 1 && (
+            <p className="text-xs text-muted-foreground mt-2 italic">
+              (Multiple correct word orders are acceptable)
+            </p>
+          )}
         </div>
       )}
 
@@ -479,13 +513,13 @@ const GrammarQuestionCard = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between">
-          <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-base uppercase tracking-widest text-accent font-display font-bold">
             {questionTypeLabel[question.type]}
-          </span>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-display font-medium">
+          </h2>
+          <p className="text-sm uppercase tracking-wider text-muted-foreground font-display font-medium leading-tight">
             {question.grammarRule}
-          </span>
+          </p>
         </div>
 
         {/* Question body */}
