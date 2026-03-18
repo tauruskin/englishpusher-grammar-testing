@@ -241,18 +241,12 @@ const SentenceReorderView = ({
 }) => {
   const data = question.sentenceReorder;
 
-  // SAFETY CHECK: Validate data before rendering
-  if (!data || !Array.isArray(data.words) || !Array.isArray(data.correctOrders) || data.correctOrders.length === 0) {
-    return (
-      <div className="text-center p-4 rounded-xl border-2 border-red-200 bg-red-50 text-red-600">
-        Error: Invalid sentence reorder question data
-      </div>
-    );
-  }
+  const safeWords: string[] = (data?.words && Array.isArray(data.words)) ? data.words : [];
+  const safeOrders: number[][] = (data?.correctOrders && Array.isArray(data.correctOrders) && data.correctOrders.length > 0) ? data.correctOrders : [];
 
-  // Initialize shuffled word indices
   const [wordOrder, setWordOrder] = useState<number[]>(() => {
-    const idxs = data.words.map((_, i) => i);
+    if (safeWords.length === 0) return [];
+    const idxs = safeWords.map((_, i) => i);
     for (let i = idxs.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
@@ -263,20 +257,25 @@ const SentenceReorderView = ({
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
-  /**
-   * Check if submitted order matches ANY of the acceptable correct orders
-   */
+  // NOW we can safely bail out after hooks
+  if (!data || safeWords.length === 0 || safeOrders.length === 0) {
+    return (
+      <div className="text-center p-4 rounded-xl border-2 border-red-200 bg-red-50 text-red-600">
+        Error: Invalid sentence reorder question data
+      </div>
+    );
+  }
+
   const isCorrectOrder = (submittedOrder: number[]): boolean => {
-    return data.correctOrders.some(
+    return safeOrders.some(
       (correctOrder) =>
         submittedOrder.length === correctOrder.length &&
         submittedOrder.every((idx, pos) => idx === correctOrder[pos])
     );
   };
 
-  // Build sentences from all acceptable orders (for display)
-  const correctSentences = data.correctOrders.map((order) =>
-    order.map((idx) => data.words[idx]).join(" ")
+  const correctSentences = safeOrders.map((order) =>
+    order.map((idx) => safeWords[idx]).join(" ")
   );
   const firstCorrectSentence = correctSentences[0];
 
@@ -287,15 +286,13 @@ const SentenceReorderView = ({
     } else {
       const next = [...selected, wordIdx];
       setSelected(next);
-      if (next.length === data.words.length) {
-        const sentence = next.map((i) => data.words[i]).join(" ");
+      if (next.length === safeWords.length) {
+        const sentence = next.map((i) => safeWords[i]).join(" ");
         setSubmitted(true);
         onSubmit(sentence);
       }
     }
   };
-
-  const builtSentence = selected.map((i) => data.words[i]).join(" ");
 
   return (
     <div className="space-y-5">
@@ -324,7 +321,7 @@ const SentenceReorderView = ({
                   : "border-primary bg-primary/10 text-primary hover:opacity-80"
               }`}
             >
-              {data.words[wIdx]}
+              {safeWords[wIdx]}
             </span>
           ))
         )}
@@ -346,14 +343,14 @@ const SentenceReorderView = ({
                     : "border-border bg-secondary text-foreground hover:border-primary hover:bg-primary/10 hover:scale-105 active:scale-95"
                 }`}
               >
-                {data.words[wordIdx]}
+                {safeWords[wordIdx]}
               </button>
             );
           })}
         </div>
       )}
 
-      {/* Answer reveal - show first correct sentence */}
+      {/* Answer reveal */}
       {answered && !isCorrect && (
         <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
           <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">
