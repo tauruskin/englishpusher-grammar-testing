@@ -216,6 +216,16 @@ These exist but are NOT integrated — do not modify or rely on them:
 
 ## WHAT HAS BEEN DONE (Changelog)
 
+### 2026-03-27 — Session
+- Added `← Back` / `Next →` / `Skip →` navigation buttons to the game
+- `viewIndex` added to `useGrammarGame.ts` (separate from `currentIndex`) — tracks which slide is displayed
+- `goPrev()`, `goNext()`, `canGoPrev`, `canGoNext`, `isReviewing` exposed from the hook
+- Auto-advance timeout stored in `pendingAdvanceRef` — cancelled when user hits Skip
+- Derived display state: `displayedQuestion`, `displayedAnswered`, `displayedSelectedAnswer`, `displayedIsCorrect`
+- `GrammarQuestionCard` gets `isReview` prop — shows "← Reviewing" badge instead of streak badge
+- `SentenceReorderView` now accepts `selectedAnswer` prop to render stored answer in review mode
+- Created `CLAUDE.md` and `MEMORY.md`
+
 ### 2026-03-18 — Session
 - Fixed sentence-reorder crash and progression issues (`useGrammarGame.ts`)
 - Added support for `correctOrders` (multiple valid orderings) in reorder type
