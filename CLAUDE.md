@@ -209,6 +209,7 @@ These exist but are NOT integrated — do not modify or rely on them:
 | Topic ID | File | Questions | Status |
 |---|---|---|---|
 | `present-simple-vs-continuous` | `present-simple-vs-continuous.ts` | 25 | Active |
+| `irregular-verbs` | `irregular-verbs.ts` | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
