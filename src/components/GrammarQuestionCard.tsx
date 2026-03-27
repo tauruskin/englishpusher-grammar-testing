@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GrammarQuestion } from "@/data/types";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
+import { BorderRotate } from "@/components/ui/animated-gradient-border";
 
 interface GrammarQuestionCardProps {
   question: GrammarQuestion;
@@ -453,6 +454,19 @@ const GrammarQuestionCard = ({
     ? "happy"
     : "sad";
 
+  // Gradient border colors change based on answer state
+  const getBorderColors = () => {
+    if (!answered) return { primary: '#c06010', secondary: '#f07c1a', accent: '#fcc870' };
+    if (isCorrect)  return { primary: '#1a7040', secondary: '#34b268', accent: '#7dd4a0' };
+    return           { primary: '#8b1a1a', secondary: '#d54242', accent: '#e88888' };
+  };
+
+  const getBorderSpeed = () => {
+    if (!answered) return 6;
+    if (isCorrect)  return 1.5; // fast celebratory spin
+    return 4;
+  };
+
   const renderQuestionBody = () => {
     switch (question.type) {
       case "gap-fill":
@@ -506,8 +520,13 @@ const GrammarQuestionCard = ({
     <div className="flex items-start gap-6 w-full">
       <GameCharacter pose={characterPose} className="flex-shrink-0 mt-4" />
 
-      <div
-        className={`flex-1 w-full max-w-lg mx-auto space-y-5 bg-card rounded-2xl p-6 md:p-8 border border-border shadow-md relative overflow-hidden transition-all duration-300 ${
+      <BorderRotate
+        gradientColors={getBorderColors()}
+        backgroundColor="#ffffff"
+        borderRadius={16}
+        borderWidth={2}
+        animationSpeed={getBorderSpeed()}
+        className={`flex-1 w-full max-w-lg mx-auto space-y-5 p-6 md:p-8 shadow-md relative overflow-hidden transition-all duration-300 ${
           transitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0 animate-slide-up"
         }`}
       >
@@ -553,7 +572,7 @@ const GrammarQuestionCard = ({
         {answered && question.type !== "error-spot" && (
           <ExplanationPanel question={question} isCorrect={isCorrect} />
         )}
-      </div>
+      </BorderRotate>
     </div>
   );
 };
