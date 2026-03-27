@@ -43,17 +43,18 @@ const Index = () => {
   };
 
   const renderQuestion = () => {
-    if (!game.currentQuestion) return null;
+    if (!game.displayedQuestion) return null;
 
     return (
       <GrammarQuestionCard
-        key={game.currentIndex}
-        question={game.currentQuestion}
-        answered={game.answered}
-        selectedAnswer={game.selectedAnswer}
-        isCorrect={game.isCorrect}
-        streak={game.streak}
-        transitioning={game.transitioning}
+        key={game.viewIndex}
+        question={game.displayedQuestion}
+        answered={game.displayedAnswered}
+        selectedAnswer={game.displayedSelectedAnswer}
+        isCorrect={game.displayedIsCorrect}
+        streak={game.isReviewing ? 0 : game.streak}
+        transitioning={game.isReviewing ? false : game.transitioning}
+        isReview={game.isReviewing}
         onSubmit={game.submitAnswer}
       />
     );
@@ -149,7 +150,36 @@ const Index = () => {
               {game.totalQuestions === 0 ? (
                 <div className="text-center text-muted-foreground">Loading...</div>
               ) : (
-                renderQuestion()
+                <>
+                  {renderQuestion()}
+                  {/* Navigation buttons */}
+                  {(game.canGoPrev || game.canGoNext) && (
+                    <div className="flex justify-between items-center px-1">
+                      <button
+                        onClick={game.goPrev}
+                        disabled={!game.canGoPrev}
+                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-sm font-semibold transition-all duration-200 border-2 ${
+                          game.canGoPrev
+                            ? "border-border bg-card text-foreground hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]"
+                            : "border-transparent bg-transparent text-transparent cursor-default"
+                        }`}
+                      >
+                        ← Back
+                      </button>
+                      <button
+                        onClick={game.goNext}
+                        disabled={!game.canGoNext}
+                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-sm font-semibold transition-all duration-200 border-2 ${
+                          game.canGoNext
+                            ? "border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground hover:scale-[1.02] active:scale-[0.98]"
+                            : "border-transparent bg-transparent text-transparent cursor-default"
+                        }`}
+                      >
+                        {game.isReviewing ? "Next →" : "Skip →"}
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}

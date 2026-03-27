@@ -9,6 +9,7 @@ interface GrammarQuestionCardProps {
   isCorrect: boolean | null;
   streak: number;
   transitioning: boolean;
+  isReview?: boolean;
   onSubmit: (answer: string) => void;
 }
 
@@ -236,11 +237,13 @@ const MultipleChoiceView = ({
 const SentenceReorderView = ({
   question,
   answered,
+  selectedAnswer,
   isCorrect,
   onSubmit,
 }: {
   question: GrammarQuestion;
   answered: boolean;
+  selectedAnswer: string | null;
   isCorrect: boolean | null;
   onSubmit: (a: string) => void;
 }) => {
@@ -307,7 +310,21 @@ const SentenceReorderView = ({
 
       {/* Built sentence display */}
       <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
-        {selected.length === 0 ? (
+        {/* Review mode: show stored answer string */}
+        {answered && selected.length === 0 && selectedAnswer ? (
+          selectedAnswer.split(" ").map((word, pos) => (
+            <span
+              key={pos}
+              className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body border-2 cursor-default ${
+                isCorrect
+                  ? "border-success bg-success/20 text-success"
+                  : "border-destructive bg-destructive/20 text-destructive"
+              }`}
+            >
+              {word}
+            </span>
+          ))
+        ) : selected.length === 0 ? (
           <span className="text-muted-foreground text-sm italic">
             Click words below to build the sentence…
           </span>
@@ -427,6 +444,7 @@ const GrammarQuestionCard = ({
   isCorrect,
   streak,
   transitioning,
+  isReview = false,
   onSubmit,
 }: GrammarQuestionCardProps) => {
   const characterPose: CharacterPose = !answered
@@ -476,6 +494,7 @@ const GrammarQuestionCard = ({
             key={question.id}
             question={question}
             answered={answered}
+            selectedAnswer={selectedAnswer}
             isCorrect={isCorrect}
             onSubmit={onSubmit}
           />
@@ -503,8 +522,12 @@ const GrammarQuestionCard = ({
           </div>
         )}
 
-        {/* Streak badge */}
-        {streak >= 2 && (
+        {/* Review badge or streak badge */}
+        {isReview ? (
+          <div className="absolute -top-1 -right-1 bg-muted text-muted-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-xs font-bold">
+            ← Reviewing
+          </div>
+        ) : streak >= 2 && (
           <div
             className={`absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${
               streak >= 3 ? "animate-pulse" : ""

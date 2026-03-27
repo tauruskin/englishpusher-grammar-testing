@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { GrammarQuestion } from "@/data/types";
 
 export interface GrammarAnswerResult {
@@ -20,7 +20,6 @@ export function getCorrectAnswer(q: GrammarQuestion): string {
     case "sentence-reorder": {
       const data = q.sentenceReorder;
       if (!data || !data.words || !data.correctOrders || data.correctOrders.length === 0) return "";
-      // Return the first valid ordering as the reference correct answer
       return data.correctOrders[0].map(idx => data.words[idx]).join(" ");
     }
     default:
@@ -40,6 +39,7 @@ function shuffle<T>(arr: T[]): T[] {
 export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
   const [shuffledQuestions, setShuffledQuestions] = useState<GrammarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewIndex, setViewIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -49,11 +49,29 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
   const [transitioning, setTransitioning] = useState(false);
   const [results, setResults] = useState<GrammarAnswerResult[]>([]);
 
+  // Ref to cancel the pending auto-advance timeout
+  const pendingAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Ref to read viewIndex inside timeouts without stale closures
+  const viewIndexRef = useRef(0);
+
+  const syncViewRef = (v: number) => {
+    viewIndexRef.current = v;
+    setViewIndex(v);
+  };
+
+  const clearPending = () => {
+    if (pendingAdvanceRef.current) {
+      clearTimeout(pendingAdvanceRef.current);
+      pendingAdvanceRef.current = null;
+    }
+  };
+
   // Initialize/reset when topic changes
   useEffect(() => {
     const q = shuffle(questions);
     setShuffledQuestions(q);
     setCurrentIndex(0);
+    syncViewRef(0);
     setScore(0);
     setAnswered(false);
     setSelectedAnswer(null);
@@ -62,10 +80,35 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
     setStreak(0);
     setTransitioning(false);
     setResults([]);
+    clearPending();
   }, [topicId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const currentQuestion = shuffledQuestions[currentIndex] ?? null;
   const totalQuestions = shuffledQuestions.length;
+
+  const advanceGame = useCallback(
+    (fromIndex: number) => {
+      setTransitioning(true);
+      setTimeout(() => {
+        const nextIdx = fromIndex + 1;
+        if (nextIdx >= totalQuestions) {
+          setGameOver(true);
+        } else {
+          setCurrentIndex(nextIdx);
+          // Only follow auto-advance if the user is still watching the current slide
+          if (viewIndexRef.current === fromIndex) {
+            syncViewRef(nextIdx);
+          }
+        }
+        setAnswered(false);
+        setSelectedAnswer(null);
+        setIsCorrect(null);
+        setTransitioning(false);
+      }, 300);
+    },
+    [totalQuestions]
+  );
+
+  const currentQuestion = shuffledQuestions[currentIndex] ?? null;
 
   const submitAnswer = useCallback(
     (answer: string) => {
@@ -77,14 +120,11 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
       if (currentQuestion.type === "sentence-reorder" && currentQuestion.sentenceReorder) {
         const data = currentQuestion.sentenceReorder;
         const userTrimmed = answer.trim().toLowerCase();
-        
-        // Check if user answer matches ANY of the correct orders
-        const possibleAnswers = data.correctOrders.map(order => 
+        const possibleAnswers = data.correctOrders.map(order =>
           order.map(idx => data.words[idx]).join(" ").trim().toLowerCase()
         );
-        
         correct = possibleAnswers.includes(userTrimmed);
-        correct_answer = possibleAnswers[0]; // Reference for display
+        correct_answer = possibleAnswers[0];
       } else {
         correct_answer = getCorrectAnswer(currentQuestion);
         correct = answer.trim().toLowerCase() === correct_answer.trim().toLowerCase();
@@ -103,39 +143,54 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
 
       setResults((prev) => [
         ...prev,
-        {
-          question: currentQuestion,
-          userAnswer: answer,
-          correctAnswer: correct_answer,
-          correct,
-        },
+        { question: currentQuestion, userAnswer: answer, correctAnswer: correct_answer, correct },
       ]);
 
-      // Feedback delay before advancing
       const feedbackDelay = correct ? 2000 : 3500;
+      const capturedIndex = currentIndex;
 
-      setTimeout(() => {
-        setTransitioning(true);
-        setTimeout(() => {
-          if (currentIndex + 1 >= totalQuestions) {
-            setGameOver(true);
-          } else {
-            setCurrentIndex((i) => i + 1);
-          }
-          setAnswered(false);
-          setSelectedAnswer(null);
-          setIsCorrect(null);
-          setTransitioning(false);
-        }, 300);
+      pendingAdvanceRef.current = setTimeout(() => {
+        pendingAdvanceRef.current = null;
+        advanceGame(capturedIndex);
       }, feedbackDelay);
     },
-    [answered, currentQuestion, currentIndex, totalQuestions]
+    [answered, currentQuestion, currentIndex, advanceGame]
   );
+
+  // Derived display state — what the UI should show (current or reviewed past question)
+  const isReviewing = viewIndex < currentIndex;
+  const reviewResult = isReviewing ? results[viewIndex] ?? null : null;
+  const displayedQuestion = shuffledQuestions[viewIndex] ?? null;
+  const displayedAnswered = isReviewing ? true : answered;
+  const displayedSelectedAnswer = isReviewing ? (reviewResult?.userAnswer ?? null) : selectedAnswer;
+  const displayedIsCorrect = isReviewing ? (reviewResult?.correct ?? null) : isCorrect;
+
+  const canGoNext = isReviewing || (answered && !gameOver);
+  const canGoPrev = viewIndex > 0;
+
+  const goNext = useCallback(() => {
+    if (isReviewing) {
+      // Advance view through already-answered questions
+      const next = Math.min(viewIndexRef.current + 1, currentIndex);
+      syncViewRef(next);
+    } else if (answered) {
+      // Skip the auto-advance delay
+      clearPending();
+      advanceGame(currentIndex);
+    }
+  }, [isReviewing, answered, currentIndex, advanceGame]);
+
+  const goPrev = useCallback(() => {
+    if (viewIndexRef.current > 0) {
+      syncViewRef(viewIndexRef.current - 1);
+    }
+  }, []);
 
   const restart = useCallback((newQuestions?: GrammarQuestion[]) => {
     const q = shuffle(newQuestions ?? questions);
     setShuffledQuestions(q);
     setCurrentIndex(0);
+    syncViewRef(0);
     setScore(0);
     setAnswered(false);
     setSelectedAnswer(null);
@@ -144,11 +199,13 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
     setStreak(0);
     setTransitioning(false);
     setResults([]);
+    clearPending();
   }, [questions]);
 
   return {
     currentQuestion,
     currentIndex,
+    viewIndex,
     totalQuestions,
     score,
     answered,
@@ -158,7 +215,17 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
     streak,
     transitioning,
     results,
+    // Derived display state
+    displayedQuestion,
+    displayedAnswered,
+    displayedSelectedAnswer,
+    displayedIsCorrect,
+    isReviewing,
+    canGoNext,
+    canGoPrev,
     submitAnswer,
+    goNext,
+    goPrev,
     restart,
   };
 }
