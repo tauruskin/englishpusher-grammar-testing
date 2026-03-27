@@ -1,20 +1,25 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "motion/react";
 import topics, { GrammarTopic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
 import ScoreBadge from "@/components/ScoreBadge";
 import GrammarQuestionCard from "@/components/GrammarQuestionCard";
 import EndScreen from "@/components/EndScreen";
+import MenuVertical from "@/components/ui/menu-vertical";
 import { useGrammarGame } from "@/hooks/useGrammarGame";
 import { useTTS } from "@/hooks/useTTS";
 
 const Index = () => {
-  const getInitialTopic = () => {
+  const getInitialState = () => {
     const params = new URLSearchParams(window.location.search);
     const topicId = params.get("topic");
-    return topics.find((t) => t.id === topicId) ?? topics[0];
+    const found = topics.find((t) => t.id === topicId);
+    return { topic: found ?? topics[0], showLanding: !found };
   };
 
-  const [selectedTopic, setSelectedTopic] = useState<GrammarTopic>(getInitialTopic);
+  const initial = getInitialState();
+  const [selectedTopic, setSelectedTopic] = useState<GrammarTopic>(initial.topic);
+  const [showLanding, setShowLanding] = useState(initial.showLanding);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -35,7 +40,14 @@ const Index = () => {
   const handleSelectTopic = (topic: GrammarTopic) => {
     setSelectedTopic(topic);
     setDropdownOpen(false);
+    setShowLanding(false);
     window.history.pushState({}, "", `?topic=${topic.id}`);
+  };
+
+  const handleGoToLanding = () => {
+    setShowLanding(true);
+    setDropdownOpen(false);
+    window.history.pushState({}, "", window.location.pathname);
   };
 
   const handlePlayAgain = () => {
@@ -75,14 +87,15 @@ const Index = () => {
             <div className="relative" ref={dropdownRef}>
               <h1
                 className="font-display text-lg font-bold text-foreground tracking-tight cursor-pointer flex items-center gap-1"
-                onClick={() => setDropdownOpen((o) => !o)}
+                onClick={showLanding ? () => setDropdownOpen((o) => !o) : handleGoToLanding}
+                title={showLanding ? undefined : "Back to topic menu"}
               >
                 Englishpusher<span className="text-primary"> Grammar Testing</span>
-                <span className="text-xs text-muted-foreground ml-1">▼</span>
+                {showLanding && <span className="text-xs text-muted-foreground ml-1">▼</span>}
               </h1>
-              <p className="text-xs text-muted-foreground">
-                {selectedTopic.name}
-              </p>
+              {!showLanding && (
+                <p className="text-xs text-muted-foreground">{selectedTopic.name}</p>
+              )}
               {dropdownOpen && (
                 <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[200px]">
                   {topics.map((topic) => (
@@ -136,6 +149,26 @@ const Index = () => {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-6 py-10">
+        {showLanding ? (
+          <motion.div
+            key="landing"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35 }}
+            className="w-full max-w-2xl"
+          >
+            <MenuVertical
+              title="Choose a Topic"
+              subtitle="Pick a grammar topic to start practising"
+              items={topics.map((t) => ({
+                label: t.name,
+                description: `${t.rules.length} questions`,
+                onClick: () => handleSelectTopic(t),
+              }))}
+            />
+          </motion.div>
+        ) : (
         <div key={selectedTopic.id} className="w-full max-w-2xl space-y-8">
           {game.gameOver ? (
             <EndScreen
@@ -184,6 +217,7 @@ const Index = () => {
             </>
           )}
         </div>
+        )}
       </main>
 
       <footer className="border-t border-border px-6 py-4 bg-card">
