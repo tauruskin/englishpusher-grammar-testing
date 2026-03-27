@@ -217,6 +217,10 @@ These exist but are NOT integrated — do not modify or rely on them:
 ## WHAT HAS BEEN DONE (Changelog)
 
 ### 2026-03-27 — Session
+- Added animated gradient border to `GrammarQuestionCard` via `BorderRotate` component
+  - Orange (unanswered, 6s) → green fast spin (correct, 1.5s) → red (incorrect, 4s)
+  - Component at `src/components/ui/animated-gradient-border.tsx` (reusable)
+  - `@property --gradient-angle` + keyframes added to `index.css`
 - Added `← Back` / `Next →` / `Skip →` navigation buttons to the game
 - `viewIndex` added to `useGrammarGame.ts` (separate from `currentIndex`) — tracks which slide is displayed
 - `goPrev()`, `goNext()`, `canGoPrev`, `canGoNext`, `isReviewing` exposed from the hook
