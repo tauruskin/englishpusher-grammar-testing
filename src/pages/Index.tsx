@@ -62,7 +62,7 @@ const Index = () => {
       <header className="border-b border-border px-6 py-4 bg-card shadow-sm">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer" className="hidden sm:block">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="Englishpusher Logo"
