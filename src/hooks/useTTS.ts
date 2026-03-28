@@ -4,6 +4,46 @@ export function useTTS() {
   const [muted, setMuted] = useState(false);
   const hasInteracted = useRef(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const getAudioCtx = useCallback(() => {
+    if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
+      audioCtxRef.current = new AudioContext();
+    }
+    return audioCtxRef.current;
+  }, []);
+
+  const playTone = useCallback((
+    freq: number,
+    startOffset: number,
+    duration: number,
+    type: OscillatorType = "sine",
+    volume = 0.25,
+  ) => {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(volume, ctx.currentTime + startOffset);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startOffset + duration);
+    osc.start(ctx.currentTime + startOffset);
+    osc.stop(ctx.currentTime + startOffset + duration);
+  }, [getAudioCtx]);
+
+  const playCorrect = useCallback(() => {
+    if (muted || !hasInteracted.current) return;
+    playTone(523.25, 0,    0.12); // C5
+    playTone(659.25, 0.13, 0.22); // E5
+  }, [muted, playTone]);
+
+  const playWrong = useCallback(() => {
+    if (muted || !hasInteracted.current) return;
+    playTone(220, 0, 0.15, "sawtooth", 0.15);
+    playTone(180, 0.12, 0.25, "sawtooth", 0.12);
+  }, [muted, playTone]);
 
   // Track first user interaction for autoplay policy
   useEffect(() => {
@@ -51,5 +91,5 @@ export function useTTS() {
     });
   }, []);
 
-  return { muted, speak, speakIfInteracted, toggleMute };
+  return { muted, speak, speakIfInteracted, toggleMute, playCorrect, playWrong };
 }

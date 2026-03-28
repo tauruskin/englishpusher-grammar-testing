@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import topics, { GrammarTopic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
@@ -23,6 +23,16 @@ const Index = () => {
   const [showLanding, setShowLanding] = useState(initial.showLanding);
   const game = useGrammarGame(selectedTopic.rules, selectedTopic.id);
   const tts = useTTS();
+
+  // Play sound feedback when an answer is submitted
+  const prevAnsweredRef = useRef(false);
+  useEffect(() => {
+    if (game.answered && !prevAnsweredRef.current && game.isCorrect !== null) {
+      if (game.isCorrect) tts.playCorrect();
+      else tts.playWrong();
+    }
+    prevAnsweredRef.current = game.answered;
+  }, [game.answered, game.isCorrect, tts.playCorrect, tts.playWrong]);
 
   const handleSelectTopic = (topic: GrammarTopic) => {
     setSelectedTopic(topic);
