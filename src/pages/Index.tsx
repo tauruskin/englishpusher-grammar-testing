@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import topics, { GrammarTopic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
@@ -20,33 +20,17 @@ const Index = () => {
   const initial = getInitialState();
   const [selectedTopic, setSelectedTopic] = useState<GrammarTopic>(initial.topic);
   const [showLanding, setShowLanding] = useState(initial.showLanding);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  
   const game = useGrammarGame(selectedTopic.rules, selectedTopic.id);
   const tts = useTTS();
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
   const handleSelectTopic = (topic: GrammarTopic) => {
     setSelectedTopic(topic);
-    setDropdownOpen(false);
     setShowLanding(false);
     window.history.pushState({}, "", `?topic=${topic.id}`);
   };
 
   const handleGoToLanding = () => {
     setShowLanding(true);
-    setDropdownOpen(false);
     window.history.pushState({}, "", window.location.pathname);
   };
 
@@ -84,34 +68,16 @@ const Index = () => {
                 className="h-10 w-auto"
               />
             </a>
-            <div className="relative" ref={dropdownRef}>
+            <div>
               <h1
-                className="font-display text-lg font-bold text-foreground tracking-tight cursor-pointer flex items-center gap-1"
-                onClick={showLanding ? () => setDropdownOpen((o) => !o) : handleGoToLanding}
-                title={showLanding ? undefined : "Back to topic menu"}
+                className={`font-display text-lg font-bold text-foreground tracking-tight flex items-center gap-1 ${!showLanding ? "cursor-pointer hover:text-primary transition-colors" : ""}`}
+                onClick={!showLanding ? handleGoToLanding : undefined}
+                title={!showLanding ? "Back to topic menu" : undefined}
               >
                 Englishpusher<span className="text-primary"> Grammar Testing</span>
-                {showLanding && <span className="text-xs text-muted-foreground ml-1">▼</span>}
               </h1>
               {!showLanding && (
                 <p className="text-xs text-muted-foreground">{selectedTopic.name}</p>
-              )}
-              {dropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[200px]">
-                  {topics.map((topic) => (
-                    <button
-                      key={topic.id}
-                      onClick={() => handleSelectTopic(topic)}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-muted ${
-                        topic.id === selectedTopic.id
-                          ? "text-primary font-semibold bg-primary/10"
-                          : "text-foreground"
-                      }`}
-                    >
-                      {topic.name}
-                    </button>
-                  ))}
-                </div>
               )}
             </div>
           </div>
