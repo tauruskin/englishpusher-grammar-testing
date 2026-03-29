@@ -5,6 +5,7 @@ import { irregularVerbsTopic } from "./irregular-verbs";
 import { verbPatternsTopic } from "./verb-patterns";
 import { narrativeTensesTopic } from "./narrative-tenses";
 import { modifiersTopic } from "./modifiers";
+import { pastSimplePresentPerfectTopic } from "./past-simple-present-perfect";
 
 const topics: GrammarTopic[] = [
   presentSimpleVsContinuousTopic,
@@ -12,6 +13,7 @@ const topics: GrammarTopic[] = [
   verbPatternsTopic,
   narrativeTensesTopic,
   modifiersTopic,
+  pastSimplePresentPerfectTopic,
 ];
 
 export default topics;
