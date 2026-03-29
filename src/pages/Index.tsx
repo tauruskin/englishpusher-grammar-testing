@@ -228,6 +228,7 @@ const Index = () => {
             >
               ← All Apps
             </a>
+            <span className="opacity-30">|</span>
             <a
               href="https://www.englishpusher.in.ua/"
               target="_blank"
