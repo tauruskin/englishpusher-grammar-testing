@@ -85,7 +85,7 @@ const Index = () => {
                 onClick={!showLanding ? handleGoToLanding : undefined}
                 title={!showLanding ? "Back to topic menu" : undefined}
               >
-                Englishpusher<span className="text-primary"> Grammar Testing</span>
+                <span className="hidden sm:inline">Englishpusher</span><span className="text-primary"> Grammar Testing</span>
               </h1>
               {!showLanding && (
                 <p className="text-xs text-muted-foreground">{selectedTopic.name}</p>
