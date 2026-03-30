@@ -211,6 +211,7 @@ These exist but are NOT integrated — do not modify or rely on them:
 | `present-simple-vs-continuous` | `present-simple-vs-continuous.ts` | 25 | Active |
 | `irregular-verbs` | `irregular-verbs.ts` | 25 | Active |
 
+
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
@@ -230,6 +231,9 @@ These exist but are NOT integrated — do not modify or rely on them:
 - `GrammarQuestionCard` gets `isReview` prop — shows "← Reviewing" badge instead of streak badge
 - `SentenceReorderView` now accepts `selectedAnswer` prop to render stored answer in review mode
 - Created `CLAUDE.md` and `MEMORY.md`
+- Added `irregular-verbs` topic (25 questions, all 4 types) — `src/data/topics/irregular-verbs.ts`
+- Installed `motion` package; created `src/components/ui/menu-vertical.tsx` (animated vertical menu)
+- Added landing screen to `Index.tsx` — shown when no `?topic=` URL param; clicking header title returns to it
 
 ### 2026-03-18 — Session
 - Fixed sentence-reorder crash and progression issues (`useGrammarGame.ts`)

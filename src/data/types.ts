@@ -89,6 +89,7 @@ export interface GrammarTopic {
   id: string;
   name: string;
   description: string;
+  lesson?: string;
   rules: GrammarQuestion[];
 }
 

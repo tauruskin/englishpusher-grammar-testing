@@ -14,6 +14,7 @@ export const modifiersTopic: GrammarTopic = {
   name: "Modifiers",
   description:
     "Practise modifiers like quite, fairly, relatively, and a bit/a lot more — used to say how much or how little something is true.",
+  lesson: "Lesson 10",
   rules: [
 
     // ─── GAP-FILL (7) ────────────────────────────────────────────────────────

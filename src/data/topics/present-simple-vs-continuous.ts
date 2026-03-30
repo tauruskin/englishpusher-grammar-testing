@@ -525,6 +525,7 @@ export const presentSimpleVsContinuousTopic = {
     id: "present-simple-vs-continuous",
     name: "Present Simple vs Present Continuous",
     description: "Master the difference between Present Simple (habits, routines, facts) and Present Continuous (actions happening now, temporary situations). Learn when to use state verbs with Present Simple only.",
+    lesson: "Lesson 2",
     rules: presentSimpleVsContinuous,
 };
 

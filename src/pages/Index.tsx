@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import topics, { GrammarTopic } from "@/data/topics";
+import topics from "@/data/topics";
+import { GrammarTopic } from "@/data/types";
 import ProgressBar from "@/components/ProgressBar";
 import ScoreBadge from "@/components/ScoreBadge";
 import GrammarQuestionCard from "@/components/GrammarQuestionCard";
@@ -133,10 +134,10 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35 }}
-            className="w-full max-w-4xl flex items-center gap-10"
+            className="w-full max-w-4xl flex items-start gap-10"
           >
             {/* Teacher + speech bubble — desktop only */}
-            <div className="hidden md:flex flex-col items-center gap-4 flex-shrink-0">
+            <div className="hidden md:flex flex-col items-center gap-4 flex-shrink-0 mt-32">
               <motion.div
                 className="relative bg-card border-2 border-border rounded-2xl px-5 py-3 shadow-sm max-w-[200px] text-center"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -154,12 +155,13 @@ const Index = () => {
             </div>
 
             {/* Topic menu */}
-            <div className="flex-1">
+            <div className="flex-1 topic-scroll md:overflow-y-auto md:max-h-[calc(100dvh-15rem)] md:overscroll-contain px-1 py-1">
               <MenuVertical
                 title="Choose a Topic"
                 subtitle="Pick a grammar topic to start practising"
                 items={topics.map((t) => ({
                   label: t.name,
+                  lesson: t.lesson,
                   description: `${t.rules.length} questions`,
                   onClick: () => handleSelectTopic(t),
                 }))}

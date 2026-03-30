@@ -219,6 +219,14 @@
     animation: character-droop 0.5s ease-out forwards;
   }
 
+  .topic-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .topic-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
   .animate-character-celebrate {
     animation: character-celebrate 1s ease-in-out infinite;
   }

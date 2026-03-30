@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export interface MenuItem {
   label: string;
+  lesson?: string;
   description?: string;
   color?: string;
   onClick: () => void;
@@ -75,17 +76,22 @@ export function MenuVertical({ items, title, subtitle }: MenuVerticalProps) {
             key={index}
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
           >
             <button
               onClick={item.onClick}
-              className="w-full flex items-center justify-between p-5 rounded-2xl bg-card border-2 border-border hover:border-primary/60 text-left transition-colors group shadow-sm"
-              style={{
-                borderLeftColor: item.color ?? "#f07c1a",
-                borderLeftWidth: "4px",
-              }}
+              className="w-[98%] mx-auto flex items-center justify-between p-5 rounded-2xl bg-card border-2 border-border hover:border-primary/60 text-left transition-colors group shadow-sm relative"
             >
-              <div className="min-w-0">
+              {/* Left accent bar — inset so no overflow-hidden needed */}
+              <span
+                className="absolute left-0 inset-y-2 w-1 rounded-full"
+                style={{ backgroundColor: item.color ?? "#f07c1a" }}
+              />
+              <div className="min-w-0 ml-3">
+                {item.lesson && (
+                  <span className="font-body text-xs text-primary/70 font-medium tracking-wide block mb-0.5">
+                    {item.lesson}
+                  </span>
+                )}
                 <span className="font-display font-semibold text-foreground text-lg group-hover:text-primary transition-colors block">
                   {item.label}
                 </span>

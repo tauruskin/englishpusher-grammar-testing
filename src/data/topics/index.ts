@@ -6,6 +6,9 @@ import { verbPatternsTopic } from "./verb-patterns";
 import { narrativeTensesTopic } from "./narrative-tenses";
 import { modifiersTopic } from "./modifiers";
 import { pastSimplePresentPerfectTopic } from "./past-simple-present-perfect";
+import { apologiseAndGiveReasonsTopic } from "./apologise-and-give-reasons";
+import { prepositionsOfTimeTopic } from "./prepositions-of-time";
+import { questionFormsTopic } from "./question-forms";
 
 const topics: GrammarTopic[] = [
   presentSimpleVsContinuousTopic,
@@ -14,6 +17,9 @@ const topics: GrammarTopic[] = [
   narrativeTensesTopic,
   modifiersTopic,
   pastSimplePresentPerfectTopic,
+  apologiseAndGiveReasonsTopic,
+  prepositionsOfTimeTopic,
+  questionFormsTopic,
 ];
 
 export default topics;

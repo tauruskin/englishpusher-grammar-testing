@@ -13,6 +13,7 @@ export const verbPatternsTopic: GrammarTopic = {
   name: "Verb Patterns",
   description:
     "Practise when to use verb + -ing (enjoy swimming) and when to use verb + to infinitive (hope to become).",
+  lesson: "Lesson 7",
   rules: [
 
     // ─── GAP-FILL (7) ────────────────────────────────────────────────────────
