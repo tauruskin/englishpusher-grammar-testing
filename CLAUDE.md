@@ -206,17 +206,41 @@ These exist but are NOT integrated — do not modify or rely on them:
 
 ## CURRENT TOPICS
 
-| Topic ID | File | Questions | Status |
-|---|---|---|---|
-| `present-simple-vs-continuous` | `present-simple-vs-continuous.ts` | 25 | Active |
-| `irregular-verbs` | `irregular-verbs.ts` | 25 | Active |
-
+| Topic ID | File | Lesson | Questions | Status |
+|---|---|---|---|---|
+| `present-simple-vs-continuous` | `present-simple-vs-continuous.ts` | Lesson 2 | 25 | Active |
+| `irregular-verbs` | `irregular-verbs.ts` | — | 25 | Active |
+| `verb-patterns` | `verb-patterns.ts` | Lesson 7 | 25 | Active |
+| `narrative-tenses` | `narrative-tenses.ts` | — | 25 | Active |
+| `modifiers` | `modifiers.ts` | Lesson 10 | 25 | Active |
+| `past-simple-present-perfect` | `past-simple-present-perfect.ts` | — | 25 | Active |
+| `apologise-and-give-reasons` | `apologise-and-give-reasons.ts` | — | 25 | Active |
+| `prepositions-of-time` | `prepositions-of-time.ts` | — | 25 | Active |
+| `question-forms` | `question-forms.ts` | — | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
 
 ## WHAT HAS BEEN DONE (Changelog)
+
+### 2026-03-30 — Session
+- Added 3 new grammar topics (25 questions each): Apologise & Give Reasons, Prepositions of Time, Question Forms
+- Added optional `lesson?: string` field to `GrammarTopic` interface in `types.ts`
+- Lesson label shown above topic name on landing cards (small orange text, hidden when empty)
+- Set lesson numbers: Lesson 2 (Present Simple), Lesson 7 (Verb Patterns), Lesson 10 (Modifiers)
+- Created `src/components/ui/menu-vertical.tsx` `MenuItem` interface updated with `lesson?` field
+- Landing page scrollable topic list: `md:overflow-y-auto md:max-h-[calc(100dvh-15rem)]` on desktop only
+- Mobile uses native page scroll (no inner scroll container) — fixes Chrome Android swipe
+- Hidden scrollbar: `scrollbar-width: none` + `display: none` on `::-webkit-scrollbar` in `index.css`
+- Card left accent bar changed from `borderLeftColor` inline style to absolute-positioned `<span>` — hover no longer hides it
+- Removed `overflow-hidden` from card button — was blocking touch scroll in Chrome Android
+- Removed `whileTap` from card `motion.div` — Framer Motion sets `touch-action: none` on whileTap elements
+- Cards `w-[98%] mx-auto` — prevents border/shadow clipping by overflow container
+- Teacher column `items-start` + `mt-32` — aligns speech bubble with first card
+- Removed `overflow-y-auto` from `<main>` — was blocking footer link taps on Android built-in browser
+- Updated logo (`public/logo.png`)
+- All changes committed and pushed to `main`
 
 ### 2026-03-27 — Session
 - Added animated gradient border to `GrammarQuestionCard` via `BorderRotate` component
