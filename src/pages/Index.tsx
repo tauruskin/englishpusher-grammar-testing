@@ -50,6 +50,10 @@ const Index = () => {
     game.restart();
   };
 
+  const handlePracticeWeak = (weakQuestions: import("@/data/types").GrammarQuestion[]) => {
+    game.restart(weakQuestions);
+  };
+
   const renderQuestion = () => {
     if (!game.displayedQuestion) return null;
 
@@ -176,6 +180,7 @@ const Index = () => {
               total={game.totalQuestions}
               results={game.results}
               onRestart={handlePlayAgain}
+              onPracticeWeak={handlePracticeWeak}
             />
           ) : (
             <>

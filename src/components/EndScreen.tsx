@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import confetti from "canvas-confetti";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 import { GrammarAnswerResult } from "@/hooks/useGrammarGame";
+import { GrammarQuestion } from "@/data/types";
 
 interface EndScreenProps {
   score: number;
   total: number;
   results: GrammarAnswerResult[];
   onRestart: () => void;
-  onPracticeWeak?: (questions: any[]) => void;
+  onPracticeWeak?: (questions: GrammarQuestion[]) => void;
 }
 
 const EndScreen = ({ score, total, results, onRestart, onPracticeWeak }: EndScreenProps) => {
@@ -50,6 +51,9 @@ const EndScreen = ({ score, total, results, onRestart, onPracticeWeak }: EndScre
   }, [isGreat, isPerfect]);
 
   const hasWeakness = incorrectResults.length > 0;
+
+  // Deduplicated incorrect questions (in case the same question was answered wrong multiple times)
+  const weakQuestions = [...new Map(incorrectResults.map(r => [r.question.id, r.question])).values()];
   const characterPose: CharacterPose = isPerfect ? "celebrate" : hasWeakness ? "thinking" : "happy";
 
   return (
@@ -122,6 +126,14 @@ const EndScreen = ({ score, total, results, onRestart, onPracticeWeak }: EndScre
           >
             Play Again 🔄
           </button>
+          {hasWeakness && onPracticeWeak && (
+            <button
+              onClick={() => onPracticeWeak(weakQuestions)}
+              className="flex-1 px-6 py-3 rounded-lg border-2 border-destructive/60 bg-destructive/10 text-destructive font-display font-semibold text-base hover:bg-destructive hover:text-white hover:scale-105 active:scale-95 transition-all"
+            >
+              Retry wrong ({weakQuestions.length}) 💪
+            </button>
+          )}
         </div>
       </div>
     </div>
