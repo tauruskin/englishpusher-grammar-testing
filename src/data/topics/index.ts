@@ -9,6 +9,9 @@ import { pastSimplePresentPerfectTopic } from "./past-simple-present-perfect";
 import { apologiseAndGiveReasonsTopic } from "./apologise-and-give-reasons";
 import { prepositionsOfTimeTopic } from "./prepositions-of-time";
 import { questionFormsTopic } from "./question-forms";
+import { startingEndingConversationsTopic } from "./starting-ending-conversations";
+import { adverbsOfFrequencyTopic } from "./adverbs-of-frequency";
+import { stativeDynamicVerbsTopic } from "./stative-dynamic-verbs";
 
 const topics: GrammarTopic[] = [
   presentSimpleVsContinuousTopic,
@@ -20,6 +23,9 @@ const topics: GrammarTopic[] = [
   apologiseAndGiveReasonsTopic,
   prepositionsOfTimeTopic,
   questionFormsTopic,
+  startingEndingConversationsTopic,
+  adverbsOfFrequencyTopic,
+  stativeDynamicVerbsTopic,
 ];
 
 export default topics;
