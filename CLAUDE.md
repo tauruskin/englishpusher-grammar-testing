@@ -224,6 +224,11 @@ These exist but are NOT integrated — do not modify or rely on them:
 
 ## WHAT HAS BEEN DONE (Changelog)
 
+### 2026-07-10 — Session
+- Created `create-grammar-topic` skill at workspace root `.claude/skills/create-grammar-topic/SKILL.md` — codifies the full new-topic workflow (textbook photo → 25 questions → register → validate → deploy). Use it when adding topics.
+- Added generic topic validation test `src/data/topics/__tests__/topics-validation.test.ts` — runs against ALL registered topics (unique ids, one `___` per blank, error-spot index matches wrong word, option consistency). Run: `npx vitest run src/data/topics/__tests__/topics-validation.test.ts`. All 618 checks pass on the 12 current topics.
+- NOTE: sections of this file above are outdated — `sentence-reorder` was removed; current question types are gap-fill, error-spot, multiple-choice, word-transform, sentence-match (see `src/data/types.ts`). `GrammarTopic` uses `name`/`rules`, not `title`/`questions`. There are now 12 topics (added: starting-ending-conversations, adverbs-of-frequency, stative-dynamic-verbs).
+
 ### 2026-03-30 — Session
 - Added 3 new grammar topics (25 questions each): Apologise & Give Reasons, Prepositions of Time, Question Forms
 - Added optional `lesson?: string` field to `GrammarTopic` interface in `types.ts`
