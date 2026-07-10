@@ -399,101 +399,95 @@ export const narrativeTensesTopic: GrammarTopic = {
       },
     },
 
-    // ─── SENTENCE-REORDER (6) ────────────────────────────────────────────────
+    // ─── WORD TRANSFORM (6) ────────────────────────────────────────────────
 
     {
       id: "nt-reorder-1",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "I was walking through the park.",
-      grammarRule: "Past Continuous — positive form",
-      explanation:
-        "Past Continuous = was/were + verb-ing. 'I was walking' describes an action in progress in the past.",
-      tip: "Past Continuous structure: subject + was/were + verb-ing.",
-      sentenceReorder: {
-        words: ["walking", "through", "I", "park", "the", "was"],
-        correctOrders: [[2, 5, 0, 1, 4, 3]],
+      sentence: "She ___ a book when the phone rang.",
+      grammarRule: "Past Continuous — interrupted background action",
+      explanation: "Past Continuous describes what was in progress when the interruption happened. Structure: was/were + verb-ing.",
+      tip: "Background action in progress + 'when' + interruption: was reading when the phone rang.",
+      wordTransform: {
+        baseWord: "read",
+        correctAnswer: "was reading",
       },
     },
 
     {
       id: "nt-reorder-2",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "The birds were singing in the trees.",
-      grammarRule: "Past Continuous — background scene",
-      explanation:
-        "Past Continuous describes background details in a story — what was happening around the main events. 'The birds were singing' sets the scene.",
-      tip: "Use Past Continuous for the background: the weather, sounds, and scene in a story.",
-      sentenceReorder: {
-        words: ["were", "singing", "the", "The", "trees", "birds", "in"],
-        correctOrders: [[3, 5, 0, 1, 6, 2, 4]],
+      sentence: "While I ___ home, I met an old friend.",
+      grammarRule: "Past Continuous — background action with 'while'",
+      explanation: "'While' introduces the longer background action in Past Continuous. The meeting (Past Simple) happened during the walk.",
+      tip: "While + Past Continuous (ongoing action) + Past Simple (event that happened during it).",
+      wordTransform: {
+        baseWord: "walk",
+        correctAnswer: "was walking",
       },
     },
 
     {
       id: "nt-reorder-3",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I was reading a book when the phone rang.",
-      grammarRule: "Past Continuous interrupted by Past Simple",
-      explanation:
-        "Past Continuous (was reading) = the longer background action. Past Simple (rang) = the short interrupting event. 'When' introduces the interruption.",
-      tip: "When = interruption. Background action: Past Continuous. Interrupting event: Past Simple.",
-      sentenceReorder: {
-        words: ["book", "I", "rang", "reading", "when", "was", "phone", "a", "the"],
-        correctOrders: [[1, 5, 3, 7, 0, 4, 8, 6, 2]],
+      sentence: "When I arrived, the film had already ___.",
+      grammarRule: "Past Perfect — completed before another past event",
+      explanation: "Past Perfect shows the film started before I arrived. Past Participle of 'start' is 'started' (regular verb).",
+      tip: "The earlier action → Past Perfect: had already started, had already left, had already finished.",
+      wordTransform: {
+        baseWord: "start",
+        correctAnswer: "started",
       },
     },
 
     {
       id: "nt-reorder-4",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I had finished my work before lunch.",
-      grammarRule: "Past Perfect — completed before a past time",
-      explanation:
-        "Past Perfect (had finished) shows the work was completed before a specific past time (before lunch). Structure: had + past participle.",
-      tip: "Past Perfect structure: subject + had + past participle.",
-      sentenceReorder: {
-        words: ["my", "finished", "before", "I", "had", "lunch", "work"],
-        correctOrders: [[3, 4, 1, 0, 6, 2, 5]],
+      sentence: "She had already ___ before he arrived.",
+      grammarRule: "Past Perfect — completed before another past event",
+      explanation: "Past Perfect: had + past participle. 'Eaten' is the past participle of 'eat'. It shows the meal was finished before his arrival.",
+      tip: "Eat → ate (Past Simple) → eaten (Past Participle). 'Had eaten' = Past Perfect.",
+      wordTransform: {
+        baseWord: "eat",
+        correctAnswer: "eaten",
       },
     },
 
     {
       id: "nt-reorder-5",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "She realised she had left her bag at home.",
-      grammarRule: "Past Perfect after thinking verb (realise)",
-      explanation:
-        "After 'realised' (a thinking verb), we use Past Perfect to show that leaving the bag happened BEFORE the moment of realisation.",
-      tip: "Realise/discover/find out + Past Perfect: the earlier action comes first in time.",
-      sentenceReorder: {
-        words: ["had", "realised", "She", "at", "her", "she", "left", "bag", "home"],
-        correctOrders: [[2, 1, 5, 0, 6, 4, 7, 3, 8]],
+      sentence: "I ___ TV when the lights went out.",
+      grammarRule: "Past Continuous — activity in progress when interrupted",
+      explanation: "Past Continuous shows what was happening when the interruption occurred. 'Was watching' = in progress.",
+      tip: "Was/were + verb-ing = action in progress. 'When' introduces the interrupting event.",
+      wordTransform: {
+        baseWord: "watch",
+        correctAnswer: "was watching",
       },
     },
 
     {
       id: "nt-reorder-6",
       topic: "narrative-tenses",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "advanced",
-      sentence: "He had lived in Dublin for five years.",
-      grammarRule: "Past Perfect — duration before another past event",
-      explanation:
-        "Past Perfect can show how long something had been happening before a past event. 'He had lived in Dublin for five years' = before he moved away.",
-      tip: "Past Perfect + for/since = duration of an action that ended before another past event.",
-      sentenceReorder: {
-        words: ["five", "in", "He", "years", "had", "lived", "Dublin", "for"],
-        correctOrders: [[2, 4, 5, 1, 6, 7, 0, 3]],
+      sentence: "By the time we arrived, they had already ___.",
+      grammarRule: "Past Perfect — earlier completed action",
+      explanation: "'By the time we arrived' means before our arrival. Past Perfect (had left) shows the earlier completed action.",
+      tip: "By the time... + Past Perfect: had already left, had already eaten, had already gone.",
+      wordTransform: {
+        baseWord: "leave",
+        correctAnswer: "left",
       },
     },
 

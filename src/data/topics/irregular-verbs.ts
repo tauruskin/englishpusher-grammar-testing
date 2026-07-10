@@ -366,101 +366,95 @@ export const irregularVerbsTopic: GrammarTopic = {
       },
     },
 
-    // ─── SENTENCE REORDER (6) ───────────────────────────────────────────────
+    // ─── WORD TRANSFORM (6) ───────────────────────────────────────────────────
 
     {
       id: "irr-v-reorder-1",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "She bought a new dress yesterday.",
+      sentence: "She ___ a new computer last week.",
       grammarRule: "Irregular Verbs — Past Simple (buy/bought)",
-      explanation:
-        "Past Simple word order: Subject + Past Simple verb + object + time. 'Bought' is Past Simple of 'buy'.",
-      tip: "Buy → bought. Time expressions like 'yesterday' naturally go at the end of the sentence.",
-      sentenceReorder: {
-        words: ["She", "bought", "a", "new", "dress", "yesterday."],
-        correctOrders: [[0, 1, 2, 3, 4, 5]],
+      explanation: "Past Simple of 'buy' is 'bought'. Irregular verb — does not follow the regular -ed pattern.",
+      tip: "Buy → bought. Past Simple: I bought, she bought, they bought.",
+      wordTransform: {
+        baseWord: "buy",
+        correctAnswer: "bought",
       },
     },
 
     {
       id: "irr-v-reorder-2",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "They spent all evening at the cinema.",
+      sentence: "They ___ all evening at the cinema.",
       grammarRule: "Irregular Verbs — Past Simple (spend/spent)",
-      explanation:
-        "Past Simple: Subject + Past Simple verb + object. 'Spent' is Past Simple of 'spend'. Time phrase 'all evening' comes right after the verb.",
-      tip: "Spend → spent. Both Past Simple and Past Participle are 'spent'.",
-      sentenceReorder: {
-        words: ["They", "spent", "all", "evening", "at", "the", "cinema."],
-        correctOrders: [[0, 1, 2, 3, 4, 5, 6]],
+      explanation: "Past Simple of 'spend' is 'spent'. Both Past Simple and Past Participle are 'spent'.",
+      tip: "Spend → spent. Past Simple: we spent, he spent, they spent.",
+      wordTransform: {
+        baseWord: "spend",
+        correctAnswer: "spent",
       },
     },
 
     {
       id: "irr-v-reorder-3",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "Have you ever seen this film before?",
+      sentence: "Have you ever ___ this film before?",
       grammarRule: "Irregular Verbs — Past Participle (see/saw/seen)",
-      explanation:
-        "Present Perfect question: Have/Has + subject + Past Participle + object. 'Seen' is Past Participle of 'see'.",
-      tip: "See → saw (Past Simple) → seen (Past Participle). 'Have you ever seen…' always uses the Past Participle.",
-      sentenceReorder: {
-        words: ["Have", "you", "ever", "seen", "this", "film", "before?"],
-        correctOrders: [[0, 1, 2, 3, 4, 5, 6]],
+      explanation: "Past Participle of 'see' is 'seen'. Use it with Present Perfect: Have you ever seen...?",
+      tip: "See → saw (Past Simple) → seen (Past Participle). 'Have you ever seen…' needs the participle.",
+      wordTransform: {
+        baseWord: "see",
+        correctAnswer: "seen",
       },
     },
 
     {
       id: "irr-v-reorder-4",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "He broke his leg during the football match.",
+      sentence: "He ___ his leg during the football match.",
       grammarRule: "Irregular Verbs — Past Simple (break/broke/broken)",
-      explanation:
-        "Past Simple: Subject + Past Simple verb + object + prepositional phrase. 'Broke' is Past Simple of 'break'.",
-      tip: "Break → broke (Past Simple) → broken (Past Participle). Prepositional phrases like 'during the match' come after the object.",
-      sentenceReorder: {
-        words: ["He", "broke", "his", "leg", "during", "the", "football", "match."],
-        correctOrders: [[0, 1, 2, 3, 4, 5, 6, 7]],
+      explanation: "Past Simple of 'break' is 'broke'. Irregular verb — does not follow the -ed pattern.",
+      tip: "Break → broke (Past Simple) → broken (Past Participle). He broke it yesterday.",
+      wordTransform: {
+        baseWord: "break",
+        correctAnswer: "broke",
       },
     },
 
     {
       id: "irr-v-reorder-5",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "She has written many letters to her friends.",
+      sentence: "She has ___ many letters to her friends.",
       grammarRule: "Irregular Verbs — Past Participle (write/wrote/written)",
-      explanation:
-        "Present Perfect: Subject + have/has + Past Participle + object. 'Written' is Past Participle of 'write'.",
+      explanation: "Past Participle of 'write' is 'written'. Use it with Present Perfect: has written.",
       tip: "Write → wrote (Past Simple) → written (Past Participle). 'Has written' = Present Perfect.",
-      sentenceReorder: {
-        words: ["She", "has", "written", "many", "letters", "to", "her", "friends."],
-        correctOrders: [[0, 1, 2, 3, 4, 5, 6, 7]],
+      wordTransform: {
+        baseWord: "write",
+        correctAnswer: "written",
       },
     },
 
     {
       id: "irr-v-reorder-6",
       topic: "irregular-verbs",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "advanced",
-      sentence: "By the time we arrived, they had already left.",
+      sentence: "By the time we arrived, they had already ___.",
       grammarRule: "Irregular Verbs — Past Participle in Past Perfect (leave/left)",
-      explanation:
-        "Past Perfect: had + Past Participle. 'Left' is Past Participle of 'leave'. 'By the time…' sets the earlier context.",
-      tip: "Leave → left (both Past Simple and Past Participle). 'Had left' shows an action completed before another past event.",
-      sentenceReorder: {
-        words: ["By", "the", "time", "we", "arrived,", "they", "had", "already", "left."],
-        correctOrders: [[0, 1, 2, 3, 4, 5, 6, 7, 8]],
+      explanation: "Past Perfect uses 'had' + Past Participle. Past Participle of 'leave' is 'left'. 'Had left' shows an action before another past event.",
+      tip: "Leave → left (both Past Simple and Past Participle). 'Had left' = Past Perfect.",
+      wordTransform: {
+        baseWord: "leave",
+        correctAnswer: "left",
       },
     },
 

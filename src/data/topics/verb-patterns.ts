@@ -405,96 +405,91 @@ export const verbPatternsTopic: GrammarTopic = {
     {
       id: "vp-reorder-1",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "I love swimming in the sea.",
+      sentence: "I love ___ in the sea.",
       grammarRule: "Verb + -ing form (love)",
-      explanation:
-        "'Love' is followed by -ing: 'I love swimming'. The -ing form describes the activity you love doing.",
-      tip: "Love, like, hate, enjoy — all followed by -ing when talking about general activities.",
-      sentenceReorder: {
-        words: ["swimming", "love", "I", "in", "sea", "the"],
-        correctOrders: [[2, 1, 0, 3, 5, 4]],
+      explanation: "'Love' is followed by the -ing form: 'love swimming'. Add -ing to the base verb.",
+      tip: "Love, like, hate, enjoy — all followed by -ing: love swimming, enjoy reading.",
+      wordTransform: {
+        baseWord: "swim",
+        correctAnswer: "swimming",
       },
     },
 
     {
       id: "vp-reorder-2",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "She decided to buy a new car.",
+      sentence: "She decided ___ a new car.",
       grammarRule: "Verb + to infinitive (decide)",
-      explanation:
-        "'Decide' is followed by to + infinitive: 'decided to buy'. It describes a choice or plan.",
+      explanation: "'Decide' is followed by to + infinitive: 'decided to buy'. Use the full infinitive form.",
       tip: "Decide, choose, agree, promise — always followed by to + infinitive.",
-      sentenceReorder: {
-        words: ["to", "She", "car", "decided", "new", "a", "buy"],
-        correctOrders: [[1, 3, 0, 6, 5, 4, 2]],
+      wordTransform: {
+        baseWord: "buy",
+        correctAnswer: "to buy",
       },
     },
 
     {
       id: "vp-reorder-3",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "They avoid travelling by bus.",
+      sentence: "They avoid ___ by bus.",
       grammarRule: "Verb + -ing form (avoid)",
-      explanation:
-        "'Avoid' is always followed by -ing: 'avoid travelling'. Never use to + infinitive after avoid.",
+      explanation: "'Avoid' is always followed by -ing: 'avoid travelling'. Never use to + infinitive after avoid.",
       tip: "Avoid + -ing: avoid travelling, avoid eating, avoid making mistakes.",
-      sentenceReorder: {
-        words: ["bus", "travelling", "avoid", "They", "by"],
-        correctOrders: [[3, 2, 1, 4, 0]],
+      wordTransform: {
+        baseWord: "travel",
+        correctAnswer: "travelling",
+        alternativeAnswers: ["traveling"],
       },
     },
 
     {
       id: "vp-reorder-4",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "He hopes to become a doctor.",
+      sentence: "He hopes ___ a doctor one day.",
       grammarRule: "Verb + to infinitive (hope)",
-      explanation:
-        "'Hope' is followed by to + infinitive: 'hopes to become'. It describes a wish or ambition.",
-      tip: "Hope describes a future wish — always followed by to + infinitive.",
-      sentenceReorder: {
-        words: ["become", "hopes", "a", "to", "He", "doctor"],
-        correctOrders: [[4, 1, 3, 0, 2, 5]],
+      explanation: "'Hope' is followed by to + infinitive: 'hopes to become'. Use the full infinitive form.",
+      tip: "Hope describes a wish — always followed by to + infinitive: hope to become, hope to find.",
+      wordTransform: {
+        baseWord: "become",
+        correctAnswer: "to become",
       },
     },
 
     {
       id: "vp-reorder-5",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "Playing outside is good for children.",
-      grammarRule: "-ing form as subject of a sentence",
-      explanation:
-        "An -ing form (Playing) can be the subject of a sentence, acting like a noun. 'Playing outside' = the subject.",
-      tip: "Swimming is fun. Reading helps. Playing outside is good. — -ing as subject is very common.",
-      sentenceReorder: {
-        words: ["good", "Playing", "children", "outside", "for", "is"],
-        correctOrders: [[1, 3, 5, 0, 4, 2]],
+      sentence: "I enjoy ___ in the park on weekends.",
+      grammarRule: "-ing form after enjoy",
+      explanation: "'Enjoy' is always followed by the -ing form, not the infinitive: 'enjoy walking'.",
+      tip: "Enjoy + -ing: enjoy walking, enjoy cooking, enjoy watching. Never enjoy + to.",
+      wordTransform: {
+        baseWord: "walk",
+        correctAnswer: "walking",
       },
     },
 
     {
       id: "vp-reorder-6",
       topic: "verb-patterns",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I promised to arrive on time.",
+      sentence: "I promised ___ on time.",
       grammarRule: "Verb + to infinitive (promise)",
-      explanation:
-        "'Promise' is followed by to + infinitive: 'promised to arrive'. It describes a commitment.",
-      tip: "Promise always takes to + infinitive: promise to call, promise to help, promise to be on time.",
-      sentenceReorder: {
-        words: ["on", "I", "to", "promised", "time", "arrive"],
-        correctOrders: [[1, 3, 2, 5, 0, 4]],
+      explanation: "'Promise' is followed by to + infinitive: 'promised to arrive'. Use the full infinitive.",
+      tip: "Promise always takes to + infinitive: promise to call, promise to arrive, promise to help.",
+      wordTransform: {
+        baseWord: "arrive",
+        correctAnswer: "to arrive",
       },
     },
 

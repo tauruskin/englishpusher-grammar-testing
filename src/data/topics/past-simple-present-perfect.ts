@@ -400,101 +400,95 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
       },
     },
 
-    // ─── SENTENCE-REORDER (6) ────────────────────────────────────────────────
+    // ─── WORD TRANSFORM (6) ────────────────────────────────────────────────
 
     {
       id: "ps-pp-reorder-1",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "I've been to Paris.",
-      grammarRule: "Present Perfect — positive form",
-      explanation:
-        "Present Perfect positive: subject + have/has + past participle. 'I've been to Paris' = I have been to Paris (general experience).",
-      tip: "I've = I have. Present Perfect: I've been, I've seen, I've tried.",
-      sentenceReorder: {
-        words: ["Paris.", "been", "I've", "to"],
-        correctOrders: [[2, 1, 3, 0]],
+      sentence: "I ___ that film last week. It was brilliant.",
+      grammarRule: "Past Simple — specific finished time",
+      explanation: "'Last week' is a specific finished time, so we use Past Simple. Past Simple of 'see' is 'saw'.",
+      tip: "Last week/year, yesterday, in 2019 → Past Simple. See → saw (irregular).",
+      wordTransform: {
+        baseWord: "see",
+        correctAnswer: "saw",
       },
     },
 
     {
       id: "ps-pp-reorder-2",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "Have you bought a new car?",
-      grammarRule: "Present Perfect — question form",
-      explanation:
-        "Present Perfect question: Have/Has + subject + past participle. 'Have you bought' asks about experience with no specific time mentioned.",
-      tip: "Present Perfect question: Have + you/they/we + past participle? Has + he/she/it + past participle?",
-      sentenceReorder: {
-        words: ["car?", "a", "Have", "bought", "new", "you"],
-        correctOrders: [[2, 5, 3, 1, 4, 0]],
+      sentence: "Have you ever ___ to Japan?",
+      grammarRule: "Present Perfect — life experience question",
+      explanation: "'Have you ever been...?' asks about life experience. 'Been' is the past participle of 'be' used with Present Perfect.",
+      tip: "Have you ever been to...? = asking about life experience. Be → been (past participle).",
+      wordTransform: {
+        baseWord: "be",
+        correctAnswer: "been",
       },
     },
 
     {
       id: "ps-pp-reorder-3",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
-      difficulty: "beginner",
-      sentence: "He hasn't worked here before.",
-      grammarRule: "Present Perfect — negative form",
-      explanation:
-        "Present Perfect negative: subject + haven't/hasn't + past participle. 'He hasn't worked here before' = he has no experience of working here.",
-      tip: "Negative PP: I/you/we/they + haven't. He/she/it + hasn't. Always + past participle.",
-      sentenceReorder: {
-        words: ["worked", "He", "before.", "hasn't", "here"],
-        correctOrders: [[1, 3, 0, 4, 2]],
+      type: "word-transform",
+      difficulty: "intermediate",
+      sentence: "She ___ in Paris since 2018.",
+      grammarRule: "Present Perfect — unfinished duration with 'since'",
+      explanation: "'Since 2018' = from 2018 until now → Present Perfect. Third person singular: 'has lived'.",
+      tip: "Since + year → Present Perfect: has lived, has worked, has known.",
+      wordTransform: {
+        baseWord: "live",
+        correctAnswer: "has lived",
       },
     },
 
     {
       id: "ps-pp-reorder-4",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I've never met your brother.",
-      grammarRule: "Present Perfect with never",
-      explanation:
-        "'Never' with a life experience uses Present Perfect. 'I've never met' = at no point in my life have I met him. 'Never' goes between have and the past participle.",
-      tip: "Never position: I've NEVER met, She's NEVER tried, We've NEVER been.",
-      sentenceReorder: {
-        words: ["met", "I've", "brother.", "never", "your"],
-        correctOrders: [[1, 3, 0, 4, 2]],
+      sentence: "I have already ___ my homework.",
+      grammarRule: "Present Perfect — 'already' signals completion",
+      explanation: "'Already' with Present Perfect shows something is done. 'Finished' is the past participle of 'finish' (regular verb).",
+      tip: "Already + Present Perfect: have already finished, has already arrived, have already eaten.",
+      wordTransform: {
+        baseWord: "finish",
+        correctAnswer: "finished",
       },
     },
 
     {
       id: "ps-pp-reorder-5",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I went to Sweden in 2019.",
-      grammarRule: "Past Simple — specific time",
-      explanation:
-        "'In 2019' is a specific finished time → Past Simple. The structure is: subject + Past Simple + time expression.",
-      tip: "Past Simple + specific time: I went in 2019, She arrived last year, He left yesterday.",
-      sentenceReorder: {
-        words: ["2019.", "Sweden", "went", "I", "to", "in"],
-        correctOrders: [[3, 2, 4, 1, 5, 0]],
+      sentence: "He ___ to London last summer.",
+      grammarRule: "Past Simple — specific past time",
+      explanation: "'Last summer' is a specific finished time → Past Simple. Past Simple of 'go' is 'went'.",
+      tip: "Go → went (irregular). Last summer/year/week + Past Simple.",
+      wordTransform: {
+        baseWord: "go",
+        correctAnswer: "went",
       },
     },
 
     {
       id: "ps-pp-reorder-6",
       topic: "past-simple-present-perfect",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I've run five kilometres today.",
-      grammarRule: "Present Perfect — unfinished time period",
-      explanation:
-        "'Today' is an unfinished time period → Present Perfect. 'I've run five kilometres today' = so far today, and today isn't over yet.",
-      tip: "Today, this week, this year = unfinished → Present Perfect. Use PP to talk about what's happened so far.",
-      sentenceReorder: {
-        words: ["five", "today.", "I've", "run", "kilometres"],
-        correctOrders: [[2, 3, 0, 4, 1]],
+      sentence: "Have you ever ___ sushi?",
+      grammarRule: "Present Perfect — life experience with 'ever'",
+      explanation: "'Have you ever tried...?' asks about life experience. 'Tried' is the past participle of 'try' (regular: try → tried).",
+      tip: "Have you ever + past participle? Try → tried (regular verb, y → ied).",
+      wordTransform: {
+        baseWord: "try",
+        correctAnswer: "tried",
       },
     },
 

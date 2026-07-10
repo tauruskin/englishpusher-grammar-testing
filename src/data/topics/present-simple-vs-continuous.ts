@@ -34,9 +34,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         topic: "present-simple-vs-continuous",
         type: "gap-fill",
         difficulty: "beginner",
-        sentence: "She ___ her homework right now. She ___ it every evening.",
+        sentence: "She ___ her homework right now. She does it every evening.",
         grammarRule: "Present Continuous vs Present Simple",
-        explanation: "First blank: 'is doing' (Present Continuous - happening now). Second blank: 'does' (Present Simple - habit).",
+        explanation: "'Is doing' (Present Continuous) — something happening right now. Compare: 'does' for habits.",
         tip: "Now/at this moment = Present Continuous. Every day/always = Present Simple.",
         gapFill: {
             gapIndex: 1,
@@ -85,9 +85,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         topic: "present-simple-vs-continuous",
         type: "gap-fill",
         difficulty: "intermediate",
-        sentence: "My sister ___ for a fashion company, but this month she ___ on a special project.",
+        sentence: "My sister ___ for a fashion company, but this month she is working on a special project.",
         grammarRule: "Present Simple Job vs Present Continuous Temporary Task",
-        explanation: "First blank: 'works' (Present Simple - regular job). Second blank: 'is working' (Present Continuous - temporary, this month).",
+        explanation: "'Works' (Present Simple) — her regular permanent job. Compare: 'is working' for a temporary project.",
         tip: "Regular job = Present Simple. Temporary task right now = Present Continuous.",
         gapFill: {
             gapIndex: 1,
@@ -102,9 +102,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         topic: "present-simple-vs-continuous",
         type: "gap-fill",
         difficulty: "intermediate",
-        sentence: "I ___ like horror films, so I ___ watch them.",
+        sentence: "I ___ like horror films, so I never watch them.",
         grammarRule: "Present Simple - State Verbs",
-        explanation: "'Like' is a state verb (feeling/opinion). We use Present Simple, never Present Continuous.",
+        explanation: "'Like' is a state verb (feeling/opinion). We use Present Simple negative: 'don't like', never 'am not liking'.",
         tip: "State verbs (like, love, hate, want, need, understand, know, believe, own, see, hear) = Present Simple only.",
         gapFill: {
             gapIndex: 1,
@@ -119,9 +119,9 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         topic: "present-simple-vs-continuous",
         type: "gap-fill",
         difficulty: "advanced",
-        sentence: "He usually ___ very seriously, but today he ___ and laughing with everyone.",
+        sentence: "He usually ___ very seriously, but today he is joking and laughing with everyone.",
         grammarRule: "Present Simple Habit vs Present Continuous Temporary Change",
-        explanation: "First blank: 'works' (habit). Second blank: 'is joking' (temporary, unusual behavior today).",
+        explanation: "'Works' (Present Simple) — his usual habit. Compare: 'is joking' shows today is different from the norm.",
         tip: "Usually/normally = Present Simple. Today/right now (different from usual) = Present Continuous.",
         gapFill: {
             gapIndex: 1,
@@ -407,116 +407,95 @@ export const presentSimpleVsContinuous: GrammarQuestion[] = [
         },
     },
 
-    // ===== SENTENCE REORDER QUESTIONS (6 questions) =====
-    // All correctOrders verified programmatically to produce correct sentences.
+    // ===== WORD TRANSFORM QUESTIONS (6 questions) =====
 
-    // words: 0=I, 1=a, 2=reading, 3=am, 4=book, 5=right, 6=now
-    // [0,3,2,1,4,5,6] → "I am reading a book right now" ✅
     {
         id: "ps-pc-reorder-1",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "beginner",
-        sentence: "I am reading a book right now.",
-        grammarRule: "Present Continuous - Word Order",
-        explanation: "Present Continuous: subject + be (am/is/are) + verb-ing + rest.",
-        sentenceReorder: {
-            words: ["I", "a", "reading", "am", "book", "right", "now"],
-            correctOrders: [
-                [0, 3, 2, 1, 4, 5, 6],
-            ],
+        sentence: "She ___ coffee every morning.",
+        grammarRule: "Present Simple — habitual actions",
+        explanation: "Use Present Simple for habits and routines. Third person singular (she) adds -s: 'drinks'.",
+        tip: "Habits and routines → Present Simple: she drinks, he works, it starts.",
+        wordTransform: {
+            baseWord: "drink",
+            correctAnswer: "drinks",
         },
     },
 
-    // words: 0=She, 1=doesn't, 2=like, 3=very, 4=coffee, 5=much
-    // [0,1,2,4,3,5] → "She doesn't like coffee very much" ✅
     {
         id: "ps-pc-reorder-2",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "beginner",
-        sentence: "She doesn't like coffee very much.",
-        grammarRule: "Present Simple Negative - Word Order",
-        explanation: "Present Simple negative: subject + don't/doesn't + verb + rest.",
-        sentenceReorder: {
-            words: ["She", "doesn't", "like", "very", "coffee", "much"],
-            correctOrders: [
-                [0, 1, 2, 4, 3, 5],
-            ],
+        sentence: "Look! The children ___ in the garden.",
+        grammarRule: "Present Continuous — actions happening right now",
+        explanation: "Use Present Continuous for actions happening at this moment. Structure: are/is/am + verb-ing.",
+        tip: "Right now / Look / at the moment → Present Continuous: are playing, is running.",
+        wordTransform: {
+            baseWord: "play",
+            correctAnswer: "are playing",
         },
     },
 
-    // words: 0=What, 1=you, 2=at, 3=doing, 4=the, 5=moment, 6=are
-    // [0,6,1,3,2,4,5] → "What are you doing at the moment" ✅
     {
         id: "ps-pc-reorder-3",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "intermediate",
-        sentence: "What are you doing at the moment?",
-        grammarRule: "Present Continuous Question - Word Order",
-        explanation: "Question: What + be + subject + verb-ing + adverbial phrase.",
-        sentenceReorder: {
-            words: ["What", "you", "at", "doing", "the", "moment", "are"],
-            correctOrders: [
-                [0, 6, 1, 3, 2, 4, 5],
-            ],
+        sentence: "He usually ___ the bus to school.",
+        grammarRule: "Present Simple — frequency adverbs",
+        explanation: "Frequency adverbs like 'usually' signal Present Simple. Third person singular adds -s: 'takes'.",
+        tip: "Usually/always/often → Present Simple. He takes, she goes, it leaves.",
+        wordTransform: {
+            baseWord: "take",
+            correctAnswer: "takes",
         },
     },
 
-    // words: 0=They, 1=go, 2=usually, 3=beach, 4=to, 5=on, 6=the, 7=weekends
-    // [0,2,1,4,6,3,5,7] → "They usually go to the beach on weekends" ✅
     {
         id: "ps-pc-reorder-4",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "intermediate",
-        sentence: "They usually go to the beach on weekends.",
-        grammarRule: "Present Simple with Adverb of Frequency",
-        explanation: "Present Simple: subject + adverb of frequency + verb + rest.",
-        sentenceReorder: {
-            words: ["They", "go", "usually", "beach", "to", "on", "the", "weekends"],
-            correctOrders: [
-                [0, 2, 1, 4, 6, 3, 5, 7],
-            ],
+        sentence: "We ___ dinner right now. Can I call you back?",
+        grammarRule: "Present Continuous — temporary actions",
+        explanation: "Use Present Continuous for what is happening at this moment. 'Right now' signals continuous.",
+        tip: "Right now / at the moment / currently → Present Continuous: are having, is working.",
+        wordTransform: {
+            baseWord: "have",
+            correctAnswer: "are having",
         },
     },
 
-    // words: 0=I,1=usually,2=work,3=in,4=an,5=office,6=but,7=I,8=am,9=working,10=from,11=home,12=this,13=week
-    // [0..13] → "I usually work in an office but I am working from home this week" ✅
-    // [0,1,2,3,4,5,6,12,13,7,8,9,10,11] → "I usually work in an office but this week I am working from home" ✅
     {
         id: "ps-pc-reorder-5",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "advanced",
-        sentence: "I usually work in an office, but I am working from home this week.",
-        grammarRule: "Combining Present Simple and Continuous",
-        explanation: "Two clauses: habit (Simple) + temporary situation (Continuous). 'This week' can go at the start or end of the second clause.",
-        sentenceReorder: {
-            words: ["I", "usually", "work", "in", "an", "office", "but", "I", "am", "working", "from", "home", "this", "week"],
-            correctOrders: [
-                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                [0, 1, 2, 3, 4, 5, 6, 12, 13, 7, 8, 9, 10, 11],
-            ],
+        sentence: "She ___ at a hospital. It's her permanent job.",
+        grammarRule: "Present Simple — permanent situations",
+        explanation: "Use Present Simple for permanent situations and facts. Third person singular adds -s.",
+        tip: "Permanent job/situation → Present Simple: she works, he lives, it costs.",
+        wordTransform: {
+            baseWord: "work",
+            correctAnswer: "works",
         },
     },
 
-    // words: 0=Does,1=he,2=usually,3=drink,4=tea,5=in,6=the,7=morning
-    // [0,1,2,3,4,5,6,7] → "Does he usually drink tea in the morning" ✅
     {
         id: "ps-pc-reorder-6",
         topic: "present-simple-vs-continuous",
-        type: "sentence-reorder",
+        type: "word-transform",
         difficulty: "advanced",
-        sentence: "Does he usually drink tea in the morning?",
-        grammarRule: "Present Simple Question with Adverb of Frequency",
-        explanation: "Question: do/does + subject + adverb of frequency + verb + rest.",
-        sentenceReorder: {
-            words: ["Does", "he", "usually", "drink", "tea", "in", "the", "morning"],
-            correctOrders: [
-                [0, 1, 2, 3, 4, 5, 6, 7],
-            ],
+        sentence: "I can't come out. I ___ my homework.",
+        grammarRule: "Present Continuous — current activity",
+        explanation: "Use Present Continuous for a current activity preventing something else. Structure: am/is/are + verb-ing.",
+        tip: "Busy right now → Present Continuous: I am doing, she is cooking, they are studying.",
+        wordTransform: {
+            baseWord: "do",
+            correctAnswer: "am doing",
         },
     },
 ];

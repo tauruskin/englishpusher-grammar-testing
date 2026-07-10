@@ -6,11 +6,12 @@
 /**
  * Question types available in the grammar testing app
  */
-export type GrammarQuestionType = 
-  | 'gap-fill' 
-  | 'error-spot' 
-  | 'multiple-choice' 
-  | 'sentence-reorder';
+export type GrammarQuestionType =
+  | 'gap-fill'
+  | 'error-spot'
+  | 'multiple-choice'
+  | 'word-transform'
+  | 'sentence-match';
 
 /**
  * Difficulty levels
@@ -29,11 +30,12 @@ export interface GrammarQuestion {
   grammarRule: string;
   explanation: string;
   tip?: string;
-  
+
   gapFill?: GapFillData;
   errorSpot?: ErrorSpotData;
   multipleChoice?: MultipleChoiceData;
-  sentenceReorder?: SentenceReorderData;
+  wordTransform?: WordTransformData;
+  sentenceMatch?: SentenceMatchData;
 }
 
 /**
@@ -71,15 +73,29 @@ export interface MultipleChoiceData {
 }
 
 /**
- * Data structure for sentence-reorder questions
- * UPDATED: Now uses correctOrders (array of arrays) to accept multiple valid orderings
+ * Data structure for word-transform questions (classic EFL "put in brackets")
  */
-export interface SentenceReorderData {
-  words: string[];
-  correctOrders: number[][]; // CHANGED: Array of acceptable word orders
-  wordHints?: {
-    [index: number]: string;
-  };
+export interface WordTransformData {
+  baseWord: string;
+  correctAnswer: string;
+  alternativeAnswers?: string[];
+}
+
+/**
+ * A single pair for sentence-match questions
+ */
+export interface MatchPair {
+  beginning: string;
+  ending: string;
+}
+
+/**
+ * Data structure for sentence-match questions.
+ * Each beginning uniquely matches exactly one ending.
+ * The correct answer is encoded as endings joined by "||" in beginning order.
+ */
+export interface SentenceMatchData {
+  pairs: MatchPair[];
 }
 
 /**

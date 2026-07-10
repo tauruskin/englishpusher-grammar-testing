@@ -406,96 +406,90 @@ export const modifiersTopic: GrammarTopic = {
     {
       id: "mod-reorder-1",
       topic: "modifiers",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "That's quite interesting.",
-      grammarRule: "quite + adjective",
-      explanation:
-        "'Quite interesting' = moderately interesting. 'Quite' comes directly before the adjective it modifies.",
-      tip: "Subject + is/are/was + quite + adjective. Quite always comes before the adjective.",
-      sentenceReorder: {
-        words: ["interesting.", "quite", "That's"],
-        correctOrders: [[2, 1, 0]],
+      sentence: "She explains things very ___.",
+      grammarRule: "Adjective → adverb: add -ly",
+      explanation: "To modify a verb, use an adverb. Add -ly to the adjective 'clear' to make the adverb 'clearly'.",
+      tip: "Adjective + -ly = adverb: clear → clearly, slow → slowly, quiet → quietly.",
+      wordTransform: {
+        baseWord: "clear",
+        correctAnswer: "clearly",
       },
     },
 
     {
       id: "mod-reorder-2",
       topic: "modifiers",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "It's quite difficult to find a job.",
-      grammarRule: "quite + adjective + to infinitive",
-      explanation:
-        "'Quite difficult to find' = moderately difficult to find. The structure is: it's + quite + adjective + to + infinitive.",
-      tip: "It's quite + adjective + to + infinitive: It's quite hard to learn, It's quite easy to miss.",
-      sentenceReorder: {
-        words: ["find", "to", "It's", "a", "quite", "job.", "difficult"],
-        correctOrders: [[2, 4, 6, 1, 0, 3, 5]],
+      sentence: "He is ___ happy with his new job.",
+      grammarRule: "fairly + adjective — moderate degree",
+      explanation: "'Fairly happy' means moderately happy. 'Fairly' comes before the adjective.",
+      tip: "Fairly goes before the adjective: fairly easy, fairly cheap, fairly good.",
+      wordTransform: {
+        baseWord: "fair",
+        correctAnswer: "fairly",
       },
     },
 
     {
       id: "mod-reorder-3",
       topic: "modifiers",
-      type: "sentence-reorder",
-      difficulty: "beginner",
-      sentence: "This area is relatively cheap to live in.",
-      grammarRule: "relatively + adjective",
-      explanation:
-        "'Relatively cheap' = cheap in comparison to other options. 'Relatively' comes directly before the adjective.",
-      tip: "Relatively goes before the adjective: relatively cheap, relatively easy, relatively common.",
-      sentenceReorder: {
-        words: ["cheap", "in.", "This", "relatively", "to", "is", "live", "area"],
-        correctOrders: [[2, 7, 5, 3, 0, 4, 6, 1]],
+      type: "word-transform",
+      difficulty: "intermediate",
+      sentence: "The test was ___ easy.",
+      grammarRule: "surprisingly + adjective",
+      explanation: "'Surprisingly easy' means easier than expected. Add -ly to 'surprising' to form the adverb.",
+      tip: "Surprising → surprisingly. Use -ly adverbs before adjectives to express unexpected degree.",
+      wordTransform: {
+        baseWord: "surprising",
+        correctAnswer: "surprisingly",
       },
     },
 
     {
       id: "mod-reorder-4",
       topic: "modifiers",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "She's quite an easy-going person.",
-      grammarRule: "quite a/an + adjective + noun",
-      explanation:
-        "Only 'quite' goes before 'a/an'. The order is: quite + a/an + adjective + noun.",
-      tip: "quite a/an + adjective + noun — remember: quite comes BEFORE a/an, not after.",
-      sentenceReorder: {
-        words: ["an", "quite", "person.", "She's", "easy-going"],
-        correctOrders: [[3, 1, 0, 4, 2]],
+      sentence: "This area is ___ expensive to live in.",
+      grammarRule: "relatively + adjective",
+      explanation: "'Relatively expensive' means expensive compared to other places. Add -ly to 'relative' to form the adverb.",
+      tip: "Relative → relatively. Comes before the adjective: relatively cheap, relatively easy.",
+      wordTransform: {
+        baseWord: "relative",
+        correctAnswer: "relatively",
       },
     },
 
     {
       id: "mod-reorder-5",
       topic: "modifiers",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I'd like to travel a bit more.",
-      grammarRule: "a bit more — small degree",
-      explanation:
-        "'A bit more' = a small amount more. The structure is: verb + a bit + more.",
-      tip: "I'd like to + verb + a bit/a lot + more/less.",
-      sentenceReorder: {
-        words: ["travel", "more.", "a", "I'd", "bit", "to", "like"],
-        correctOrders: [[3, 6, 5, 0, 2, 4, 1]],
+      sentence: "He plays the piano ___.",
+      grammarRule: "good (adjective) vs well (adverb)",
+      explanation: "'Well' is the adverb form of 'good'. Use 'well' to describe how an action is done: plays well, speaks well.",
+      tip: "Good (adjective) → well (adverb). 'He plays well' (not 'plays good').",
+      wordTransform: {
+        baseWord: "good",
+        correctAnswer: "well",
       },
     },
 
     {
       id: "mod-reorder-6",
       topic: "modifiers",
-      type: "sentence-reorder",
-      difficulty: "intermediate",
-      sentence: "He is fairly happy with his lifestyle.",
-      grammarRule: "fairly + adjective",
-      explanation:
-        "'Fairly happy' = moderately happy. 'Fairly' comes before the adjective in the same position as 'quite' or 'relatively'.",
-      tip: "Subject + is/was + fairly + adjective + rest of sentence.",
-      sentenceReorder: {
-        words: ["with", "fairly", "lifestyle.", "He", "happy", "is", "his"],
-        correctOrders: [[3, 5, 1, 4, 0, 6, 2]],
+      type: "word-transform",
+      difficulty: "advanced",
+      sentence: "She works ___ — often until midnight.",
+      grammarRule: "hard (adverb) vs hardly (= almost not)",
+      explanation: "'Hard' is both an adjective and adverb meaning 'with effort'. 'Hardly' means 'almost not' — a completely different meaning.",
+      tip: "She works hard (= with effort). She hardly works (= almost not at all). These mean opposite things!",
+      wordTransform: {
+        baseWord: "hard/hardly",
+        correctAnswer: "hard",
       },
     },
 

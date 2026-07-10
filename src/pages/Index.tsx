@@ -68,69 +68,78 @@ const Index = () => {
         transitioning={game.isReviewing ? false : game.transitioning}
         isReview={game.isReviewing}
         onSubmit={game.submitAnswer}
+        canGoNext={game.canGoNext}
+        canGoPrev={game.canGoPrev}
+        onNext={game.goNext}
+        onPrev={game.goPrev}
       />
     );
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border px-6 py-4 bg-card shadow-sm">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
+      <header className="border-b border-border px-6 py-3.5 bg-card shadow-sm">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer" className="hidden sm:block">
+            <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer" className="hidden sm:block flex-shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="Englishpusher Logo"
-                className="h-10 w-auto"
+                className="h-9 w-auto"
               />
             </a>
             <div>
               <h1
-                className={`font-display text-lg font-bold text-foreground tracking-tight flex items-center gap-1 ${!showLanding ? "cursor-pointer hover:text-primary transition-colors" : ""}`}
+                className={`font-display text-xl font-bold text-foreground tracking-tight leading-none ${!showLanding ? "cursor-pointer hover:text-primary transition-colors" : ""}`}
                 onClick={!showLanding ? handleGoToLanding : undefined}
                 title={!showLanding ? "Back to topic menu" : undefined}
               >
-                <span className="hidden sm:inline">Englishpusher</span><span className="text-primary"> Grammar Testing</span>
+                <span className="hidden sm:inline text-foreground/70">Englishpusher </span><span className="text-primary">Grammar</span>
               </h1>
-              {!showLanding && (
-                <p className="text-xs text-muted-foreground">{selectedTopic.name}</p>
+              {!showLanding ? (
+                <p className="text-xs text-muted-foreground mt-0.5">{selectedTopic.name}</p>
+              ) : (
+                <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">Testing</p>
               )}
             </div>
           </div>
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={tts.toggleMute}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+              aria-label={tts.muted ? "Unmute pronunciation" : "Mute pronunciation"}
+              title={tts.muted ? "Unmute" : "Mute"}
+            >
+              {tts.muted ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+              )}
+            </button>
+            {!game.gameOver && (
               <button
-                onClick={tts.toggleMute}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-lg"
-                aria-label={tts.muted ? "Unmute pronunciation" : "Mute pronunciation"}
-                title={tts.muted ? "Unmute" : "Mute"}
+                onClick={handlePlayAgain}
+                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                aria-label="Restart game"
+                title="Restart"
               >
-                {tts.muted ? "🔇" : "🔊"}
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+                </svg>
               </button>
-              {!game.gameOver && (
-                <button
-                  onClick={handlePlayAgain}
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-lg"
-                  aria-label="Restart game"
-                  title="Restart"
-                >
-                  🔄
-                </button>
-              )}
-              {!game.gameOver && (
-                <>
-                  {game.streak >= 3 && (
-                    <span className="text-sm font-display font-bold text-primary animate-pulse">
-                      🔥 {game.streak}
-                    </span>
-                  )}
-                  <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
-                </>
-              )}
-            </div>
+            )}
+            {!game.gameOver && (
+              <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
+            )}
+          </div>
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-6 py-10">
+      <main className="flex-1 flex items-start justify-center px-6 py-6 md:pt-20">
         {showLanding ? (
           <motion.div
             key="landing"
@@ -173,7 +182,7 @@ const Index = () => {
             </div>
           </motion.div>
         ) : (
-        <div key={selectedTopic.id} className="w-full max-w-2xl space-y-8">
+        <div key={selectedTopic.id} className="w-full max-w-3xl space-y-8">
           {game.gameOver ? (
             <EndScreen
               score={game.score}
@@ -190,33 +199,6 @@ const Index = () => {
               ) : (
                 <>
                   {renderQuestion()}
-                  {/* Navigation buttons */}
-                  {(game.canGoPrev || game.canGoNext) && (
-                    <div className="flex justify-between items-center px-1">
-                      <button
-                        onClick={game.goPrev}
-                        disabled={!game.canGoPrev}
-                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-sm font-semibold transition-all duration-200 border-2 ${
-                          game.canGoPrev
-                            ? "border-border bg-card text-foreground hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]"
-                            : "border-transparent bg-transparent text-transparent cursor-default"
-                        }`}
-                      >
-                        ← Back
-                      </button>
-                      <button
-                        onClick={game.goNext}
-                        disabled={!game.canGoNext}
-                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-sm font-semibold transition-all duration-200 border-2 ${
-                          game.canGoNext
-                            ? "border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground hover:scale-[1.02] active:scale-[0.98]"
-                            : "border-transparent bg-transparent text-transparent cursor-default"
-                        }`}
-                      >
-                        {game.isReviewing ? "Next →" : "Skip →"}
-                      </button>
-                    </div>
-                  )}
                 </>
               )}
             </>
@@ -226,23 +208,29 @@ const Index = () => {
       </main>
 
       <footer className="border-t border-border px-6 py-4 bg-card">
-        <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <p>Copyright © 2026 — Developed by Tetiana Pushkar</p>
-          <div className="flex items-center gap-4">
+        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
+          <p className="text-xs">© 2026 Tetiana Pushkar</p>
+          <div className="flex items-center gap-1">
             <a
               href="https://app.englishpusher.in.ua/"
-              className="hover:text-primary transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-muted hover:text-foreground transition-colors font-medium text-xs"
             >
-              ← Home
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              Home
             </a>
-            <span className="opacity-30">|</span>
+            <span className="opacity-20 text-xs">|</span>
             <a
               href="https://www.englishpusher.in.ua/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-muted hover:text-foreground transition-colors font-medium text-xs"
             >
-              Visit Englishpusher.in.ua →
+              Englishpusher.in.ua
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
             </a>
           </div>
         </div>

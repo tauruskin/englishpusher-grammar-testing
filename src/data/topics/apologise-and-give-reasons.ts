@@ -405,96 +405,90 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
     {
       id: "apol-reorder-1",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "Sorry I'm late.",
-      grammarRule: "Apologising — Sorry I'm late",
-      explanation:
-        "'Sorry I'm late' is a short, natural apology for arriving after the expected time. It is one of the most common everyday apologies in English.",
-      tip: "Short apologies: Sorry I'm late. Sorry about that. I apologise. — all natural and common.",
-      sentenceReorder: {
-        words: ["late.", "I'm", "Sorry"],
-        correctOrders: [[2, 1, 0]],
+      sentence: "I'm really sorry for ___ late.",
+      grammarRule: "Gerund after preposition: sorry for + -ing",
+      explanation: "After a preposition ('for'), we use the -ing form (gerund). 'Sorry for being late' = I apologise for my lateness.",
+      tip: "Preposition + -ing: sorry for being, thank you for coming, responsible for missing.",
+      wordTransform: {
+        baseWord: "be",
+        correctAnswer: "being",
       },
     },
 
     {
       id: "apol-reorder-2",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "I made a mistake.",
-      grammarRule: "Accepting responsibility — I made a mistake",
-      explanation:
-        "'I made a mistake' accepts responsibility directly. The verb is 'make' (not 'do') — this is a fixed collocation in English.",
-      tip: "Make a mistake — always 'make', never 'do'. Make a mistake, make an error, make a decision.",
-      sentenceReorder: {
-        words: ["mistake.", "I", "a", "made"],
-        correctOrders: [[1, 3, 2, 0]],
+      sentence: "Please accept my ___.",
+      grammarRule: "Noun plural: apology → apologies",
+      explanation: "'Apologies' is the plural of 'apology'. It is the formal noun used in polite requests for forgiveness.",
+      tip: "Apology → apologies (nouns ending in -y: change y to i + -es). Formal: please accept my apologies.",
+      wordTransform: {
+        baseWord: "apology",
+        correctAnswer: "apologies",
       },
     },
 
     {
       id: "apol-reorder-3",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "beginner",
-      sentence: "My train was delayed.",
-      grammarRule: "Giving a reason — My train was delayed",
-      explanation:
-        "'My train was delayed' gives a reason for being late. It uses passive voice — the train was delayed by something (not your fault).",
-      tip: "My train/bus was delayed. My flight got cancelled. The traffic was terrible. — all give reasons.",
-      sentenceReorder: {
-        words: ["delayed.", "My", "was", "train"],
-        correctOrders: [[1, 3, 2, 0]],
+      sentence: "The train ___ by 20 minutes.",
+      grammarRule: "Passive voice for giving reasons: was/were + past participle",
+      explanation: "Use passive voice to explain what happened: 'was delayed' (by something outside your control). Delay → delayed (regular).",
+      tip: "Giving reasons with passive: the train was delayed, my flight got cancelled, the road was closed.",
+      wordTransform: {
+        baseWord: "delay",
+        correctAnswer: "was delayed",
       },
     },
 
     {
       id: "apol-reorder-4",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "I'll be there as soon as possible.",
-      grammarRule: "Taking action — I'll be there as soon as possible",
-      explanation:
-        "'I'll be there as soon as possible' is a fixed phrase used to promise fast action. The structure 'as soon as possible' must stay together as a fixed unit.",
-      tip: "I'll be there / call you back / sort it out + as soon as possible — promises of quick action.",
-      sentenceReorder: {
-        words: ["as", "I'll", "there", "possible.", "be", "soon", "as"],
-        correctOrders: [[1, 4, 2, 0, 5, 6, 3]],
+      sentence: "I should have ___ you earlier. I'm sorry.",
+      grammarRule: "Should have + past participle — missed obligation",
+      explanation: "'Should have called' expresses regret about a past action that didn't happen. Structure: should have + past participle.",
+      tip: "Should have + past participle = regret: should have called, should have told, should have come.",
+      wordTransform: {
+        baseWord: "call",
+        correctAnswer: "called",
       },
     },
 
     {
       id: "apol-reorder-5",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "Sorry to keep you waiting.",
-      grammarRule: "Apologising — Sorry to keep you waiting",
-      explanation:
-        "'Sorry to keep you waiting' is a polite fixed phrase used when someone has had to wait. The structure is: Sorry + to + base verb + object + -ing.",
-      tip: "Sorry to keep you waiting = I'm sorry that you had to wait. A very polite and natural phrase.",
-      sentenceReorder: {
-        words: ["you", "Sorry", "keep", "waiting.", "to"],
-        correctOrders: [[1, 4, 2, 0, 3]],
+      sentence: "Sorry to ___ you waiting.",
+      grammarRule: "Sorry to + base verb",
+      explanation: "'Sorry to keep you waiting' is a fixed polite phrase. After 'sorry to', use the base form of the verb.",
+      tip: "Sorry to + base verb: sorry to keep, sorry to bother, sorry to interrupt.",
+      wordTransform: {
+        baseWord: "keep",
+        correctAnswer: "keep",
       },
     },
 
     {
       id: "apol-reorder-6",
       topic: "apologise-and-give-reasons",
-      type: "sentence-reorder",
+      type: "word-transform",
       difficulty: "intermediate",
-      sentence: "It was my fault and I apologise.",
-      grammarRule: "Accepting responsibility — It was my fault",
-      explanation:
-        "'It was my fault' directly accepts blame. Following it with 'I apologise' makes it a complete and professional apology that both accepts responsibility and expresses regret.",
-      tip: "It was my fault + I apologise — combines accepting responsibility with a formal apology.",
-      sentenceReorder: {
-        words: ["my", "and", "fault", "was", "It", "apologise.", "I"],
-        correctOrders: [[4, 3, 0, 2, 1, 6, 5]],
+      sentence: "I ___ a big mistake and I take full responsibility.",
+      grammarRule: "Past Simple — accepting responsibility (make/made)",
+      explanation: "'Made' is the Past Simple of 'make'. 'Make a mistake' is a fixed collocation — never 'do a mistake'.",
+      tip: "Make → made. Collocations: make a mistake, make an error, make a decision.",
+      wordTransform: {
+        baseWord: "make",
+        correctAnswer: "made",
       },
     },
 

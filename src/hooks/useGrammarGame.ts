@@ -17,10 +17,12 @@ export function getCorrectAnswer(q: GrammarQuestion): string {
       return q.errorSpot?.correction ?? "";
     case "multiple-choice":
       return q.multipleChoice?.correctOption ?? "";
-    case "sentence-reorder": {
-      const data = q.sentenceReorder;
-      if (!data || !data.words || !data.correctOrders || data.correctOrders.length === 0) return "";
-      return data.correctOrders[0].map(idx => data.words[idx]).join(" ");
+    case "word-transform":
+      return q.wordTransform?.correctAnswer ?? "";
+    case "sentence-match": {
+      const data = q.sentenceMatch;
+      if (!data) return "";
+      return data.pairs.map(p => p.ending).join("||");
     }
     default:
       return "";
@@ -34,6 +36,29 @@ function shuffle<T>(arr: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/** Normalize apostrophe variants (curly, backtick, etc.) to a plain apostrophe */
+function normalizeApostrophes(text: string): string {
+  return text.replace(/['‘’ʼ`´]/g, "'");
+}
+
+/** Expand contracted 'be' forms so student answers like "'re having" match "are having" */
+function expandBeContractions(text: string): string {
+  const normalized = normalizeApostrophes(text);
+  return normalized
+    .replace(/'re\b/gi, "are")
+    .replace(/'m\b/gi, "am")
+    .replace(/'s\b/gi, "is");
+}
+
+// Group questions by type in difficulty order, shuffle within each group
+const TYPE_ORDER = ["multiple-choice", "gap-fill", "error-spot", "word-transform", "sentence-match"];
+
+function shuffleGrouped(questions: GrammarQuestion[]): GrammarQuestion[] {
+  const groups = TYPE_ORDER.map(type => shuffle(questions.filter(q => q.type === type)));
+  const rest = shuffle(questions.filter(q => !TYPE_ORDER.includes(q.type)));
+  return [...groups.flat(), ...rest];
 }
 
 export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
@@ -68,7 +93,7 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
 
   // Initialize/reset when topic changes
   useEffect(() => {
-    const q = shuffle(questions);
+    const q = shuffleGrouped(questions);
     setShuffledQuestions(q);
     setCurrentIndex(0);
     syncViewRef(0);
@@ -117,14 +142,13 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
       let correct = false;
       let correct_answer = "";
 
-      if (currentQuestion.type === "sentence-reorder" && currentQuestion.sentenceReorder) {
-        const data = currentQuestion.sentenceReorder;
+      if (currentQuestion.type === "word-transform" && currentQuestion.wordTransform) {
+        const data = currentQuestion.wordTransform;
         const userTrimmed = answer.trim().toLowerCase();
-        const possibleAnswers = data.correctOrders.map(order =>
-          order.map(idx => data.words[idx]).join(" ").trim().toLowerCase()
-        );
-        correct = possibleAnswers.includes(userTrimmed);
-        correct_answer = possibleAnswers[0];
+        const userExpanded = expandBeContractions(userTrimmed);
+        const allAnswers = [data.correctAnswer, ...(data.alternativeAnswers ?? [])].map(a => a.trim().toLowerCase());
+        correct = allAnswers.includes(userTrimmed) || allAnswers.includes(userExpanded);
+        correct_answer = data.correctAnswer;
       } else {
         correct_answer = getCorrectAnswer(currentQuestion);
         correct = answer.trim().toLowerCase() === correct_answer.trim().toLowerCase();
@@ -145,14 +169,6 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
         ...prev,
         { question: currentQuestion, userAnswer: answer, correctAnswer: correct_answer, correct },
       ]);
-
-      const feedbackDelay = correct ? 2000 : 3500;
-      const capturedIndex = currentIndex;
-
-      pendingAdvanceRef.current = setTimeout(() => {
-        pendingAdvanceRef.current = null;
-        advanceGame(capturedIndex);
-      }, feedbackDelay);
     },
     [answered, currentQuestion, currentIndex, advanceGame]
   );
@@ -187,7 +203,7 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
   }, []);
 
   const restart = useCallback((newQuestions?: GrammarQuestion[]) => {
-    const q = shuffle(newQuestions ?? questions);
+    const q = shuffleGrouped(newQuestions ?? questions);
     setShuffledQuestions(q);
     setCurrentIndex(0);
     syncViewRef(0);

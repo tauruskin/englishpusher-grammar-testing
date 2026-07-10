@@ -1,7 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 import { GrammarQuestion } from "@/data/types";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 import { BorderRotate } from "@/components/ui/animated-gradient-border";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import ContentTooltip from "@/components/ui/content-tooltip";
 
 interface GrammarQuestionCardProps {
   question: GrammarQuestion;
@@ -12,6 +23,10 @@ interface GrammarQuestionCardProps {
   transitioning: boolean;
   isReview?: boolean;
   onSubmit: (answer: string) => void;
+  canGoNext?: boolean;
+  canGoPrev?: boolean;
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 // --- Gap Fill ---
@@ -30,6 +45,7 @@ const GapFillView = ({
 }) => {
   const data = question.gapFill!;
   const correct = data.correctAnswer;
+  const [options] = useState(() => shuffleArray(data.options));
 
   const getOptionStyle = (option: string) => {
     if (!answered)
@@ -69,7 +85,7 @@ const GapFillView = ({
 
       {/* Answer options */}
       <div className="grid gap-2.5">
-        {data.options.map((option, i) => (
+        {options.map((option, i) => (
           <button
             key={option}
             onClick={() => !answered && onSubmit(option)}
@@ -101,7 +117,7 @@ const ErrorSpotView = ({
 }) => {
   const data = question.errorSpot!;
   const words = question.sentence.split(" ");
-  const options = data.correctionOptions ?? [data.correction];
+  const [options] = useState(() => shuffleArray(data.correctionOptions ?? [data.correction]));
 
   return (
     <div className="space-y-5">
@@ -201,6 +217,7 @@ const MultipleChoiceView = ({
 }) => {
   const data = question.multipleChoice!;
   const correct = data.correctOption;
+  const [options] = useState(() => shuffleArray(data.options));
 
   const getOptionStyle = (option: string) => {
     if (!answered)
@@ -218,7 +235,7 @@ const MultipleChoiceView = ({
         {data.question}
       </p>
       <div className="grid gap-2.5">
-        {data.options.map((option, i) => (
+        {options.map((option, i) => (
           <button
             key={option}
             onClick={() => !answered && onSubmit(option)}
@@ -234,8 +251,8 @@ const MultipleChoiceView = ({
   );
 };
 
-// --- Sentence Reorder ---
-const SentenceReorderView = ({
+// --- Word Transform ---
+const WordTransformView = ({
   question,
   answered,
   selectedAnswer,
@@ -248,155 +265,299 @@ const SentenceReorderView = ({
   isCorrect: boolean | null;
   onSubmit: (a: string) => void;
 }) => {
-  const data = question.sentenceReorder;
+  const data = question.wordTransform!;
+  const [typed, setTyped] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const safeWords: string[] = (data?.words && Array.isArray(data.words)) ? data.words : [];
-  const safeOrders: number[][] = (data?.correctOrders && Array.isArray(data.correctOrders) && data.correctOrders.length > 0) ? data.correctOrders : [];
-
-  const [wordOrder, setWordOrder] = useState<number[]>(() => {
-    if (safeWords.length === 0) return [];
-    const idxs = safeWords.map((_, i) => i);
-    for (let i = idxs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+  useEffect(() => {
+    if (!answered) {
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
-    return idxs;
-  });
+  }, [answered, question.id]);
 
-  const [selected, setSelected] = useState<number[]>([]);
-  const [submitted, setSubmitted] = useState(false);
-
-  // NOW we can safely bail out after hooks
-  if (!data || safeWords.length === 0 || safeOrders.length === 0) {
-    return (
-      <div className="text-center p-4 rounded-xl border-2 border-red-200 bg-red-50 text-red-600">
-        Error: Invalid sentence reorder question data
-      </div>
-    );
-  }
-
-  const isCorrectOrder = (submittedOrder: number[]): boolean => {
-    return safeOrders.some(
-      (correctOrder) =>
-        submittedOrder.length === correctOrder.length &&
-        submittedOrder.every((idx, pos) => idx === correctOrder[pos])
-    );
-  };
-
-  const correctSentences = safeOrders.map((order) =>
-    order.map((idx) => safeWords[idx]).join(" ")
-  );
-  const firstCorrectSentence = correctSentences[0];
-
-  const handleWordClick = (wordIdx: number) => {
-    if (answered || submitted) return;
-    if (selected.includes(wordIdx)) {
-      setSelected((s) => s.filter((i) => i !== wordIdx));
-    } else {
-      const next = [...selected, wordIdx];
-      setSelected(next);
-      if (next.length === safeWords.length) {
-        const sentence = next.map((i) => safeWords[i]).join(" ");
-        setSubmitted(true);
-        onSubmit(sentence);
-      }
+  const handleSubmit = useCallback(() => {
+    if (!answered && typed.trim()) {
+      onSubmit(typed.trim());
     }
-  };
+  }, [answered, typed, onSubmit]);
+
+  const parts = question.sentence.split("___");
+  const displayInBlank = answered ? (selectedAnswer ?? "") : (typed || null);
 
   return (
     <div className="space-y-5">
       <p className="text-center text-muted-foreground text-sm font-body">
-        Arrange the words to form a correct sentence:
+        Put the verb in brackets into the correct form:
       </p>
-
-      {/* Built sentence display */}
-      <div className="min-h-[52px] bg-secondary rounded-xl border-2 border-dashed border-border px-4 py-3 flex flex-wrap gap-1.5 items-center">
-        {/* Review mode: show stored answer string */}
-        {answered && selected.length === 0 && selectedAnswer ? (
-          selectedAnswer.split(" ").map((word, pos) => (
-            <span
-              key={pos}
-              className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body border-2 cursor-default ${
-                isCorrect
-                  ? "border-success bg-success/20 text-success"
-                  : "border-destructive bg-destructive/20 text-destructive"
-              }`}
-            >
-              {word}
-            </span>
-          ))
-        ) : selected.length === 0 ? (
-          <span className="text-muted-foreground text-sm italic">
-            Click words below to build the sentence…
+      {/* Sentence with blank */}
+      <div className="text-center space-y-2">
+        <p className="font-body text-lg md:text-xl text-foreground leading-relaxed">
+          {parts[0]}
+          <span
+            className={`inline-block mx-1 px-2 min-w-[120px] text-center font-bold border-b-2 transition-colors ${
+              answered
+                ? isCorrect
+                  ? "border-success text-success"
+                  : "border-destructive text-destructive"
+                : "border-primary text-primary/60"
+            }`}
+          >
+            {displayInBlank ?? "        "}
           </span>
-        ) : (
-          selected.map((wIdx, pos) => (
-            <span
-              key={pos}
-              onClick={() =>
-                !answered && !submitted && setSelected((s) => s.filter((_, i) => i !== pos))
-              }
-              className={`inline-block px-2.5 py-1 rounded-lg text-sm font-body cursor-pointer border-2 transition-all ${
-                answered
-                  ? isCorrect
-                    ? "border-success bg-success/20 text-success cursor-default"
-                    : "border-destructive bg-destructive/20 text-destructive cursor-default"
-                  : "border-primary bg-primary/10 text-primary hover:opacity-80"
-              }`}
-            >
-              {safeWords[wIdx]}
-            </span>
-          ))
-        )}
+          {parts[1]}
+        </p>
+        <p className="text-sm font-display font-semibold text-accent tracking-wide">
+          ({data.baseWord})
+        </p>
       </div>
 
-      {/* Word bank */}
+      {/* Text input */}
       {!answered && (
-        <div className="flex flex-wrap gap-2 justify-center">
-          {wordOrder.map((wordIdx) => {
-            const isUsed = selected.includes(wordIdx);
+        <div className="flex gap-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            placeholder="Type your answer…"
+            className="flex-1 px-4 py-3 rounded-xl border-2 border-border bg-secondary font-body text-foreground focus:outline-none focus:border-primary transition-colors"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+          />
+          <button
+            onClick={handleSubmit}
+            disabled={!typed.trim()}
+            className="px-5 py-3 rounded-xl bg-primary text-primary-foreground font-display font-semibold disabled:opacity-40 hover:brightness-110 active:scale-95 transition-all"
+          >
+            Check
+          </button>
+        </div>
+      )}
+
+      {/* Answer reveal on wrong */}
+      {answered && !isCorrect && (
+        <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
+          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">
+            Correct answer
+          </p>
+          <p className="font-body font-semibold text-success text-lg">{data.correctAnswer}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- Sentence Match ---
+
+const MATCH_COLORS = [
+  { bg: "bg-orange-100",  border: "border-orange-400",  text: "text-orange-700",  badge: "bg-orange-400  text-white" },
+  { bg: "bg-blue-100",    border: "border-blue-400",    text: "text-blue-700",    badge: "bg-blue-400    text-white" },
+  { bg: "bg-emerald-100", border: "border-emerald-400", text: "text-emerald-700", badge: "bg-emerald-400 text-white" },
+  { bg: "bg-violet-100",  border: "border-violet-400",  text: "text-violet-700",  badge: "bg-violet-400  text-white" },
+  { bg: "bg-pink-100",    border: "border-pink-400",    text: "text-pink-700",    badge: "bg-pink-400    text-white" },
+];
+
+const SentenceMatchView = ({
+  question,
+  answered,
+  selectedAnswer,
+  isCorrect,
+  onSubmit,
+}: {
+  question: GrammarQuestion;
+  answered: boolean;
+  selectedAnswer: string | null;
+  isCorrect: boolean | null;
+  onSubmit: (a: string) => void;
+}) => {
+  const data = question.sentenceMatch!;
+  const pairs = data.pairs;
+
+  const [shuffledEndingIndices] = useState<number[]>(() =>
+    shuffleArray(pairs.map((_, i) => i))
+  );
+  // matches[beginningIndex] = endingIndex paired with it, or null
+  const [matches, setMatches] = useState<(number | null)[]>(() =>
+    new Array(pairs.length).fill(null)
+  );
+  const [activeBeginning, setActiveBeginning] = useState<number | null>(null);
+
+  // Decode selectedAnswer string back to matches array for review mode
+  const reviewMatches: (number | null)[] | null = (() => {
+    if (!answered || !selectedAnswer) return null;
+    return selectedAnswer.split("||").map((endingStr) =>
+      pairs.findIndex(
+        (p) => p.ending.trim().toLowerCase() === endingStr.trim().toLowerCase()
+      )
+    );
+  })();
+
+  const displayMatches = answered ? reviewMatches : matches;
+
+  const getPairCorrect = (beginIdx: number): boolean | null => {
+    if (!answered || !displayMatches) return null;
+    const matched = displayMatches[beginIdx];
+    return matched !== null && matched !== -1 ? matched === beginIdx : false;
+  };
+
+  const handleBeginningClick = (idx: number) => {
+    if (answered) return;
+    setActiveBeginning((prev) => (prev === idx ? null : idx));
+  };
+
+  const handleEndingClick = (endingIdx: number) => {
+    if (answered) return;
+    if (activeBeginning !== null) {
+      const next = [...matches];
+      // Clear any beginning previously matched to this ending
+      const prevBeginning = next.findIndex((m) => m === endingIdx);
+      if (prevBeginning !== -1) next[prevBeginning] = null;
+      // Assign
+      next[activeBeginning] = endingIdx;
+      setMatches(next);
+      setActiveBeginning(null);
+      // Auto-submit when all matched
+      if (next.every((m) => m !== null)) {
+        onSubmit(next.map((i) => pairs[i!].ending).join("||"));
+      }
+    } else {
+      // Tap already-matched ending → un-match and re-select its beginning
+      const prevBeginning = matches.findIndex((m) => m === endingIdx);
+      if (prevBeginning !== -1) {
+        const next = [...matches];
+        next[prevBeginning] = null;
+        setMatches(next);
+        setActiveBeginning(prevBeginning);
+      }
+    }
+  };
+
+  const allMatched = matches.every((m) => m !== null);
+
+  return (
+    <div className="space-y-4">
+      <p className="text-center text-muted-foreground text-sm font-body">
+        {activeBeginning !== null
+          ? "Now tap the correct ending →"
+          : "Tap a beginning, then tap its matching ending:"}
+      </p>
+
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+        {/* ── LEFT: Beginnings ── */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-display uppercase tracking-widest text-muted-foreground text-center pb-0.5 border-b border-border">
+            Beginning
+          </p>
+          {pairs.map((pair, i) => {
+            const matchedEndingIdx = displayMatches ? displayMatches[i] : null;
+            const isMatched = matchedEndingIdx !== null && matchedEndingIdx !== -1;
+            const isActive = activeBeginning === i;
+            const color = MATCH_COLORS[i % MATCH_COLORS.length];
+            const correct = getPairCorrect(i);
+
+            let cls =
+              "relative text-left w-full px-3 py-2.5 rounded-xl border-2 font-body text-sm transition-all duration-200 flex items-start gap-2 ";
+            if (answered) {
+              cls += correct
+                ? "bg-emerald-50 border-emerald-400 text-emerald-800"
+                : "bg-red-50 border-red-300 text-red-800";
+            } else if (isActive) {
+              cls += "ring-2 ring-primary ring-offset-1 border-primary bg-primary/10 shadow-sm scale-[1.02]";
+            } else if (isMatched) {
+              cls += `${color.bg} ${color.border} ${color.text}`;
+            } else {
+              cls += "bg-secondary border-border text-foreground hover:border-primary/60 hover:bg-primary/5";
+            }
+
             return (
-              <button
-                key={wordIdx}
-                onClick={() => handleWordClick(wordIdx)}
-                disabled={isUsed || submitted}
-                className={`px-3 py-1.5 rounded-lg border-2 font-body text-sm transition-all duration-150 ${
-                  isUsed
-                    ? "border-transparent bg-secondary/50 text-transparent cursor-default"
-                    : "border-border bg-secondary text-foreground hover:border-primary hover:bg-primary/10 hover:scale-105 active:scale-95"
-                }`}
-              >
-                {safeWords[wordIdx]}
+              <button key={i} onClick={() => handleBeginningClick(i)} disabled={answered} className={cls}>
+                <span
+                  className={`flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold mt-0.5 ${
+                    answered
+                      ? correct
+                        ? "bg-emerald-400 text-white"
+                        : "bg-red-400 text-white"
+                      : isMatched
+                      ? color.badge
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {i + 1}
+                </span>
+                <span className="leading-snug">{pair.beginning}</span>
               </button>
             );
           })}
         </div>
-      )}
 
-      {/* Answer reveal */}
-      {answered && !isCorrect && (
-        <div className="text-center p-3 rounded-xl border-2 border-success/40 bg-success/10">
-          <p className="text-xs text-muted-foreground mb-1 font-display uppercase tracking-widest">
-            Correct sentence
+        {/* ── RIGHT: Shuffled Endings ── */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-display uppercase tracking-widest text-muted-foreground text-center pb-0.5 border-b border-border">
+            Ending
           </p>
-          <p className="font-body font-semibold text-success">{firstCorrectSentence}</p>
-          {correctSentences.length > 1 && (
-            <p className="text-xs text-muted-foreground mt-2 italic">
-              (Multiple correct word orders are acceptable)
-            </p>
-          )}
-        </div>
-      )}
+          {shuffledEndingIndices.map((endingIdx) => {
+            const matchedByBeginning = displayMatches
+              ? displayMatches.findIndex((m) => m === endingIdx)
+              : -1;
+            const isMatched = matchedByBeginning !== -1;
+            const color = isMatched ? MATCH_COLORS[matchedByBeginning % MATCH_COLORS.length] : null;
+            const correct = isMatched ? getPairCorrect(matchedByBeginning) : null;
+            const isHighlighted = activeBeginning !== null && !isMatched;
 
-      {/* Clear button */}
-      {!answered && !submitted && selected.length > 0 && (
-        <div className="text-center">
-          <button
-            onClick={() => setSelected([])}
-            className="text-xs text-muted-foreground hover:text-destructive underline transition-colors"
-          >
-            Clear and start over
-          </button>
+            let cls =
+              "relative text-left w-full px-3 py-2.5 rounded-xl border-2 font-body text-sm transition-all duration-200 flex items-start gap-2 ";
+            if (answered) {
+              if (isMatched && correct === true)  cls += "bg-emerald-50 border-emerald-400 text-emerald-800";
+              else if (isMatched && correct === false) cls += "bg-red-50 border-red-300 text-red-800";
+              else cls += "bg-secondary border-border text-muted-foreground opacity-50";
+            } else if (isMatched && color) {
+              cls += `${color.bg} ${color.border} ${color.text}`;
+            } else if (isHighlighted) {
+              cls += "bg-secondary border-border text-foreground hover:border-primary hover:bg-primary/5 hover:scale-[1.02] cursor-pointer";
+            } else {
+              cls += "bg-secondary border-border text-foreground hover:border-primary/50";
+            }
+
+            return (
+              <button key={endingIdx} onClick={() => handleEndingClick(endingIdx)} disabled={answered} className={cls}>
+                {isMatched && color ? (
+                  <span
+                    className={`flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold mt-0.5 ${
+                      answered
+                        ? correct
+                          ? "bg-emerald-400 text-white"
+                          : "bg-red-400 text-white"
+                        : color.badge
+                    }`}
+                  >
+                    {matchedByBeginning + 1}
+                  </span>
+                ) : (
+                  <span className="flex-shrink-0 w-5 mt-0.5" />
+                )}
+                <span className="leading-snug">{pairs[endingIdx].ending}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Correct pairs reveal on wrong answer */}
+      {answered && !isCorrect && (
+        <div className="p-3 rounded-xl border-2 border-success/40 bg-success/5 space-y-1.5">
+          <p className="text-[10px] font-display uppercase tracking-widest text-muted-foreground">
+            Correct matches:
+          </p>
+          {pairs.map((pair, i) => (
+            <p key={i} className="text-sm font-body text-foreground leading-snug">
+              <span className="font-semibold text-success">✓</span>{" "}
+              <span className="text-foreground/80">{pair.beginning}</span>{" "}
+              <span className="text-muted-foreground">→</span>{" "}
+              <span className="font-medium">{pair.ending}</span>
+            </p>
+          ))}
         </div>
       )}
     </div>
@@ -434,7 +595,8 @@ const questionTypeLabel: Record<string, string> = {
   "gap-fill": "Fill the Gap",
   "error-spot": "Spot the Error",
   "multiple-choice": "Multiple Choice",
-  "sentence-reorder": "Reorder",
+  "word-transform": "Word Transform",
+  "sentence-match": "Match the Halves",
 };
 
 // --- Main Card ---
@@ -447,7 +609,21 @@ const GrammarQuestionCard = ({
   transitioning,
   isReview = false,
   onSubmit,
+  canGoNext,
+  canGoPrev,
+  onNext,
+  onPrev,
 }: GrammarQuestionCardProps) => {
+  const [hintOpen, setHintOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  // Scroll buttons into view after answering (fixes Mac viewport clipping)
+  useEffect(() => {
+    if (answered && navRef.current) {
+      navRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [answered]);
+
   const characterPose: CharacterPose = !answered
     ? "thinking"
     : isCorrect
@@ -502,9 +678,20 @@ const GrammarQuestionCard = ({
             onSubmit={onSubmit}
           />
         );
-      case "sentence-reorder":
+      case "word-transform":
         return (
-          <SentenceReorderView
+          <WordTransformView
+            key={question.id}
+            question={question}
+            answered={answered}
+            selectedAnswer={selectedAnswer}
+            isCorrect={isCorrect}
+            onSubmit={onSubmit}
+          />
+        );
+      case "sentence-match":
+        return (
+          <SentenceMatchView
             key={question.id}
             question={question}
             answered={answered}
@@ -520,13 +707,14 @@ const GrammarQuestionCard = ({
     <div className="flex items-start gap-6 w-full">
       <GameCharacter pose={characterPose} className="flex-shrink-0 mt-4" />
 
+      <div className="flex-1 flex flex-col gap-3">
       <BorderRotate
         gradientColors={getBorderColors()}
         backgroundColor="#ffffff"
         borderRadius={16}
         borderWidth={2}
         animationSpeed={getBorderSpeed()}
-        className={`flex-1 w-full max-w-lg mx-auto space-y-5 p-6 md:p-8 shadow-md relative overflow-hidden transition-all duration-300 ${
+        className={`flex-1 w-full max-w-[48rem] mx-auto space-y-2.5 p-6 md:p-8 shadow-md relative overflow-hidden transition-all duration-300 ${
           transitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0 animate-slide-up"
         }`}
       >
@@ -543,12 +731,12 @@ const GrammarQuestionCard = ({
 
         {/* Review badge or streak badge */}
         {isReview ? (
-          <div className="absolute -top-1 -right-1 bg-muted text-muted-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-xs font-bold">
+          <div className="absolute top-0 right-0 !mt-0 bg-muted text-muted-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-xs font-bold">
             ← Reviewing
           </div>
         ) : streak >= 2 && (
           <div
-            className={`absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${
+            className={`absolute top-0 right-0 !mt-0 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${
               streak >= 3 ? "animate-pulse" : ""
             }`}
           >
@@ -557,22 +745,58 @@ const GrammarQuestionCard = ({
         )}
 
         <div className="flex flex-col gap-1">
-          <h2 className="text-base uppercase tracking-widest text-accent font-display font-bold">
-            {questionTypeLabel[question.type]}
-          </h2>
-          <p className="text-sm uppercase tracking-wider text-muted-foreground font-display font-medium leading-tight">
-            {question.grammarRule}
-          </p>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base uppercase tracking-widest text-accent font-display font-bold">
+              {questionTypeLabel[question.type]}
+            </h2>
+            {!answered && (
+              <TooltipProvider delayDuration={300}>
+                <ContentTooltip
+                  rule={question.grammarRule}
+                  open={hintOpen}
+                  onOpenChange={setHintOpen}
+                />
+              </TooltipProvider>
+            )}
+          </div>
+          {answered && !isCorrect && (
+            <p className="text-sm uppercase tracking-wider text-muted-foreground font-display font-medium leading-tight">
+              {question.grammarRule}
+            </p>
+          )}
         </div>
 
         {/* Question body */}
         {renderQuestionBody()}
 
-        {/* Explanation panel — shown after answering */}
-        {answered && question.type !== "error-spot" && (
+        {/* Explanation panel — shown only on wrong answer */}
+        {answered && !isCorrect && question.type !== "error-spot" && (
           <ExplanationPanel question={question} isCorrect={isCorrect} />
         )}
       </BorderRotate>
+
+      {/* Navigation buttons — outside card, aligned with card (skips teacher column) */}
+      {(canGoPrev || canGoNext) && (
+        <div ref={navRef} className="flex gap-3">
+          {canGoPrev && (
+            <button
+              onClick={onPrev}
+              className="flex-1 py-2.5 rounded-xl font-display text-sm font-semibold transition-all duration-200 border-2 border-border bg-card text-foreground hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]"
+            >
+              ← Back
+            </button>
+          )}
+          {canGoNext && (
+            <button
+              onClick={onNext}
+              className="flex-1 py-2.5 rounded-xl font-display text-sm font-semibold transition-all duration-200 bg-primary text-primary-foreground shadow-md hover:brightness-110 hover:scale-[1.03] active:scale-[0.97]"
+            >
+              Next →
+            </button>
+          )}
+        </div>
+      )}
+      </div>
     </div>
   );
 };
