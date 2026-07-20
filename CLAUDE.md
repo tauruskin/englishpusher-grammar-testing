@@ -218,12 +218,19 @@ These exist but are NOT integrated — do not modify or rely on them:
 | `prepositions-of-time` | `prepositions-of-time.ts` | — | 25 | Active |
 | `question-forms` | `question-forms.ts` | — | 25 | Active |
 | `first-conditional` | `first-conditional.ts` | — | 25 | Active |
+| `modals-rules-advice` | `modals-rules-advice.ts` | Lesson 4A | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
 
 ## WHAT HAS BEEN DONE (Changelog)
+
+### 2026-07-20 — Session (2)
+- Added `modals-rules-advice` topic (25 questions: 6 gap-fill, 6 error-spot, 7 multiple-choice, 6 word-transform) from the Speakout B1 Grammar Bank page "4A modals for rules and advice" (PDF page, plus two unrelated staged photos from the earlier first-conditional session that were correctly ignored). Covers must/have to/need to for obligation, don't have to/needn't vs mustn't for optional-vs-forbidden, should/shouldn't for advice, had to for past obligation, and the "no 'to' after must/should" structure error. Lesson field set to "Lesson 4A" (visible on the source page).
+- Added `tip` fields to all 7 multiple-choice questions in this topic to match the gold-standard pattern in `stative-dynamic-verbs.ts` (the skill's "every question needs a tip" rule) — error-spot questions correctly omit a top-level tip since `errorSpot.reason` already serves that role, matching existing topics.
+- Built headlessly via the `create-grammar-topic` skill's orchestrator-bridge branch (`GRAMMAR_TOPIC_HEADLESS=1`) — wrote `.topic-summary.json` and `preview.html` at the repo root for orchestrator review; commit/push/deploy skipped, working tree left as-is.
+- Same as the prior session: could not run `npx vitest run src/data/topics/__tests__/topics-validation.test.ts` — every shell command (Bash and PowerShell) is rejected with "requires approval" and no interactive approver is available in this headless session. Verified the new topic against every rule the test checks by manual inspection instead (unique ids — confirmed no other topic uses the `mra-` prefix; single `___` per gap-fill/word-transform sentence; error-spot `errorWordIndex` token matches `wrongWord` and `correction` differs; 4 distinct options per gap-fill/multiple-choice question; multiple-choice `optionExplanations` keys match option text character-for-character). Recommend running the test for real once this branch reaches an interactive session.
 
 ### 2026-07-20 — Session
 - Added `first-conditional` topic (25 questions: 6 gap-fill, 6 error-spot, 7 multiple-choice, 6 word-transform) from Speakout B1 textbook photos (First Conditional page + exercise). Covers `if + present simple, ... will + infinitive`, negative forms, question forms, and contrasts with the zero conditional. No lesson number was visible on the source pages — field omitted, user can add it later.

@@ -13,6 +13,7 @@ import { startingEndingConversationsTopic } from "./starting-ending-conversation
 import { adverbsOfFrequencyTopic } from "./adverbs-of-frequency";
 import { stativeDynamicVerbsTopic } from "./stative-dynamic-verbs";
 import { firstConditionalTopic } from "./first-conditional";
+import { modalsRulesAdviceTopic } from "./modals-rules-advice";
 
 const topics: GrammarTopic[] = [
   presentSimpleVsContinuousTopic,
@@ -28,6 +29,7 @@ const topics: GrammarTopic[] = [
   adverbsOfFrequencyTopic,
   stativeDynamicVerbsTopic,
   firstConditionalTopic,
+  modalsRulesAdviceTopic,
 ];
 
 export default topics;
