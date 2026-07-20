@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Staged teacher uploads for the grammar-topic bot pipeline - regenerated per build,
+# not meant to live in git history
+.staging/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
