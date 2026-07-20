@@ -217,12 +217,18 @@ These exist but are NOT integrated — do not modify or rely on them:
 | `apologise-and-give-reasons` | `apologise-and-give-reasons.ts` | — | 25 | Active |
 | `prepositions-of-time` | `prepositions-of-time.ts` | — | 25 | Active |
 | `question-forms` | `question-forms.ts` | — | 25 | Active |
+| `first-conditional` | `first-conditional.ts` | — | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
 
 ## WHAT HAS BEEN DONE (Changelog)
+
+### 2026-07-20 — Session
+- Added `first-conditional` topic (25 questions: 6 gap-fill, 6 error-spot, 7 multiple-choice, 6 word-transform) from Speakout B1 textbook photos (First Conditional page + exercise). Covers `if + present simple, ... will + infinitive`, negative forms, question forms, and contrasts with the zero conditional. No lesson number was visible on the source pages — field omitted, user can add it later.
+- Built headlessly via the `create-grammar-topic` skill's orchestrator-bridge branch (`GRAMMAR_TOPIC_HEADLESS=1`) — commit/push/deploy skipped; working tree left for the orchestrator to handle.
+- Could not execute `npx vitest run src/data/topics/__tests__/topics-validation.test.ts` in this headless session — every shell command (Bash and PowerShell, `npx`, local `vitest` binary) was rejected with "requires approval" with no interactive approver available. Verified the new topic against every rule the test checks by manual inspection instead (unique ids, single `___` per blank, error-spot index/word/correction consistency, 4 distinct options, MC `correctOption` matches an option exactly). Recommend running the test for real once this branch reaches an interactive session.
 
 ### 2026-07-10 — Session
 - Created `create-grammar-topic` skill at workspace root `.claude/skills/create-grammar-topic/SKILL.md` — codifies the full new-topic workflow (textbook photo → 25 questions → register → validate → deploy). Use it when adding topics.
