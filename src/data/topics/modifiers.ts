@@ -274,7 +274,7 @@ export const modifiersTopic: GrammarTopic = {
         "Only 'quite' can be placed before 'a/an' in the structure quite a/an + adjective + noun. We cannot say 'fairly an expensive hobby' or 'pretty an expensive hobby'.",
       tip: "quite a/an + adjective + noun is a fixed structure. No other modifier works here.",
       multipleChoice: {
-        question: "That's ___ an expensive hobby — most people can't afford it.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "quite",
         options: ["quite", "fairly", "relatively", "pretty"],
         optionExplanations: {
@@ -297,7 +297,7 @@ export const modifiersTopic: GrammarTopic = {
         "'Quite' is the right modifier here because it expresses a moderate degree — something that is true but not strongly so. The context ('good, but not amazing') confirms a moderate strength is needed.",
       tip: "Quite = moderate. Very/extremely = strong. When something is good but not amazing, use quite.",
       multipleChoice: {
-        question: "The film was good, but I wouldn't say it was amazing — it was ___ entertaining.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "quite",
         options: ["quite", "extremely", "absolutely", "incredibly"],
         optionExplanations: {
@@ -320,7 +320,7 @@ export const modifiersTopic: GrammarTopic = {
         "'A bit more' expresses a small increase. The context ('just an extra 20 minutes') confirms the change is small. 'A lot more' would suggest a much bigger increase.",
       tip: "Context clues like 'just', 'slightly', 'a little' suggest 'a bit'. Words like 'much', 'significantly' suggest 'a lot'.",
       multipleChoice: {
-        question: "I'd like to exercise ___ more — maybe just an extra 20 minutes a day.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "a bit",
         options: ["a bit", "a lot", "quite", "fairly"],
         optionExplanations: {
@@ -343,7 +343,7 @@ export const modifiersTopic: GrammarTopic = {
         "All four modifiers (fairly, relatively, quite, pretty) can be used before an adjective to express a moderate degree. Here 'fairly' or 'relatively' fit best as they suggest it's reasonably easy but not extremely so.",
       tip: "Fairly, relatively, quite, and pretty are largely interchangeable before adjectives. All mean 'moderately'.",
       multipleChoice: {
-        question: "The new office is ___ easy to get to — there are two bus routes and a metro stop.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "fairly",
         options: ["fairly", "absolutely", "terribly", "barely"],
         optionExplanations: {
@@ -366,7 +366,7 @@ export const modifiersTopic: GrammarTopic = {
         "'A lot more' expresses a large increase. Saving for a house requires a significant change in earnings, so 'a lot more' is appropriate. 'A bit more' would suggest only a small increase.",
       tip: "Saving for a house, paying off a mortgage — these are large goals. Use 'a lot more', not 'a bit more'.",
       multipleChoice: {
-        question: "He'd like to earn ___ more so he can save up for a house.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "a lot",
         options: ["a lot", "a bit", "quite", "pretty"],
         optionExplanations: {
@@ -389,7 +389,7 @@ export const modifiersTopic: GrammarTopic = {
         "Only 'quite' can precede 'a/an' in this structure. The sentence 'quite a difficult language' = it is significantly difficult. This use of 'quite' before 'a/an' actually has a stronger meaning than 'quite' before a plain adjective.",
       tip: "Quite a/an + noun phrase can sometimes mean 'remarkably' — stronger than quite + adjective alone.",
       multipleChoice: {
-        question: "That's ___ a difficult language to learn — even advanced students find it challenging.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "quite",
         options: ["quite", "rather", "fairly", "pretty"],
         optionExplanations: {

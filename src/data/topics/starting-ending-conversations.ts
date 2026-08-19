@@ -292,7 +292,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "'Go ahead' means 'yes, you may proceed'. It is used to give someone permission to do something.",
       tip: "'Go ahead', 'Be my guest', and 'Not at all' all give permission, but in slightly different contexts.",
       multipleChoice: {
-        question: "Which response shows you are happy for someone to proceed with something?",
+        question: "Which option is correct?",
         correctOption: "Go ahead.",
         options: ["I've got to go.", "Go ahead.", "By the way.", "How long have you?"],
         optionExplanations: [
@@ -315,7 +315,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "'And you?' is used to return a question to the other person after they have answered yours.",
       tip: "'And you?', 'What about you?', and 'How about you?' all work the same way.",
       multipleChoice: {
-        question: "Someone has answered your question. You want to ask the same question back. Which phrase do you use?",
+        question: "Which phrase is correct?",
         correctOption: "And you?",
         options: ["Be my guest.", "Not at all.", "See you later.", "And you?"],
         optionExplanations: [
@@ -338,7 +338,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "'Be my guest' is a polite, slightly formal way to say 'please go ahead — you are welcome to do it'.",
       tip: "'Be my guest' sounds more generous and formal than just 'go ahead'.",
       multipleChoice: {
-        question: "Which phrase is used to politely give someone permission to do something?",
+        question: "Which option is correct?",
         correctOption: "Be my guest.",
         options: ["How was your weekend?", "Be my guest.", "I've got to go.", "Did you hear about it?"],
         optionExplanations: [
@@ -361,7 +361,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "After a positive statement using 'is', the negative tag is 'isn't it?'. The tag uses the same auxiliary verb in negative form.",
       tip: "Positive statement → negative tag. 'It is...' → 'isn't it?'",
       multipleChoice: {
-        question: "Which is the correct tag to complete: 'It's a lovely morning, ___'?",
+        question: "Which option is correct?",
         correctOption: "isn't it?",
         options: ["is it?", "isn't it?", "doesn't it?", "wasn't it?"],
         optionExplanations: [
@@ -384,7 +384,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "'I'm [name], by the way' is a natural, casual way to introduce yourself during a conversation.",
       tip: "'By the way' is used to add something casually — including your own name.",
       multipleChoice: {
-        question: "You have just met someone at an event and want to introduce yourself informally. Which phrase fits?",
+        question: "Which phrase is correct?",
         correctOption: "I'm Emma, by the way.",
         options: [
           "That's my bus, by the way.",
@@ -412,7 +412,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
         "'Did you hear about...?' is used to bring up something newsworthy that you both might know about.",
       tip: "Use 'Did you hear about...?' or 'Did you watch...?' to start a conversation about shared topics.",
       multipleChoice: {
-        question: "Which phrase is used to start a conversation by bringing up recent news or events?",
+        question: "Which option is correct?",
         correctOption: "Did you hear about the match?",
         options: [
           "See you later.",

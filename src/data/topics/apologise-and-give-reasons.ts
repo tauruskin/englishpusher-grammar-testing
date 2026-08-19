@@ -273,7 +273,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "'Don't worry' is a natural, friendly way to accept an apology and reassure someone. It tells the person that the situation is not serious.",
       tip: "Don't worry / No problem / It's fine / Never mind — all accept an apology and reassure the speaker.",
       multipleChoice: {
-        question: "A: I'm really sorry I missed the meeting. B: ___ — it happens to everyone.",
+        question: "Which option correctly completes B's reply?",
         correctOption: "Don't worry",
         options: ["Don't worry", "Thank you", "I'm sorry", "That's wrong"],
         optionExplanations: {
@@ -296,7 +296,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "'No problem' dismisses the apology and focuses on the solution. It is casual and reassuring, commonly used in both spoken and written English.",
       tip: "No problem / Don't worry / It's fine / That's OK — all tell the person not to worry.",
       multipleChoice: {
-        question: "A: Sorry about that — I sent the wrong file. B: ___, just send me the correct one.",
+        question: "Which option correctly completes B's reply?",
         correctOption: "No problem",
         options: ["No problem", "No thank you", "That's bad", "I disagree"],
         optionExplanations: {
@@ -319,7 +319,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "'Call you back' is the correct word order for this phrasal verb. The object pronoun ('you') goes between the verb ('call') and the particle ('back').",
       tip: "Call you back — the pronoun always goes between 'call' and 'back'. Never 'call back you'.",
       multipleChoice: {
-        question: "I'll ___ once I get out of the meeting — probably around 4pm.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "call you back",
         options: ["call you back", "call back you", "you call back", "back call you"],
         optionExplanations: {
@@ -342,7 +342,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "The phrase 'The traffic was terrible' is used to explain a delay caused by bad road conditions. 'Traffic' fits perfectly here because the speaker decided to take the train instead of driving.",
       tip: "The traffic/journey was terrible — use this to explain a delay caused by travel conditions.",
       multipleChoice: {
-        question: "The ___ was terrible, so I took the train instead of driving.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "traffic",
         options: ["traffic", "apology", "mistake", "problem"],
         optionExplanations: {
@@ -365,7 +365,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "'I got lost' means you lost your way and couldn't find the right place. It is a natural, common phrase to explain why you were late or went to the wrong place.",
       tip: "I got lost = I couldn't find my way. A fixed phrase — always 'got lost', not 'was lost' (in this meaning).",
       multipleChoice: {
-        question: "I'm so sorry — I completely ___ and went to the wrong office.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "got lost",
         options: ["got lost", "got late", "made lost", "was losing"],
         optionExplanations: {
@@ -388,7 +388,7 @@ export const apologiseAndGiveReasonsTopic: GrammarTopic = {
         "'Never mind' is used to tell someone not to worry about something that has already happened. It accepts the apology and moves the conversation forward. It is slightly more formal than 'Don't worry'.",
       tip: "Never mind / Don't worry / No problem / That's OK — all accept an apology. 'Never mind' often implies 'let's move on'.",
       multipleChoice: {
-        question: "A: I'm so sorry about the mix-up with your order. B: ___ — let's just sort it out now.",
+        question: "Which option correctly completes B's reply?",
         correctOption: "Never mind",
         options: ["Never mind", "Never ever", "Don't ever", "No worry"],
         optionExplanations: {

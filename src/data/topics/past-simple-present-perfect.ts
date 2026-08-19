@@ -273,7 +273,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "No specific time is mentioned — just the number of times. This is a general life experience, so we use Present Perfect: 've been.",
       tip: "Experience with no time = Present Perfect. 'Twice', 'a few times', 'before' = PP signals.",
       multipleChoice: {
-        question: "I ___ to New York twice — it's an incredible city.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "'ve been",
         options: ["'ve been", "went", "was", "had been"],
         optionExplanations: {
@@ -296,7 +296,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "'Yesterday' is a specific finished time in the past. Whenever we use specific past time expressions, we must use Past Simple.",
       tip: "Yesterday, last week, in 2019, two years ago, this morning (if day is over) → Past Simple.",
       multipleChoice: {
-        question: "I ___ a hamburger yesterday for the first time in months.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "ate",
         options: ["ate", "have eaten", "was eating", "had eaten"],
         optionExplanations: {
@@ -319,7 +319,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "The past action (leaving the keys) has a current consequence (can't find them now). This present relevance is expressed with Present Perfect.",
       tip: "Can't do something NOW because of a past action → Present Perfect for the past action.",
       multipleChoice: {
-        question: "I can't find my keys anywhere — I think I ___ them at the café.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "'ve left",
         options: ["'ve left", "left", "was leaving", "had left"],
         optionExplanations: {
@@ -342,7 +342,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "'This morning' refers to a period that is still going on (the morning hasn't ended). We use Present Perfect for unfinished time periods.",
       tip: "This morning (still morning), today, this week, this year = unfinished → Present Perfect.",
       multipleChoice: {
-        question: "I ___ three cups of coffee this morning — I feel a bit jittery.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "'ve had",
         options: ["'ve had", "had", "was having", "have been having"],
         optionExplanations: {
@@ -365,7 +365,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "The conversation starts with Present Perfect ('Have you tried?'). Once we add a specific time ('in Tokyo in 2022'), we switch to Past Simple to tell the story.",
       tip: "PP asks about the experience. PS tells the specific story with details and time.",
       multipleChoice: {
-        question: "A: Have you tried sushi? B: Yes! I ___ it for the first time in Tokyo in 2022.",
+        question: "Which option correctly completes B's reply?",
         correctOption: "tried",
         options: ["tried", "have tried", "was trying", "had tried"],
         optionExplanations: {
@@ -388,7 +388,7 @@ export const pastSimplePresentPerfectTopic: GrammarTopic = {
         "When making a recommendation based on a personal experience, Present Perfect is used because the focus is on the experience and its present relevance (you should try it), not on when it happened.",
       tip: "Recommendations from experience: 'I've been there', 'I've read it', 'I've tried it' → Present Perfect.",
       multipleChoice: {
-        question: "I ___ that restaurant — you should definitely try it.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "'ve been to",
         options: ["'ve been to", "went to", "was at", "had visited"],
         optionExplanations: {

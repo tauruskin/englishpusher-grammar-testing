@@ -273,7 +273,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "'Enjoy' is always followed by -ing (enjoy swimming). 'Hope', 'want', and 'decide' are followed by to + infinitive.",
       tip: "Key -ing verbs: enjoy, avoid, miss, finish, imagine, don't mind, stop, spend time.",
       multipleChoice: {
-        question: "Which verb is always followed by an -ing form?",
+        question: "Which option is correct?",
         correctOption: "enjoy",
         options: ["enjoy", "hope", "want", "decide"],
         optionExplanations: {
@@ -296,7 +296,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "'Would like' is followed by a to infinitive, just like 'want'. We say 'would like to travel', never 'would like travelling'.",
       tip: "'Would like' = polite 'want'. Both take to + infinitive.",
       multipleChoice: {
-        question: "I would like ___ to London next summer.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "to travel",
         options: ["to travel", "travelling", "travel", "travelled"],
         optionExplanations: {
@@ -319,7 +319,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "'Agree' is followed by a to infinitive. We say 'agreed to finish', 'agreed to help', never 'agreed finishing'.",
       tip: "'Agree' describes a decision or promise about the future — use to + infinitive.",
       multipleChoice: {
-        question: "They agreed ___ the project together by the end of the month.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "to finish",
         options: ["to finish", "finishing", "finish", "finished"],
         optionExplanations: {
@@ -342,7 +342,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "'Don't mind' is always followed by -ing. We say 'don't mind getting up', 'don't mind waiting', never 'don't mind to get up'.",
       tip: "'Don't mind' means it's not a problem for you — use -ing to describe the action.",
       multipleChoice: {
-        question: "I don't mind ___ early if it means avoiding the traffic.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "getting up",
         options: ["getting up", "to get up", "get up", "got up"],
         optionExplanations: {
@@ -365,7 +365,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "'Need' is followed by a to infinitive. We say 'needs to study', 'needs to work', never 'needs studying' (in this meaning).",
       tip: "Need + to infinitive describes what must be done: need to study, need to hurry.",
       multipleChoice: {
-        question: "She needs ___ harder if she wants to pass the exam.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "to study",
         options: ["to study", "studying", "study", "studied"],
         optionExplanations: {
@@ -388,7 +388,7 @@ export const verbPatternsTopic: GrammarTopic = {
         "An -ing form can act as the subject of a sentence, just like a noun. 'Reading in a foreign language' is the subject here. We cannot use 'to read' as a subject in natural spoken English.",
       tip: "When a verb is the subject of a sentence, use -ing: Swimming is fun. Reading helps you learn.",
       multipleChoice: {
-        question: "___ in a foreign language can be very challenging at first.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "Reading",
         options: ["Reading", "To read", "Read", "Reads"],
         optionExplanations: {

@@ -272,7 +272,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "The background action in progress (listening to music) uses Past Continuous. The sudden interrupting event (crashed) uses Past Simple.",
       tip: "Crash, ring, knock, arrive — these sudden events interrupt a Past Continuous action.",
       multipleChoice: {
-        question: "I ___ to music when the internet crashed.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "was listening",
         options: ["was listening", "listened", "had listened", "listen"],
         optionExplanations: {
@@ -295,7 +295,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "We use Past Simple for a sequence of completed past actions. Both actions (arrived, ordered) happened one after the other and are finished.",
       tip: "A sequence of story events: he arrived → he ordered → he ate. Each uses Past Simple.",
       multipleChoice: {
-        question: "He ___ the restaurant at 7pm and ordered a steak.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "arrived at",
         options: ["arrived at", "was arriving at", "had arrived at", "arrives at"],
         optionExplanations: {
@@ -318,7 +318,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "'By the time' shows that the train leaving happened BEFORE she got to the station. The earlier action uses Past Perfect.",
       tip: "'By the time' + Past Simple → Past Perfect in the other clause.",
       multipleChoice: {
-        question: "By the time she got to the station, the train ___.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "had already left",
         options: ["had already left", "already left", "was already leaving", "has already left"],
         optionExplanations: {
@@ -341,7 +341,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "'As' and 'while' are used to describe two actions happening at the same time. Both actions use Past Continuous to show they were in progress together.",
       tip: "As/while + two actions happening together = Past Continuous + Past Continuous.",
       multipleChoice: {
-        question: "They ___ their coffee as the waiter closed the café.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "were finishing",
         options: ["were finishing", "finished", "had finished", "finish"],
         optionExplanations: {
@@ -364,7 +364,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "The cause (losing the wallet) happened BEFORE the effect (not having money). We use Past Perfect for the earlier action: 'had lost'.",
       tip: "When one past event caused another — the cause uses Past Perfect.",
       multipleChoice: {
-        question: "I didn't have any money because I ___ my wallet.",
+        question: "Which option correctly completes the sentence?",
         correctOption: "had lost",
         options: ["had lost", "lost", "was losing", "have lost"],
         optionExplanations: {
@@ -387,7 +387,7 @@ export const narrativeTensesTopic: GrammarTopic = {
         "Past Simple questions use 'did' + subject + base form. We say 'How did you meet Harry?' — never 'How did you met Harry?'.",
       tip: "Past Simple question: Did + subject + BASE FORM. The main verb stays in base form.",
       multipleChoice: {
-        question: "How ___ Harry at university?",
+        question: "Which option correctly completes the question?",
         correctOption: "did you meet",
         options: ["did you meet", "did you met", "were you meeting", "had you met"],
         optionExplanations: {
