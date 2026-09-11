@@ -110,6 +110,22 @@ describe.each(topics.map((t) => [t.id, t] as const))("topic: %s", (_id, topic) =
           }
         }
       });
+
+      // --- Regression guards: the learner must actually SEE the stem ---
+      // MultipleChoiceView always renders `multipleChoice.question`, and
+      // renders `sentence` unless a gapless `sentence` spells out an option.
+      // A "completes the sentence" prompt with no gap anywhere therefore
+      // renders as a bare instruction with nothing to complete.
+      it("multiple-choice: a completion prompt has a gap to complete", () => {
+        const data = q.multipleChoice!;
+        if (/\b(completes?|fills?)\b/i.test(data.question)) {
+          const hasGap = data.question.includes("___") || q.sentence.includes("___");
+          expect(
+            hasGap,
+            `prompt asks to complete something but neither question nor sentence has a "___" gap`,
+          ).toBe(true);
+        }
+      });
     }
 
     if (q.type === "word-transform") {

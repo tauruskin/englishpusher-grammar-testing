@@ -8,6 +8,10 @@ function shuffleArray<T>(arr: T[]): T[] {
   }
   return a;
 }
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 import { GrammarQuestion } from "@/data/types";
 import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 import { BorderRotate } from "@/components/ui/animated-gradient-border";
@@ -219,6 +223,31 @@ const MultipleChoiceView = ({
   const correct = data.correctOption;
   const [options] = useState(() => shuffleArray(data.options));
 
+  // Most items carry the stem in `question.sentence` and use
+  // `multipleChoice.question` purely as a prompt ("Which option completes...").
+  // The stem has to be rendered or the learner has nothing to complete.
+  //
+  // This view adapts to whatever shape the data is in, because the same topic
+  // files are also consumed by the Telegram Quiz Bot, which renders them
+  // differently. Fix display problems HERE — never by editing the shared data.
+  //
+  // Two cases where showing `sentence` would be wrong:
+  //  1. It restates the correct answer. Some items use it as an authoring note
+  //     (harmless back when this view never showed it, a giveaway now). A gapped
+  //     stem is always safe — the gap is where the answer was removed; a gapless
+  //     one only if it doesn't spell out an option.
+  //  2. The prompt already quotes the sentence, so showing both prints it twice.
+  const norm = (s: string) => s.replace(/['‘’ʼ`´]/g, "'").replace(/\s+/g, " ").trim();
+  const hasGap = question.sentence.includes("___");
+  const revealsAnAnswer =
+    !hasGap &&
+    data.options.some((opt) =>
+      new RegExp(`(^|\\W)${escapeRegExp(opt.trim())}(\\W|$)`, "i").test(question.sentence),
+    );
+  const promptRepeatsStem = norm(data.question).includes(norm(question.sentence));
+  const stemParts =
+    revealsAnAnswer || promptRepeatsStem ? null : question.sentence.split("___");
+
   const getOptionStyle = (option: string) => {
     if (!answered)
       return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
@@ -231,6 +260,35 @@ const MultipleChoiceView = ({
 
   return (
     <div className="space-y-5">
+      {/* Reference sentence with blank */}
+      {stemParts && (
+        <div className="text-center">
+          <p
+            data-testid="mc-stem"
+            className="font-body text-lg md:text-xl text-foreground leading-relaxed"
+          >
+            {stemParts.map((part, idx, arr) => (
+              <span key={idx}>
+                {part}
+                {idx < arr.length - 1 && (
+                  <span
+                    className={`inline-block mx-1 min-w-[110px] text-center font-bold border-b-2 ${
+                      answered
+                        ? isCorrect
+                          ? "border-success text-success"
+                          : "border-destructive text-destructive"
+                        : "border-primary text-primary"
+                    }`}
+                  >
+                    {answered ? correct : "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"}
+                  </span>
+                )}
+              </span>
+            ))}
+          </p>
+        </div>
+      )}
+
       <p className="text-center font-body text-base text-muted-foreground">
         {data.question}
       </p>
