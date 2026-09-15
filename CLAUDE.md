@@ -217,21 +217,12 @@ These exist but are NOT integrated — do not modify or rely on them:
 | `apologise-and-give-reasons` | `apologise-and-give-reasons.ts` | — | 25 | Active |
 | `prepositions-of-time` | `prepositions-of-time.ts` | — | 25 | Active |
 | `question-forms` | `question-forms.ts` | — | 25 | Active |
-| `starting-ending-conversations` | `starting-ending-conversations.ts` | — | 27 | Active |
-| `adverbs-of-frequency` | `adverbs-of-frequency.ts` | — | 25 | Active |
-| `stative-dynamic-verbs` | `stative-dynamic-verbs.ts` | Lesson 4 | 25 | Active |
-| `articles` | `articles.ts` | Lesson 4B | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
 
 ## WHAT HAS BEEN DONE (Changelog)
-
-### 2026-09-15 — Session
-- Added `articles` topic (25 questions, all 4 types) — `src/data/topics/articles.ts`, sourced from SpeakOut B1 Unit 4B "First!" (student book pages 47, 117/Grammar Bank). Covers a/an first mention, jobs, definite article for unique things/superlatives/rivers-oceans/multi-word country names/defining expressions, and zero article for general statements/cities/countries/sports.
-- Registered in `src/data/topics/index.ts`. All 750 validation checks pass across 13 topics.
-- Built in headless mode via the orchestrator bridge (`GRAMMAR_TOPIC_HEADLESS=1`) — wrote `.topic-summary.json` and `preview.html` instead of committing/deploying; working tree left uncommitted for the bridge to handle.
 
 ### 2026-07-10 — Session
 - Created `create-grammar-topic` skill at workspace root `.claude/skills/create-grammar-topic/SKILL.md` — codifies the full new-topic workflow (textbook photo → 25 questions → register → validate → deploy). Use it when adding topics.
