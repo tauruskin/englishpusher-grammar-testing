@@ -217,12 +217,21 @@ These exist but are NOT integrated — do not modify or rely on them:
 | `apologise-and-give-reasons` | `apologise-and-give-reasons.ts` | — | 25 | Active |
 | `prepositions-of-time` | `prepositions-of-time.ts` | — | 25 | Active |
 | `question-forms` | `question-forms.ts` | — | 25 | Active |
+| `starting-ending-conversations` | `starting-ending-conversations.ts` | — | 27 | Active |
+| `adverbs-of-frequency` | `adverbs-of-frequency.ts` | — | 25 | Active |
+| `stative-dynamic-verbs` | `stative-dynamic-verbs.ts` | Lesson 4 | 25 | Active |
+| `articles` | `articles.ts` | Lesson 4B | 25 | Active |
 
 **Deleted topics:** `present-perfect.ts` (removed 2026-03-18, commit c7138c0)
 
 ---
 
 ## WHAT HAS BEEN DONE (Changelog)
+
+### 2026-09-15 — Session
+- Added `articles` topic (25 questions, all 4 question types) — `src/data/topics/articles.ts`, built from Speak Out B1 Unit 4B textbook photos (a/an sound rules, definite article for superlatives/rivers/defining expressions/spoken dates, zero article for general statements/place names/sports/fixed phrases). Registered in `src/data/topics/index.ts`.
+- Built headless via the orchestrator bridge (`GRAMMAR_TOPIC_HEADLESS=1`) — commit/deploy skipped; `.topic-summary.json` and `preview.html` written for teacher review instead.
+- Backfilled missing rows in the "Current Topics" table below (`starting-ending-conversations`, `adverbs-of-frequency`, `stative-dynamic-verbs`) that had been added in an earlier session but never added to the table.
 
 ### 2026-07-10 — Session
 - Created `create-grammar-topic` skill at workspace root `.claude/skills/create-grammar-topic/SKILL.md` — codifies the full new-topic workflow (textbook photo → 25 questions → register → validate → deploy). Use it when adding topics.
