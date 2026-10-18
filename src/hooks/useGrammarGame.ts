@@ -24,6 +24,11 @@ export function getCorrectAnswer(q: GrammarQuestion): string {
       if (!data) return "";
       return data.pairs.map(p => p.ending).join("||");
     }
+    case "sentence-reorder": {
+      const data = q.sentenceReorder;
+      if (!data) return "";
+      return data.correctOrders[0]?.map(i => data.words[i]).join(" ") ?? "";
+    }
     default:
       return "";
   }
@@ -149,6 +154,14 @@ export function useGrammarGame(questions: GrammarQuestion[], topicId?: string) {
         const allAnswers = [data.correctAnswer, ...(data.alternativeAnswers ?? [])].map(a => a.trim().toLowerCase());
         correct = allAnswers.includes(userTrimmed) || allAnswers.includes(userExpanded);
         correct_answer = data.correctAnswer;
+      } else if (currentQuestion.type === "sentence-reorder" && currentQuestion.sentenceReorder) {
+        const data = currentQuestion.sentenceReorder;
+        const userAnswer = normalizeApostrophes(answer.trim()).toLowerCase();
+        const validAnswers = data.correctOrders.map(order =>
+          order.map(i => data.words[i]).join(" ").toLowerCase()
+        );
+        correct = validAnswers.includes(userAnswer);
+        correct_answer = validAnswers[0] ?? "";
       } else {
         correct_answer = getCorrectAnswer(currentQuestion);
         correct = answer.trim().toLowerCase() === correct_answer.trim().toLowerCase();
