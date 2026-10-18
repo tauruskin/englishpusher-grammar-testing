@@ -11,7 +11,8 @@ export type GrammarQuestionType =
   | 'error-spot'
   | 'multiple-choice'
   | 'word-transform'
-  | 'sentence-match';
+  | 'sentence-match'
+  | 'sentence-reorder';
 
 /**
  * Difficulty levels
@@ -36,6 +37,7 @@ export interface GrammarQuestion {
   multipleChoice?: MultipleChoiceData;
   wordTransform?: WordTransformData;
   sentenceMatch?: SentenceMatchData;
+  sentenceReorder?: SentenceReorderData;
 }
 
 /**
@@ -96,6 +98,16 @@ export interface MatchPair {
  */
 export interface SentenceMatchData {
   pairs: MatchPair[];
+}
+
+/**
+ * Data structure for sentence-reorder questions.
+ * `correctOrders` lists every acceptable ordering of `words` by index,
+ * since some sentences have more than one valid word order.
+ */
+export interface SentenceReorderData {
+  words: string[];
+  correctOrders: number[][];
 }
 
 /**
