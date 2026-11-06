@@ -121,7 +121,7 @@ export const startingEndingConversationsTopic: GrammarTopic = {
       gapFill: {
         gapIndex: 1,
         correctAnswer: "got",
-        options: ["needed", "wanted", "got", "gone"],
+        options: ["get", "getting", "got", "gone"],
         correctOptionIndex: 2, // options[2] === "got" ✓
       },
     },
