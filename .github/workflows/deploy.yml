@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy redirect page to GitHub Pages
 
 on:
   push:
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,28 +21,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Set base path
-        run: echo "VITE_BASE_PATH=/" >> $GITHUB_ENV
-
-      - name: Build
-        run: npm run build
-
-      - name: Verify build output
-        run: |
-          test -f ./dist/index.html || (echo "ERROR: dist/index.html not found, build may have failed" && exit 1)
-          echo "Build output contents:"
-          ls -la ./dist/
-          echo "--- dist/index.html ---"
-          head -20 ./dist/index.html
+      - name: Test redirect table
+        run: node --test "test/*.test.js"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./site
           force_orphan: true
